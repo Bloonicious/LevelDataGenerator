@@ -17,7 +17,7 @@ const gainMultiplier = 1.2;
 const capacityMultiplier = 1.2;
 
 // Define the number of levels to generate
-const numberOfLevels = 10;
+const numberOfLevels = 50;
 
 // Initialize an array to store the generated levels
 let levels = [];
