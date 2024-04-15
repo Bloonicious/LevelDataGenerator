@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Level Data Generator</title>
     <link rel="stylesheet" href="main.css">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Level Data Generator</h1>
-        <button onclick="generateLevels()">Generate Levels</button>
-        <button onclick="viewCurrentValues()">View Current Values</button>
-        <div id="output"></div>
-    </div>
+    <h1>Level Data Generator</h1>
+    <button onclick="generateLevels()">Generate Levels</button>
+    <button onclick="viewCurrentValues()">View Current Values</button>
+    <button onclick="copyJson()">Copy JSON</button>
+    <div id="output"></div>
     <script src="leveldata.js"></script>
 </body>
 </html>
