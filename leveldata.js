@@ -70,7 +70,16 @@ function generateLevels() {
 
 function viewCurrentValues() {
     let outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = JSON.stringify(levelData, null, 2);
+    outputDiv.textContent = JSON.stringify(levelData, null, 2);
+}
+
+function copyJson() {
+    let jsonText = JSON.stringify(levelData, null, 2);
+    navigator.clipboard.writeText(jsonText).then(function() {
+        alert('JSON data copied to clipboard!');
+    }, function() {
+        alert('Error copying JSON data to clipboard');
+    });
 }
 
 function displayLevels() {
