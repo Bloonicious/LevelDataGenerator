@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level Generator</title>
-    <style>
-        body {
-            font-family: Comic Sans MS, cursive, sans-serif;
-            background-color: red;
-            color: white;
-        }
-    </style>
+    <title>Level Data Generator</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <h1>Level Generator</h1>
-    <button onclick="generateLevels()">Generate Levels</button>
-    <button onclick="viewCurrentValues()">View Current Values</button>
-    <pre id="output"></pre>
+    <div class="container">
+        <h1>Level Data Generator</h1>
+        <button onclick="generateLevels()">Generate Levels</button>
+        <button onclick="viewCurrentValues()">View Current Values</button>
+        <div id="output"></div>
+    </div>
     <script src="leveldata.js"></script>
 </body>
 </html>
