@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Level Data Generator</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <h1>Level Data Generator</h1>
-    <button onclick="generateLevels()">Generate Levels</button>
+    <button onclick="generateLevels()" class="button">Generate Levels</button>
     <pre id="output"></pre>
 
     <script src="leveldata.js"></script>
@@ -32,7 +33,7 @@
             const capacityMultiplier = 1.2;
 
             // Define the number of levels to generate
-            const numberOfLevels = 50;
+            const numberOfLevels = 10;
 
             // Initialize an array to store the generated levels
             let levels = [];
