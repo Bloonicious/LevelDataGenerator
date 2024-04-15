@@ -15,70 +15,8 @@
 <body>
     <h1>Level Generator</h1>
     <button onclick="generateLevels()">Generate Levels</button>
+    <button onclick="viewCurrentValues()">View Current Values</button>
     <pre id="output"></pre>
-
     <script src="leveldata.js"></script>
-    <script>
-        function generateLevels() {
-    // Define the starting level data
-    const startingLevel = {
-        "0 Param data": {
-            "0 int Tier": 14,
-            "0 int Level": 800,
-            "0 double Cost": 1.84e+69,
-            "0 int NumberOfWorkers": 6,
-            "0 double GainPerSecondPerWorker": 1.3699999999999999e+58,
-            "0 double CapacityPerWorker": 5.4999999999999999e+58,
-            "0 int WorkerWalkingSpeedPerSecond": 5,
-            "1 UInt8 BigUpdate": 1,
-            "0 double SuperCashReward": 2
-        }
-    };
-
-    // Define the multiplier for cost, gain, and capacity per level
-    const costMultiplier = 1.225;
-    const gainMultiplier = 1.2;
-    const capacityMultiplier = 1.2;
-
-    // Define the number of levels to generate
-    const numberOfLevels = 50;
-
-    // Initialize an array to store the generated levels
-    let levels = [];
-
-    // Generate new levels based on the previous level data
-    let currentLevel = { ...startingLevel };
-    for (let i = 0; i < numberOfLevels; i++) {
-        currentLevel = {
-            "0 Param data": {
-                "0 int Tier": currentLevel["0 Param data"]["0 int Tier"],
-                "0 int Level": currentLevel["0 Param data"]["0 int Level"] + 1,
-                "0 double Cost": currentLevel["0 Param data"]["0 double Cost"] * costMultiplier,
-                "0 int NumberOfWorkers": currentLevel["0 Param data"]["0 int NumberOfWorkers"],
-                "0 double GainPerSecondPerWorker": currentLevel["0 Param data"]["0 double GainPerSecondPerWorker"] * gainMultiplier,
-                "0 double CapacityPerWorker": currentLevel["0 Param data"]["0 double CapacityPerWorker"] * capacityMultiplier,
-                "0 int WorkerWalkingSpeedPerSecond": currentLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"],
-                "1 UInt8 BigUpdate": 0,
-                "0 double SuperCashReward": 0
-            }
-        };
-        
-        // Add special features for level 850
-        if (currentLevel["0 Param data"]["0 int Level"] === 850) {
-            currentLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 3; // Triple gain
-            currentLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3; // Triple capacity
-            currentLevel["0 Param data"]["0 int NumberOfWorkers"] += 1; // Increase workers by 1
-            currentLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1; // Set as BigUpdate
-            currentLevel["0 Param data"]["0 double SuperCashReward"] = 2; // Give 2 Supercash
-        }
-        
-        levels.push(currentLevel);
-    }
-
-    // Display the generated levels
-    document.getElementById('output').innerText = JSON.stringify(levels, null, 2);
-}
-        }
-    </script>
 </body>
 </html>
