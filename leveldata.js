@@ -75,23 +75,21 @@ function generateLevels() {
         newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * currentStatMultiplier;
 
         // Apply big update for specific levels
-        if (newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 900 || newLevel["0 Param data"]["0 int Level"] === 1000) {
+        if (newLevel["0 Param data"]["0 int Level"] === 10 || newLevel["0 Param data"]["0 int Level"] === 25 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 500 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 900 || newLevel["0 Param data"]["0 int Level"] === 1000) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 2;
         }
 
         // Apply special conditions for specific levels
-        if (newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 600) {
-            newLevel["0 Param data"]["0 int NumberOfWorkers"] = 6;
-        } else if (newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 500 || newLevel["0 Param data"]["0 int Level"] === 700 || newLevel["0 Param data"]["0 int Level"] === 800) {
-            newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"] + 1;
-        } else {
-            newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
-        }
-
-        if (newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 500 || newLevel["0 Param data"]["0 int Level"] === 700 || newLevel["0 Param data"]["0 int Level"] === 800) {
+        if (newLevel["0 Param data"]["0 int Level"] === 25 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 500 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 700 || newLevel["0 Param data"]["0 int Level"] === 800) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 2;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 2;
+        } else if (newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 900) {
+            newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 3;
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3;
+        } else if (newLevel["0 Param data"]["0 int Level"] === 1000) {
+            newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 4;
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 4;
         }
 
         // Increase worker speed at specific levels
@@ -101,20 +99,11 @@ function generateLevels() {
             newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"];
         }
 
-        // Triple the gain and capacity for level 850 and quadruple for level 1000
-        if (newLevel["0 Param data"]["0 int Level"] === 850) {
-            newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 3;
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3;
-        }
-
-        if (newLevel["0 Param data"]["0 int Level"] === 900) {
-            newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 3;
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3;
-        }
-
-        if (newLevel["0 Param data"]["0 int Level"] === 1000) {
-            newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 4;
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 4;
+        // Increase worker count at specific levels
+        if (newLevel["0 Param data"]["0 int Level"] === 10 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] >= 850) {
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"] + 1;
+        } else {
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
         }
 
         // Copy the generated level to the output
