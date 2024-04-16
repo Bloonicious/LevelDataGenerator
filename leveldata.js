@@ -56,7 +56,7 @@ let workerSpeedIncrementLevel = {
     1201: 6,
     1400: 6,
     1401: 6,
-    1500: 6
+    1500: 6,
     1501: 6
 };
 
