@@ -15,9 +15,7 @@ let statMultiplier851 = 1.2;
 let costMultiplier1001 = 1.275;
 let statMultiplier1001 = 1.23;
 
-// Default level counts for worker speed and worker count increment
-let workerSpeedLevelCount = 969; // Worker speed incremented starting at level 969
-let workerCountLevelCount = 850; // Worker count incremented starting at level 850
+let workerSpeedIncrementLevel = 83;
 
 function generateLevels() {
     let currentLevel = parseInt(document.getElementById('levelInput').value);
@@ -32,14 +30,17 @@ function generateLevels() {
             "0 int Tier": currentTier,
             "0 int Level": currentLevel - 1,
             "0 double Cost": currentCost,
-            "0 int NumberOfWorkers": 1,
             "0 double GainPerSecondPerWorker": currentGain,
             "0 double CapacityPerWorker": currentCapacity,
             "0 int WorkerWalkingSpeedPerSecond": 2,
             "1 UInt8 BigUpdate": 0,
-            "0 double SuperCashReward": 0
+            "0 double SuperCashReward": 0,
+            "0 int NumberOfWorkers": 1
         }
     };
+
+    let workerCountIncrementLevels = [10, 50, 100, 200, 400, 850];
+    let workerSpeedIncrementLevels = [workerSpeedIncrementLevel, 265, 561, 969];
 
     for (let i = 0; i < levelsToGenerate; i++) {
         let newLevel = {};
@@ -79,7 +80,7 @@ function generateLevels() {
         newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * currentStatMultiplier;
 
         // Apply big update for specific levels
-        if ([10, 25, 50, 100, 200, 400, 500, 600, 700, 800, 850, 900, 1000, 1200, 1400, 1500].includes(newLevel["0 Param data"]["0 int Level"])) {
+        if (newLevel["0 Param data"]["0 int Level"] === 10 || newLevel["0 Param data"]["0 int Level"] === 25 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 500 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 700 || newLevel["0 Param data"]["0 int Level"] === 800 || newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 900 || newLevel["0 Param data"]["0 int Level"] === 1000 || newLevel["0 Param data"]["0 int Level"] === 1200 || newLevel["0 Param data"]["0 int Level"] === 1400 || newLevel["0 Param data"]["0 int Level"] === 1500) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 2;
         } else {
@@ -88,29 +89,29 @@ function generateLevels() {
         }
 
         // Apply special conditions for specific levels
-        if ([25, 50, 100, 200, 400, 500, 600, 700, 800].includes(newLevel["0 Param data"]["0 int Level"])) {
+        if (newLevel["0 Param data"]["0 int Level"] === 25 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 500 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 700 || newLevel["0 Param data"]["0 int Level"] === 800) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 2;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 2;
-        } else if ([850, 900, 1000].includes(newLevel["0 Param data"]["0 int Level"])) {
+        } else if (newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 900) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 3;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3;
-        } else if ([1200, 1400].includes(newLevel["0 Param data"]["0 int Level"])) {
+        } else if (newLevel["0 Param data"]["0 int Level"] === 1000 || newLevel["0 Param data"]["0 int Level"] === 1200 || newLevel["0 Param data"]["0 int Level"] === 1400) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 4;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 4;
-        } else if ([1500].includes(newLevel["0 Param data"]["0 int Level"])) {
+        } else if (newLevel["0 Param data"]["0 int Level"] === 1500) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 5;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 5;
         }
 
         // Increase worker speed at specific levels
-        if (newLevel["0 Param data"]["0 int Level"] >= workerSpeedLevelCount) {
+        if (workerSpeedIncrementLevels.includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] + 1;
         } else {
             newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"];
         }
 
         // Increase worker count at specific levels
-        if (newLevel["0 Param data"]["0 int Level"] >= workerCountLevelCount) {
+        if (workerCountIncrementLevels.includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"] + 1;
         } else {
             newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
@@ -123,28 +124,6 @@ function generateLevels() {
 
     // Display the generated levels
     displayLevels();
-    // Updates input boxes
-    updateInputBoxes();
-}
-
-// Add event listeners to worker speed and worker count input boxes
-document.getElementById('workerSpeedInput').addEventListener('input', updateWorkerSpeed);
-document.getElementById('workerCountInput').addEventListener('input', updateWorkerCount);
-
-// Function to update worker speed based on input value
-function updateWorkerSpeed() {
-    let workerSpeed = parseInt(document.getElementById('workerSpeedInput').value);
-    if (!isNaN(workerSpeed)) {
-        lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeed;
-    }
-}
-
-// Function to update worker count based on input value
-function updateWorkerCount() {
-    let workerCount = parseInt(document.getElementById('workerCountInput').value);
-    if (!isNaN(workerCount)) {
-        lastLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCount;
-    }
 }
 
 function displayLevels() {
@@ -152,22 +131,16 @@ function displayLevels() {
     outputDiv.innerHTML = JSON.stringify(levelData, null, 4);
 }
 
-// Function to export level data to JSON file with proper formatting
-function exportToJsonFile(tier) {
-    let filename = `level_data(tier${tier}).json`;
-    let jsonStr = JSON.stringify(levelData, function(key, value) {
-        return value; // Return values as is without modification
-    }, 4); // Use 4 spaces for indentation
-
-    let blob = new Blob([jsonStr], { type: 'application/json' });
-    let link = document.createElement('a');
-    link.download = filename;
-    link.href = window.URL.createObjectURL(blob);
-    link.click();
-}
-
-// Call this function to export the level data to a JSON file
 function copyJson() {
-    let currentTier = parseInt(document.getElementById('tierInput').value);
-    exportToJsonFile(currentTier);
+    let tierInput = document.getElementById('tierInput').value;
+    let filename = `level_data(${tierInput}).json`;
+    let outputDiv = document.getElementById('output');
+    let json = JSON.stringify(levelData, null, 4);
+    let blob = new Blob([json], { type: 'application/json' });
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
 }
