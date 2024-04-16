@@ -98,18 +98,20 @@ function generateLevels() {
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 5;
         }
 
-        // Increase worker speed at specific levels
-        if (newLevel["0 Param data"]["0 int Level"] === 83 || newLevel["0 Param data"]["0 int Level"] === 265 || newLevel["0 Param data"]["0 int Level"] === 561 || newLevel["0 Param data"]["0 int Level"] === 969) {
-            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] + 1;
+       // Increase worker speed at specific levels
+        if (lastLevel["0 Param data"]["0 int Level"] === 83 || lastLevel["0 Param data"]["0 int Level"] === 265 || lastLevel["0 Param data"]["0 int Level"] === 561 || lastLevel["0 Param data"]["0 int Level"] >= 969) {
+          newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] + 1;
         } else {
-            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"];
+          newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"];
         }
 
         // Increase worker count at specific levels
-        if (newLevel["0 Param data"]["0 int Level"] === 10 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 850) {
-            newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"] + 1;
+        if (lastLevel["0 Param data"]["1 UInt8 BigUpdate"] === 1) {
+          newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"] + 1;
+        } else if (lastLevel["0 Param data"]["0 int Level"] === 10 || newLevel["0 Param data"]["0 int Level"] === 50 || lastLevel["0 Param data"]["0 int Level"] === 100 || lastLevel["0 Param data"]["0 int Level"] === 200 || lastLevel["0 Param data"]["0 int Level"] === 400 || lastLevel["0 Param data"]["0 int Level"] === 850 || lastLevel["0 Param data"]["0 int Level"] === 1400) {
+          newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"] + 1;
         } else {
-            newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
+          newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
         }
 
         // Copy the generated level to the output
