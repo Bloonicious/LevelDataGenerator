@@ -123,6 +123,8 @@ function generateLevels() {
 
     // Display the generated levels
     displayLevels();
+    // Updates input boxes
+    updateInputBoxes();
 }
 
 // Add event listeners to worker speed and worker count input boxes
