@@ -16,6 +16,7 @@ let costMultiplier1001 = 1.275;
 let statMultiplier1001 = 1.23;
 
 let workerSpeedIncrementLevel = {
+    1: 2,
     83: 3,
     265: 4,
     561: 5,
@@ -23,6 +24,7 @@ let workerSpeedIncrementLevel = {
 };
 
 let workerCountIncrementLevel = {
+    1: 1,
     10: 2,
     50: 3,
     100: 4,
