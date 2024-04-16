@@ -39,8 +39,18 @@ function generateLevels() {
         }
     };
 
-    let workerCountIncrementLevels = [10, 50, 100, 200, 400, 850];
-    let workerSpeedIncrementLevels = [workerSpeedIncrementLevel, 265, 561, 969];
+    let workerCountIncrementLevels = [];
+    let workerSpeedIncrementLevels = [];
+
+    // Dynamically adjust worker count and worker speed increment levels based on current level
+    for (let level = 10; level <= currentLevel; level += 10) {
+        if (level === 25 || level === 50 || level === 100 || level === 200 || level === 400 || level === 850) {
+            workerCountIncrementLevels.push(level);
+        }
+        if (level === workerSpeedIncrementLevel || level === 265 || level === 561 || level === 969) {
+            workerSpeedIncrementLevels.push(level);
+        }
+    }
 
     for (let i = 0; i < levelsToGenerate; i++) {
         let newLevel = {};
@@ -80,7 +90,7 @@ function generateLevels() {
         newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * currentStatMultiplier;
 
         // Apply big update for specific levels
-        if (newLevel["0 Param data"]["0 int Level"] === 10 || newLevel["0 Param data"]["0 int Level"] === 25 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 500 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 700 || newLevel["0 Param data"]["0 int Level"] === 800 || newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 900 || newLevel["0 Param data"]["0 int Level"] === 1000 || newLevel["0 Param data"]["0 int Level"] === 1200 || newLevel["0 Param data"]["0 int Level"] === 1400 || newLevel["0 Param data"]["0 int Level"] === 1500) {
+        if (workerCountIncrementLevels.includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 2;
         } else {
