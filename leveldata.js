@@ -125,14 +125,37 @@ function generateLevels() {
     displayLevels();
 }
 
+// Add event listeners to worker speed and worker count input boxes
+document.getElementById('workerSpeedInput').addEventListener('input', updateWorkerSpeed);
+document.getElementById('workerCountInput').addEventListener('input', updateWorkerCount);
+
+// Function to update worker speed based on input value
+function updateWorkerSpeed() {
+    let workerSpeed = parseInt(document.getElementById('workerSpeedInput').value);
+    if (!isNaN(workerSpeed)) {
+        lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeed;
+    }
+}
+
+// Function to update worker count based on input value
+function updateWorkerCount() {
+    let workerCount = parseInt(document.getElementById('workerCountInput').value);
+    if (!isNaN(workerCount)) {
+        lastLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCount;
+    }
+}
+
 function displayLevels() {
     let outputDiv = document.getElementById('output');
     outputDiv.innerHTML = JSON.stringify(levelData, null, 4);
 }
 
+// Function to export level data to JSON file with proper formatting
 function exportToJsonFile(tier) {
     let filename = `level_data(tier${tier}).json`;
-    let jsonStr = JSON.stringify(levelData, null, 4);
+    let jsonStr = JSON.stringify(levelData, function(key, value) {
+        return value; // Return values as is without modification
+    }, 4); // Use 4 spaces for indentation
 
     let blob = new Blob([jsonStr], { type: 'application/json' });
     let link = document.createElement('a');
