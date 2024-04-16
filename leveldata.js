@@ -88,13 +88,13 @@ function generateLevels() {
         }
 
         // Apply special conditions for specific levels
-        if ([25, 50, 100, 200, 400, 500, 600, 700, 800, 850, 900, 1000, 1200, 1400, 1500].includes(newLevel["0 Param data"]["0 int Level"])) {
+        if ([25, 50, 100, 200, 400, 500, 600, 700, 800].includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 2;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 2;
-        } else if ([850, 900, 1000, 1200, 1400, 1500].includes(newLevel["0 Param data"]["0 int Level"])) {
+        } else if ([850, 900, 1000].includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 3;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3;
-        } else if ([1000, 1200, 1400, 1500].includes(newLevel["0 Param data"]["0 int Level"])) {
+        } else if ([1200, 1400].includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 4;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 4;
         } else if ([1500].includes(newLevel["0 Param data"]["0 int Level"])) {
