@@ -15,6 +15,23 @@ let statMultiplier851 = 1.2;
 let costMultiplier1001 = 1.275;
 let statMultiplier1001 = 1.23;
 
+let workerSpeedIncrementLevel = {
+    83: 3,
+    265: 4,
+    561: 5,
+    969: 6
+};
+
+let workerCountIncrementLevel = {
+    10: 2,
+    50: 3,
+    100: 4,
+    200: 5,
+    400: 6,
+    850: 7,
+    1400: 8
+};
+
 function generateLevels() {
     let currentLevel = parseInt(document.getElementById('levelInput').value);
     let currentTier = parseInt(document.getElementById('tierInput').value);
@@ -96,6 +113,19 @@ function generateLevels() {
         } else if (newLevel["0 Param data"]["0 int Level"] === 1500) {
             newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] *= 5;
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 5;
+        }
+
+        // Adjusts worker speed and worker count based on current levelling
+        if (workerSpeedIncrementLevel[newLevel["0 Param data"]["0 int Level"]]) {
+            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementLevel[newLevel["0 Param data"]["0 int Level"]];
+        } else {
+            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"];
+        }
+
+        if (workerCountIncrementLevel[newLevel["0 Param data"]["0 int Level"]]) {
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementLevel[newLevel["0 Param data"]["0 int Level"]];
+        } else {
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
         }
         
         // Copy the generated level to the output
