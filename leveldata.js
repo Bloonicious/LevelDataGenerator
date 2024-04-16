@@ -47,10 +47,10 @@ function generateLevels() {
             "0 double Cost": currentCost,
             "0 double GainPerSecondPerWorker": currentGain,
             "0 double CapacityPerWorker": currentCapacity,
-            "0 int WorkerWalkingSpeedPerSecond": 2,
+            "0 int WorkerWalkingSpeedPerSecond": 5,
             "1 UInt8 BigUpdate": 0,
             "0 double SuperCashReward": 0,
-            "0 int NumberOfWorkers": 1
+            "0 int NumberOfWorkers": 6
         }
     };
 
