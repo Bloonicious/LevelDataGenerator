@@ -130,8 +130,8 @@ function displayLevels() {
     outputDiv.innerHTML = JSON.stringify(levelData, null, 4);
 }
 
-function exportToJsonFile() {
-    let filename = 'level_data.json';
+function exportToJsonFile(tier) {
+    let filename = `level_data(tier${tier}).json`;
     let jsonStr = JSON.stringify(levelData, null, 4);
 
     let blob = new Blob([jsonStr], { type: 'application/json' });
@@ -143,5 +143,6 @@ function exportToJsonFile() {
 
 // Call this function to export the level data to a JSON file
 function copyJson() {
-    exportToJsonFile();
+    let currentTier = parseInt(document.getElementById('tierInput').value);
+    exportToJsonFile(currentTier);
 }
