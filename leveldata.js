@@ -217,3 +217,10 @@ function copyJson() {
     a.click();
     URL.revokeObjectURL(url);
 }
+
+function removeJson() {
+    // Clear the levelData array
+    levelData = [];
+    // Update the displayed levels
+    displayLevels();
+}
