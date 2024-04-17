@@ -1,5 +1,5 @@
 body {
-    background-color: #f0f0f0;
+    background-color: silver;
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
@@ -11,7 +11,7 @@ body {
 .intro {
     width: 45%;
     padding: 20px;
-    background-color: silver;
+    background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: black;
@@ -23,9 +23,14 @@ body {
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
-    color: black;
+    color: white;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 .button {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.input {
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
