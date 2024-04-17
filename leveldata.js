@@ -218,7 +218,7 @@ function copyJson() {
     URL.revokeObjectURL(url);
 }
 
-function removeJson() {
+function removeGeneratedLines() {
     // Clear the levelData array
     levelData = [];
     // Update the displayed levels
