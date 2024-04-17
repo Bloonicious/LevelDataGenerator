@@ -31,3 +31,28 @@ body {
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: black;
 }
+
+.tab-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    background-color: silver;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.tab-button.active {
+    background-color: white;
+}
+
+.container {
+    background-color: silver;
+    padding: 20px;
+    border-radius: 10px;
+}
