@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level Generator</title>
+    <title>Level Data Generator</title>
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <div class="container">
-        <h1>Level Generator</h1>
+        <h1>Level Data Generator</h1>
         <div>
             <label for="levelInput">Current Level:</label>
             <input type="number" id="levelInput" value="1">
@@ -35,8 +35,17 @@
         </div>
         <button onclick="generateLevels()">Generate Levels</button>
         <button onclick="copyJson()">Copy JSON</button>
+        <button onclick="removeJson()">Remove Generated Lines</button>
         <div id="output"></div>
     </div>
     <script src="leveldata.js"></script>
+    <script>
+        function removeJson() {
+            // Clear the levelData array
+            levelData = [];
+            // Update the displayed levels
+            displayLevels();
+        }
+    </script>
 </body>
 </html>
