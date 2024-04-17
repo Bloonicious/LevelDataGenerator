@@ -11,10 +11,10 @@ body {
 .intro {
     width: 45%;
     padding: 20px;
-    background-color: #fff;
+    background-color: silver;
     border: 1px solid #ccc;
     border-radius: 5px;
-    color: white;
+    color: black;
 }
 
 .generator {
@@ -23,7 +23,7 @@ body {
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
-    color: white;
+    color: black;
 }
 
 .button {
