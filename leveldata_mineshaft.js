@@ -97,9 +97,9 @@ let workerCountIncrementLevel = {
 function generateLevels_mineshaft() {
     let currentLevel = parseInt(document.getElementById('levelInput').value);
     let currentTier = parseInt(document.getElementById('tierInput').value);
-    let currentCost = parseFloat(document.getElementById('costInput').value);
-    let currentGain = parseFloat(document.getElementById('gainInput').value);
-    let currentCapacity = parseFloat(document.getElementById('capacityInput').value);
+    let currentCost = parseFloat(document.getElementById('mineshaftCostInput').value);
+    let currentGain = parseFloat(document.getElementById('mineshaftGainInput').value);
+    let currentCapacity = parseFloat(document.getElementById('mineshaftCapacityInput').value);
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
 
     let lastLevel = {
