@@ -1,7 +1,7 @@
 let levelData_warehouse = [];
 
-if (!window.workerSpeedIncrementLevel) {
-    var workerSpeedIncrementLevel = {
+if (!window.workerSpeedIncrementWarehouseLevel) {
+    var workerSpeedIncrementWarehouseLevel = {
         1: 2,
         535: 3,
         1535: 4,
@@ -9,8 +9,8 @@ if (!window.workerSpeedIncrementLevel) {
     };
 }
 
-if (!window.workerCountIncrementLevel) {
-    var workerCountIncrementLevel = {
+if (!window.workerCountIncrementWarehouseLevel) {
+    var workerCountIncrementWarehouseLevel = {
         1: 1,
         20: 2,
         100: 3,
@@ -61,11 +61,11 @@ function generateLevels_warehouse() {
         }
 
         // Increment worker speed and count based on current level
-        if (workerSpeedIncrementLevel[newLevel["0 Param data"]["0 int Level"]]) {
-            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementLevel[newLevel["0 Param data"]["0 int Level"]];
+        if (workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
+            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
         }
-        if (workerCountIncrementLevel[newLevel["0 Param data"]["0 int Level"]]) {
-            newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementLevel[newLevel["0 Param data"]["0 int Level"]];
+        if (workerCountIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
         }
 
         // Push the new level data
