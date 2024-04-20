@@ -128,7 +128,7 @@ function displayLevels_elevator() {
     outputDiv.innerHTML = JSON.stringify(levelData_elevator, null, 4);
 }
 
-function copyJson() {
+function copyJsonElevator() {
     let filename = `level_data_elevator.json`;
     let outputDiv = document.getElementById('output');
     let json = JSON.stringify(levelData_elevator, null, 4);
