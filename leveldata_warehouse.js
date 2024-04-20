@@ -18,9 +18,9 @@ let workerCountIncrementLevel = {
 
 function generateLevels_warehouse() {
     let currentLevel = parseInt(document.getElementById('levelInput').value);
-    let currentCost = parseFloat(document.getElementById('costInput').value);
-    let currentCapacity = parseFloat(document.getElementById('capacityInput').value);
-    let currentLoadingPerSecond = parseFloat(document.getElementById('loadingInput').value);
+    let currentCost = parseFloat(document.getElementById('warehouseCostInput').value);
+    let currentCapacity = parseFloat(document.getElementById('warehouseCapacityInput').value);
+    let currentLoadingPerSecond = parseFloat(document.getElementById('warehouseLoadingInput').value);
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
 
     let lastLevel = {
