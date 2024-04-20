@@ -1,4 +1,4 @@
-let levelData = [];
+let levelData_mineshaft = [];
 
 let costMultiplier = 1.16;
 let statMultiplier = 1.1;
@@ -94,7 +94,7 @@ let workerCountIncrementLevel = {
     1501: 8
 };
 
-function generateLevels() {
+function generateLevels_mineshaft() {
     let currentLevel = parseInt(document.getElementById('levelInput').value);
     let currentTier = parseInt(document.getElementById('tierInput').value);
     let currentCost = parseFloat(document.getElementById('costInput').value);
@@ -196,7 +196,7 @@ function generateLevels() {
     }
 
     // Display the generated levels
-    displayLevels();
+    displayLevels_mineshaft();
 }
 
 function displayLevels() {
