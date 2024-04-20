@@ -39,4 +39,12 @@ document.addEventListener("DOMContentLoaded", function() {
         tutorialContent.style.display = "none";
         mainContent.style.display = "none";
     });
+
+    // Add event listener for generator behavior select
+    var generatorBehaviorSelect = document.getElementById("generatorBehaviorSelect");
+    generatorBehaviorSelect.addEventListener("change", function() {
+        var selectedBehavior = generatorBehaviorSelect.value;
+        // You can add code here to handle the selected behavior
+        console.log("Selected generator behaviour: " + selectedBehavior);
+    });
 });
