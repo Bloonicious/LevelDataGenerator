@@ -7,21 +7,21 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('totalLevelsOutput').innerText = totalLevels;
     }
 
-    // Listen for level generation events in mineshaft
-    document.addEventListener('mineshaftLevelsGenerated', function(event) {
-        totalLevels += event.detail.numLevels;
+    // Listen for changes in mineshaft level data
+    document.addEventListener('mineshaftDataChanged', function(event) {
+        totalLevels = levelData_mineshaft.length;
         updateTotalLevels();
     });
 
-    // Listen for level generation events in elevator
-    document.addEventListener('elevatorLevelsGenerated', function(event) {
-        totalLevels += event.detail.numLevels;
+    // Listen for changes in elevator level data
+    document.addEventListener('elevatorDataChanged', function(event) {
+        totalLevels = levelData_elevator.length;
         updateTotalLevels();
     });
 
-    // Listen for level generation events in warehouse
-    document.addEventListener('warehouseLevelsGenerated', function(event) {
-        totalLevels += event.detail.numLevels;
+    // Listen for changes in warehouse level data
+    document.addEventListener('warehouseDataChanged', function(event) {
+        totalLevels = levelData_warehouse.length;
         updateTotalLevels();
     });
 
