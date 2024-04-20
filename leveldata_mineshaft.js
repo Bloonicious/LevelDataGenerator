@@ -232,7 +232,7 @@ function copyJson() {
     let tierInput = document.getElementById('tierInput').value;
     let filename = `level_data(${tierInput}).json`;
     let outputDiv = document.getElementById('output');
-    let json = JSON.stringify(levelData, null, 4);
+    let json = JSON.stringify(levelData_mineshaft, null, 4);
     let blob = new Blob([json], { type: 'application/json' });
     let url = URL.createObjectURL(blob);
     let a = document.createElement('a');
