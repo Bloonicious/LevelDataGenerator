@@ -1,15 +1,60 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Get the tab buttons
+    // Get the generator behavior select element
+    var generatorBehaviorSelect = document.getElementById("generatorBehaviorSelect");
+
+    // Retrieve the selected generator behavior from localStorage
+    var savedGeneratorBehavior = localStorage.getItem("generatorBehavior");
+    if (savedGeneratorBehavior) {
+        generatorBehaviorSelect.value = savedGeneratorBehavior;
+
+        // Trigger change event to show the correct input boxes
+        var changeEvent = new Event("change");
+        generatorBehaviorSelect.dispatchEvent(changeEvent);
+    }
+
+    // Add event listener to the generator behavior select
+    generatorBehaviorSelect.addEventListener("change", function() {
+        // Store the selected generator behavior in localStorage
+        var selectedGenerator = generatorBehaviorSelect.value;
+        localStorage.setItem("generatorBehavior", selectedGenerator);
+
+        // Show input boxes based on the selected generator
+        showInputBoxes(selectedGenerator);
+    });
+
+    // Function to show input boxes based on the selected generator
+    function showInputBoxes(selectedGenerator) {
+        var elevatorInputs = document.getElementById("elevatorInputs");
+        var warehouseInputs = document.getElementById("warehouseInputs");
+        var mineshaftInputs = document.getElementById("mineshaftInputs");
+
+        // Hide all input boxes by default
+        elevatorInputs.style.display = "none";
+        warehouseInputs.style.display = "none";
+        mineshaftInputs.style.display = "none";
+
+        // Show input boxes based on the selected generator
+        if (selectedGenerator === "elevator") {
+            elevatorInputs.style.display = "block";
+        } else if (selectedGenerator === "warehouse") {
+            warehouseInputs.style.display = "block";
+        } else {
+            mineshaftInputs.style.display = "block";
+        }
+    }
+
+    // Call showInputBoxes to initially display input boxes based on the selected generator
+    showInputBoxes(generatorBehaviorSelect.value);
+
+    // Add event listeners to the tab buttons
     var mainTabButton = document.getElementById("mainTabButton");
     var tutorialTabButton = document.getElementById("tutorialTabButton");
     var settingsTabButton = document.getElementById("settingsTabButton");
 
-    // Get the content divs
     var mainContent = document.getElementById("mainContent");
     var tutorialContent = document.getElementById("tutorialContent");
     var settingsContent = document.getElementById("settingsContent");
 
-    // Add event listeners to the tab buttons
     mainTabButton.addEventListener("click", function() {
         mainTabButton.classList.add("active");
         tutorialTabButton.classList.remove("active");
@@ -38,29 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
         settingsContent.style.display = "block";
         tutorialContent.style.display = "none";
         mainContent.style.display = "none";
-    });
-
-    // Add event listener to the generator behavior select
-    var generatorBehaviorSelect = document.getElementById("generatorBehaviorSelect");
-    generatorBehaviorSelect.addEventListener("change", function() {
-        var selectedGenerator = generatorBehaviorSelect.value;
-        var elevatorInputs = document.getElementById("elevatorInputs");
-        var warehouseInputs = document.getElementById("warehouseInputs");
-        var mineshaftInputs = document.getElementById("mineshaftInputs");
-
-        // Hide all input boxes by default
-        elevatorInputs.style.display = "none";
-        warehouseInputs.style.display = "none";
-        mineshaftInputs.style.display = "none";
-
-        // Show input boxes based on the selected generator
-        if (selectedGenerator === "elevator") {
-            elevatorInputs.style.display = "block";
-        } else if (selectedGenerator === "warehouse") {
-            warehouseInputs.style.display = "block";
-        } else {
-            mineshaftInputs.style.display = "block";
-        }
     });
 
     // Add event listener to the "Generate Levels" button
