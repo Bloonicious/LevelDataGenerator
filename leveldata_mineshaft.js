@@ -228,7 +228,7 @@ function displayLevels_mineshaft() {
     outputDiv.innerHTML = JSON.stringify(levelData_mineshaft, null, 4);
 }
 
-function copyJson() {
+function copyJsonMineshaft() {
     let tierInput = document.getElementById('tierInput').value;
     let filename = `level_data(${tierInput}).json`;
     let outputDiv = document.getElementById('output');
