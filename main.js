@@ -62,4 +62,19 @@ document.addEventListener("DOMContentLoaded", function() {
             mineshaftInputs.style.display = "block";
         }
     });
+
+    // Add event listener to the "Generate Levels" button
+    var generateLevelsButton = document.getElementById("generateLevelsButton");
+    generateLevelsButton.addEventListener("click", function() {
+        var selectedGenerator = generatorBehaviorSelect.value;
+
+        // Call the appropriate function to generate levels based on the selected generator
+        if (selectedGenerator === "elevator") {
+            generateLevels_elevator();
+        } else if (selectedGenerator === "warehouse") {
+            generateLevels_warehouse();
+        } else {
+            generateLevels_mineshaft();
+        }
+    });
 });
