@@ -2,10 +2,10 @@ let levelData_elevator = [];
 
 function generateLevels_elevator() {
     let currentLevel = parseInt(document.getElementById('levelInput').value);
-    let currentCost = parseFloat(document.getElementById('costInput').value);
+    let currentCost = parseFloat(document.getElementById('elevatorCostInput').value);
     let currentSpeed = parseFloat(document.getElementById('speedInput').value);
-    let currentCapacity = parseFloat(document.getElementById('capacityInput').value);
-    let currentLoadingPerSecond = parseFloat(document.getElementById('loadingInput').value);
+    let currentCapacity = parseFloat(document.getElementById('elevatorCapacityInput').value);
+    let currentLoadingPerSecond = parseFloat(document.getElementById('elevatorLoadingInput').value);
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
 
     let lastLevel = {
