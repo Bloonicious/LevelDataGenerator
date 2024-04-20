@@ -119,4 +119,27 @@ document.addEventListener("DOMContentLoaded", function() {
             generateLevels_mineshaft();
         }
     });
+
+    function toggleJsonButtons() {
+        var generatorSelect = document.getElementById('generatorBehaviorSelect');
+        var selectedGenerator = generatorSelect.value;
+    
+        var elevatorButton = document.getElementById('copyElevatorJsonButton');
+        var warehouseButton = document.getElementById('copyWarehouseJsonButton');
+        var mineshaftButton = document.getElementById('copyMineshaftJsonButton');
+
+        if (selectedGenerator === 'elevator') {
+            elevatorButton.style.display = 'inline-block';
+            warehouseButton.style.display = 'none';
+            mineshaftButton.style.display = 'none';
+        } else if (selectedGenerator === 'warehouse') {
+            elevatorButton.style.display = 'none';
+            warehouseButton.style.display = 'inline-block';
+            mineshaftButton.style.display = 'none';
+        } else if (selectedGenerator === 'mineshaft') {
+            elevatorButton.style.display = 'none';
+            warehouseButton.style.display = 'none';
+            mineshaftButton.style.display = 'inline-block';
+        }
+    }
 });
