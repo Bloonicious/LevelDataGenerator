@@ -126,6 +126,30 @@ function generateLevels_warehouse() {
             newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
         }
 
+        // Update capacity and loading per second according to big update
+        if ([50, 200, 600, 850, 950, 1050, 1150, 1250, 1350, 1450, 1550, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400].includes(currentLevel)) {
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 2;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2;
+        } else if (currentLevel === 100) {
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 1.25;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.25;
+        } else if (currentLevel === 800) {
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 1.5;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.5;
+        } else if ([2000, 2100, 2200, 2300, 2400].includes(currentLevel)) {
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 400;
+        } else if ([2500, 2600, 2700, 2800, 2900].includes(currentLevel)) {
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+        } else if (currentLevel === 3000) {
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 5;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 5;
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+        } else {
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
+        }
+
         // Increment worker speed and count based on current level
         if (workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
             newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
