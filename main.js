@@ -40,39 +40,26 @@ document.addEventListener("DOMContentLoaded", function() {
         mainContent.style.display = "none";
     });
 
-    // Get the generator behavior select element
-    var generatorBehaviorSelect = document.getElementById("generatorBehaviorSelect");
-
     // Add event listener to the generator behavior select
+    var generatorBehaviorSelect = document.getElementById("generatorBehaviorSelect");
     generatorBehaviorSelect.addEventListener("change", function() {
-        var selectedBehavior = generatorBehaviorSelect.value;
+        var selectedGenerator = generatorBehaviorSelect.value;
+        var elevatorInputs = document.getElementById("elevatorInputs");
+        var warehouseInputs = document.getElementById("warehouseInputs");
+        var mineshaftInputs = document.getElementById("mineshaftInputs");
 
-        // Load the corresponding level data script based on the selected behavior
-        if (selectedBehavior === "mineshaft") {
-            // Load mineshaft level data script
-            loadLevelDataScript("leveldata.js");
-        } else if (selectedBehavior === "elevator") {
-            // Load elevator level data script
-            loadLevelDataScript("leveldata_elevator.js");
-        } else if (selectedBehavior === "warehouse") {
-            // Load warehouse level data script
-            loadLevelDataScript("leveldata_warehouse.js");
+        // Hide all input boxes by default
+        elevatorInputs.style.display = "none";
+        warehouseInputs.style.display = "none";
+        mineshaftInputs.style.display = "none";
+
+        // Show input boxes based on the selected generator
+        if (selectedGenerator === "elevator") {
+            elevatorInputs.style.display = "block";
+        } else if (selectedGenerator === "warehouse") {
+            warehouseInputs.style.display = "block";
+        } else {
+            mineshaftInputs.style.display = "block";
         }
     });
 });
-
-function loadLevelDataScript(scriptSrc) {
-    // Remove the previously loaded level data script
-    var oldScript = document.getElementById("levelDataScript");
-    if (oldScript) {
-        oldScript.parentNode.removeChild(oldScript);
-    }
-
-    // Create a new script element
-    var newScript = document.createElement("script");
-    newScript.id = "levelDataScript";
-    newScript.src = scriptSrc;
-
-    // Append the new script element to the document head
-    document.head.appendChild(newScript);
-}
