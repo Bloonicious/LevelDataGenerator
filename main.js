@@ -50,37 +50,57 @@ document.addEventListener("DOMContentLoaded", function() {
     var mainTabButton = document.getElementById("mainTabButton");
     var tutorialTabButton = document.getElementById("tutorialTabButton");
     var settingsTabButton = document.getElementById("settingsTabButton");
+    var statsTabButton = document.getElementById("statsTabButton");
 
     var mainContent = document.getElementById("mainContent");
     var tutorialContent = document.getElementById("tutorialContent");
     var settingsContent = document.getElementById("settingsContent");
+    var statsContent = document.getElementById("statsContent");
 
     mainTabButton.addEventListener("click", function() {
         mainTabButton.classList.add("active");
         tutorialTabButton.classList.remove("active");
         settingsTabButton.classList.remove("active");
+        statsTabButton.classList.remove("active");
 
         mainContent.style.display = "block";
         tutorialContent.style.display = "none";
         settingsContent.style.display = "none";
+        statsContent.style.display = "none";
     });
 
     tutorialTabButton.addEventListener("click", function() {
         tutorialTabButton.classList.add("active");
         settingsTabButton.classList.remove("active");
+        statsTabButton.classList.remove("active");
         mainTabButton.classList.remove("active");
 
         tutorialContent.style.display = "block";
         settingsContent.style.display = "none";
+        statsContent.style.display = "none";
         mainContent.style.display = "none";
     });
 
     settingsTabButton.addEventListener("click", function() {
         settingsTabButton.classList.add("active");
+        statsTabButton.classList.remove("active");
         tutorialTabButton.classList.remove("active");
         mainTabButton.classList.remove("active");
 
         settingsContent.style.display = "block";
+        statsContent.style.display = "none";
+        tutorialContent.style.display = "none";
+        mainContent.style.display = "none";
+    });
+
+    statsTabButton.addEventListener("click", function() {
+        statsTabButton.classList.add("active");
+        settingsTabButton.classList.remove("active");
+        tutorialTabButton.classList.remove("active");
+        mainTabButton.classList.remove("active");
+
+        statsContent.style.display = "block";
+        settingsContent.style.display = "none";
         tutorialContent.style.display = "none";
         mainContent.style.display = "none";
     });
