@@ -69,8 +69,8 @@ function generateLevels_elevator() {
 
         // Increment cost, capacity, and loading per second based on the current level
         newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
-        // Increment speed by 1 millisecond (0.001) for each level
-        newLevel["0 Param data"]["0 double Speed"] = lastLevel["0 Param data"]["0 double Speed"] + 0.001;
+        // Increment speed by 2 milliseconds (0.002) for each level
+        newLevel["0 Param data"]["0 double Speed"] = lastLevel["0 Param data"]["0 double Speed"] + 0.002;
         newLevel["0 Param data"]["0 double Capacity"] = lastLevel["0 Param data"]["0 double Capacity"] * currentStatMultiplier;
         newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * currentStatMultiplier;
 
