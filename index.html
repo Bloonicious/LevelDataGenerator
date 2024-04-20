@@ -56,9 +56,9 @@
                 <input type="number" id="warehouseCapacityInput" value="1000">
             </div>
             <button id="generateLevelsButton"><p>Generate Levels</p></button>
-            <button onclick="copyJsonElevator()">Copy Elevator JSON</button>
-            <button onclick="copyJsonWarehouse()">Copy Warehouse JSON</button>
-            <button onclick="copyJsonMineshaft()">Copy Mineshaft JSON</button>
+            <button id="copyElevatorJsonButton" onclick="copyJsonElevator()" style="display: inline-block;">Copy Elevator JSON</button>
+            <button id="copyWarehouseJsonButton" onclick="copyJsonWarehouse()" style="display: none;">Copy Warehouse JSON</button>
+            <button id="copyMineshaftJsonButton" onclick="copyJsonMineshaft()" style="display: none;">Copy Mineshaft JSON</button>
             <button onclick="removeGeneratedLines()"><p>Remove Generated Lines</p></button>
             <div id="output"></div>
         </div>
@@ -74,7 +74,7 @@
         <div id="settingsContent" style="display: none;">
             <h1>Settings</h1>
             <p>Select generator behaviour:</p>
-            <select id="generatorBehaviorSelect">
+            <select id="generatorBehaviorSelect" onchange="toggleJsonButtons()">
                 <option value="mineshaft">Mineshaft</option>
                 <option value="elevator">Elevator</option>
                 <option value="warehouse">Warehouse</option>
