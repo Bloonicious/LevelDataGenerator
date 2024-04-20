@@ -47,3 +47,23 @@ function displayLevels_elevator() {
     let outputDiv = document.getElementById('output');
     outputDiv.innerHTML = JSON.stringify(levelData_elevator, null, 4);
 }
+
+function copyJson() {
+    let filename = `level_data_elevator.json`;
+    let outputDiv = document.getElementById('output');
+    let json = JSON.stringify(levelData, null, 4);
+    let blob = new Blob([json], { type: 'application/json' });
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function removeGeneratedLines() {
+    // Clear the levelData_elevator array
+    levelData_elevator = [];
+    // Update the displayed levels
+    displayLevels_elevator();
+}
