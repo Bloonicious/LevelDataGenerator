@@ -26,8 +26,12 @@ body {
     color: black;
 }
 
-.generator input[type="number"],
-.generator button {
+.button {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: black;
+}
+
+.p {
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: black;
 }
