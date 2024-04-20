@@ -47,7 +47,14 @@ function generateLevels_warehouse() {
         newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * 1.1; // Example multiplier, adjust as needed
         newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * 1.1; // Example multiplier, adjust as needed
 
-        // Apply big update for specific levels if needed
+        // Apply big update for specific levels
+        if (currentLevel === 20 || currentLevel === 50 || currentLevel === 100 || currentLevel === 200 || currentLevel === 400 || currentLevel === 600 || currentLevel === 800 || currentLevel === 850 || currentLevel === 950 || currentLevel === 1050 || currentLevel === 1150 || currentLevel === 1250) {
+            newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
+        } else {
+            newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 0;
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
+        }
 
         // Increment worker speed and count based on current level
         if (workerSpeedIncrementLevel[currentLevel]) {
@@ -69,4 +76,24 @@ function generateLevels_warehouse() {
 function displayLevels_warehouse() {
     let outputDiv = document.getElementById('output');
     outputDiv.innerHTML = JSON.stringify(levelData_warehouse, null, 4);
+}
+
+function copyJson() {
+    let filename = `level_data_warehouse.json`;
+    let outputDiv = document.getElementById('output');
+    let json = JSON.stringify(levelData, null, 4);
+    let blob = new Blob([json], { type: 'application/json' });
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function removeGeneratedLines() {
+    // Clear the levelData_warehouse array
+    levelData_warehouse = [];
+    // Update the displayed levels
+    displayLevels_warehouse();
 }
