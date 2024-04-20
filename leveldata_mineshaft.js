@@ -95,6 +95,30 @@ let workerCountIncrementLevel = {
 };
 
 function generateLevels_mineshaft() {
+    var selectedGenerator = generatorBehaviorSelect.value;
+
+    // Common input IDs
+    var levelInput = document.getElementById("levelInput");
+    var tierInput = document.getElementById("tierInput");
+
+    // Variables for specific input IDs
+    var costInput, gainInput, capacityInput;
+
+    // Check the selected generator and set specific input IDs
+    if (selectedGenerator === "elevator") {
+        costInput = document.getElementById("elevatorCostInput");
+        gainInput = document.getElementById("speedInput");
+        capacityInput = document.getElementById("elevatorCapacityInput");
+    } else if (selectedGenerator === "warehouse") {
+        costInput = document.getElementById("warehouseCostInput");
+        gainInput = document.getElementById("loadingInput");
+        capacityInput = document.getElementById("warehouseCapacityInput");
+    } else {
+        // For mineshaft, use the existing IDs
+        costInput = document.getElementById("mineshaftCostInput");
+        gainInput = document.getElementById("mineshaftGainInput");
+        capacityInput = document.getElementById("mineshaftCapacityInput");
+    }
     let currentLevel = parseInt(document.getElementById('levelInput').value);
     let currentTier = parseInt(document.getElementById('tierInput').value);
     let currentCost = parseFloat(document.getElementById('mineshaftCostInput').value);
