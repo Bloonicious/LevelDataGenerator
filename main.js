@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function toggleJsonButtons() {
-        var generatorSelect = document.getElementById('generatorBehaviorSelect');
+        var generatorSelect = document.getElementById('generatorBehaviorSelect'); // Corrected id here
         var selectedGenerator = generatorSelect.value;
     
         var elevatorButton = document.getElementById('copyElevatorJsonButton');
