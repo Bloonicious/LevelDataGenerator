@@ -29,32 +29,32 @@
             <div id="mineshaftInputs">
                 <label for="tierInput">Tier:</label>
                 <input type="number" id="tierInput" value="1">
-                <label for="costInput">Current Cost:</label>
-                <input type="number" id="costInput" value="10">
-                <label for="gainInput">Current Gain:</label>
-                <input type="number" id="gainInput" value="5">
-                <label for="capacityInput">Current Capacity:</label>
-                <input type="number" id="capacityInput" value="20">
+                <label for="mineshaftCostInput">Current Cost:</label>
+                <input type="number" id="mineshaftCostInput" value="10">
+                <label for="mineshaftGainInput">Current Gain:</label>
+                <input type="number" id="mineshaftGainInput" value="5">
+                <label for="mineshaftCapacityInput">Current Capacity:</label>
+                <input type="number" id="mineshaftCapacityInput" value="20">
             </div>
             <div id="elevatorInputs" style="display: none;">
-                <label for="costInput">Current Cost:</label>
-                <input type="number" id="costInput" value="400">
+                <label for="elevatorCostInput">Current Cost:</label>
+                <input type="number" id="elevatorCostInput" value="400">
                 <label for="speedInput">Speed:</label>
                 <input type="number" id="speedInput" value="0.5">
                 <label for="elevatorCapacityInput">Elevator Capacity:</label>
                 <input type="number" id="elevatorCapacityInput" value="600">
-                <label for="loadingInput">Loading Per Second:</label>
-                <input type="number" id="loadingInput" value="150">
+                <label for="elevatorLoadingInput">Loading Per Second:</label>
+                <input type="number" id="elevatorLoadingInput" value="150">
             </div>
             <div id="warehouseInputs" style="display: none;">
-                <label for="costInput">Current Cost:</label>
-                <input type="number" id="costInput" value="400">
-                <label for="loadingInput">Loading Per Second:</label>
-                <input type="number" id="loadingInput" value="250">
-                <label for="capacityInput">Current Capacity:</label>
-                <input type="number" id="capacityInput" value="1000">
+                <label for="warehouseCostInput">Current Cost:</label>
+                <input type="number" id="warehouseCostInput" value="400">
+                <label for="warehouseLoadingInput">Loading Per Second:</label>
+                <input type="number" id="warehouseLoadingInput" value="250">
+                <label for="warehouseCapacityInput">Current Capacity:</label>
+                <input type="number" id="warehouseCapacityInput" value="1000">
             </div>
-            <button onclick="generateLevels_mineshaft()">Generate Levels</button>
+            <button id="generateLevelsButton">Generate Levels</button>
             <button onclick="copyJson()">Copy JSON</button>
             <button onclick="removeGeneratedLines()">Remove Generated Lines</button>
             <div id="output"></div>
