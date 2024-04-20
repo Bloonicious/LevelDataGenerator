@@ -1,11 +1,42 @@
 let levelData_warehouse = [];
 
+let warehouseCostMultiplier = 1.20;
+let warehouseStatMultiplier = 1.30;
+let warehouseCostMultiplier11 = 1.20;
+let warehouseStatMultiplier11 = 1.25;
+let warehouseCostMultiplier21 = 1.17;
+let warehouseStatMultiplier21 = 1.20;
+let warehouseCostMultiplier41 = 1.15;
+let warehouseStatMultiplier41 = 1.15;
+let warehouseCostMultiplier101 = 1.13;
+let warehouseStatMultiplier101 = 1.11;
+let warehouseCostMultiplier2501 = 1.15;
+let warehouseStatMultiplier2501 = 1.13;
+let warehouseCostMultiplier3001 = 1.18;
+let warehouseStatMultiplier3001 = 1.15;
+
 if (!window.workerSpeedIncrementWarehouseLevel) {
     var workerSpeedIncrementWarehouseLevel = {
         1: 2,
+        20: 2,
+        21: 2,
+        100: 2,
+        101: 2,
+        400: 2,
+        401: 2,
         535: 3,
+        800: 3,
+        801: 3,
         1535: 4,
-        2409: 5
+        1600: 4,
+        1601: 4,
+        2000: 4,
+        2001: 4,
+        2400: 4,
+        2401: 4,
+        2409: 5,
+        2600: 5,
+        2601: 5
     };
 }
 
@@ -13,10 +44,19 @@ if (!window.workerCountIncrementWarehouseLevel) {
     var workerCountIncrementWarehouseLevel = {
         1: 1,
         20: 2,
+        21: 2,
         100: 3,
+        101: 3,
         400: 4,
+        401: 4,
         800: 5,
-        2600: 6
+        801: 5,
+        2000: 5,
+        2001: 5,
+        2400: 5,
+        2401: 5,
+        2600: 6,
+        2601: 6
     };
 }
 
@@ -46,13 +86,39 @@ function generateLevels_warehouse() {
         newLevel["0 Param data"] = {};
         newLevel["0 Param data"]["0 int Level"] = lastLevel["0 Param data"]["0 int Level"] + 1;
 
+        // Determine the correct multiplier based on the level
+        let currentCostMultiplier;
+        let currentStatMultiplier;
+        if (currentLevel < 11) {
+            currentCostMultiplier = warehouseCostMultiplier;
+            currentStatMultiplier = warehouseStatMultiplier;
+        } else if (currentLevel < 21) {
+            currentCostMultiplier = warehouseCostMultiplier11;
+            currentStatMultiplier = warehouseStatMultiplier11;
+        } else if (currentLevel < 41) {
+            currentCostMultiplier = warehouseCostMultiplier21;
+            currentStatMultiplier = warehouseStatMultiplier21;
+        } else if (currentLevel < 101) {
+            currentCostMultiplier = warehouseCostMultiplier41;
+            currentStatMultiplier = warehouseStatMultiplier41;
+        } else if (currentLevel < 2501) {
+            currentCostMultiplier = warehouseCostMultiplier101;
+            currentStatMultiplier = warehouseStatMultiplier101;
+        } else if (currentLevel < 3001) {
+            currentCostMultiplier = warehouseCostMultiplier2501;
+            currentStatMultiplier = warehouseStatMultiplier2501;
+        } else {
+            currentCostMultiplier = warehouseCostMultiplier3001;
+            currentStatMultiplier = warehouseStatMultiplier3001;
+        }
+
         // Increment cost, capacity, and loading per second based on the current level
-        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * 1.16; // Example multiplier, adjust as needed
-        newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * 1.1; // Example multiplier, adjust as needed
-        newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * 1.1; // Example multiplier, adjust as needed
+        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
+        newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * currentStatMultiplier;
+        newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * currentStatMultiplier;
 
         // Apply big update for specific levels
-        if ([20, 50, 100, 200, 400, 600, 800, 850, 950, 1050, 1150, 1250].includes(newLevel["0 Param data"]["0 int Level"])) {
+        if ([20, 50, 100, 200, 400, 600, 800, 850, 950, 1050, 1150, 1250, 1350, 1450, 1550, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000].includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
         } else {
