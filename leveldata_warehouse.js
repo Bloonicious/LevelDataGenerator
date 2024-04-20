@@ -81,7 +81,7 @@ function displayLevels_warehouse() {
 function copyJson() {
     let filename = `level_data_warehouse.json`;
     let outputDiv = document.getElementById('output');
-    let json = JSON.stringify(levelData, null, 4);
+    let json = JSON.stringify(levelData_warehouse, null, 4);
     let blob = new Blob([json], { type: 'application/json' });
     let url = URL.createObjectURL(blob);
     let a = document.createElement('a');
