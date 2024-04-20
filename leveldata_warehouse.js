@@ -172,7 +172,7 @@ function displayLevels_warehouse() {
     outputDiv.innerHTML = JSON.stringify(levelData_warehouse, null, 4);
 }
 
-function copyJson() {
+function copyJsonWarehouse() {
     let filename = `level_data_warehouse.json`;
     let outputDiv = document.getElementById('output');
     let json = JSON.stringify(levelData_warehouse, null, 4);
