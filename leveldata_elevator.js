@@ -12,6 +12,8 @@ let elevatorCostMultiplier101 = 1.13;
 let elevatorStatMultiplier101 = 1.11;
 let elevatorCostMultiplier2501 = 1.15;
 let elevatorStatMultiplier2501 = 1.13;
+let elevatorCostMultiplier3001 = 1.18;
+let elevatorStatMultiplier3001 = 1.15;
 
 function generateLevels_elevator() {
     let currentLevel = parseInt(document.getElementById('levelInput').value);
@@ -43,23 +45,26 @@ function generateLevels_elevator() {
         let currentCostMultiplier;
         let currentStatMultiplier;
         if (currentLevel < 11) {
-            currentCostMultiplier = 1.20;
-            currentStatMultiplier = 1.30;
+            currentCostMultiplier = elevatorCostMultiplier;
+            currentStatMultiplier = elevatorStatMultiplier;
         } else if (currentLevel < 21) {
-            currentCostMultiplier = 1.20;
-            currentStatMultiplier = 1.25;
+            currentCostMultiplier = elevatorCostMultiplier11;
+            currentStatMultiplier = elevatorStatMultiplier11;
         } else if (currentLevel < 41) {
-            currentCostMultiplier = 1.17;
-            currentStatMultiplier = 1.20;
+            currentCostMultiplier = elevatorCostMultiplier21;
+            currentStatMultiplier = elevatorStatMultiplier21;
         } else if (currentLevel < 101) {
-            currentCostMultiplier = 1.15;
-            currentStatMultiplier = 1.15;
+            currentCostMultiplier = elevatorCostMultiplier41;
+            currentStatMultiplier = elevatorStatMultiplier41;
         } else if (currentLevel < 2501) {
-            currentCostMultiplier = 1.13;
-            currentStatMultiplier = 1.11;
+            currentCostMultiplier = elevatorCostMultiplier101;
+            currentStatMultiplier = elevatorStatMultiplier101;
+        } else if (currentLevel < 3001) {
+            currentCostMultiplier = elevatorCostMultiplier2501;
+            currentStatMultiplier = elevatorStatMultiplier2501;
         } else {
-            currentCostMultiplier = 1.15;
-            currentStatMultiplier = 1.13;
+            currentCostMultiplier = elevatorCostMultiplier3001;
+            currentStatMultiplier = elevatorStatMultiplier3001;
         }
 
         // Increment cost, capacity, and loading per second based on the current level
@@ -71,15 +76,12 @@ function generateLevels_elevator() {
         newLevel["0 Param data"]["0 double Speed"] = lastLevel["0 Param data"]["0 double Speed"] + 0.001;
 
         // Apply big update for specific levels if needed
-        if (currentLevel === 10 || currentLevel === 40 || currentLevel === 80 || currentLevel === 150 || currentLevel === 300 || currentLevel === 500 || currentLevel === 800 || currentLevel === 900 || currentLevel === 1000 || currentLevel === 1100 || currentLevel === 1200 || currentLevel === 1300 || currentLevel === 1400 || currentLevel === 1500 || currentLevel === 1600 || currentLevel === 1700 || currentLevel === 1800 || currentLevel === 1900 || currentLevel === 2000 || currentLevel === 2100 || currentLevel === 2200 || currentLevel === 2300 || currentLevel === 2400 || currentLevel === 2500) {
+        if ([10, 40, 80, 150, 300, 500, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000].includes(currentLevel)) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
 
             // Update capacity and loading per second according to big update
-            if (currentLevel === 10) {
-                newLevel["0 Param data"]["0 double Capacity"] *= 2;
-                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2;
-            } else if (currentLevel === 40 || currentLevel === 150 || currentLevel === 300 || currentLevel === 500 || currentLevel === 900 || currentLevel === 1000 || currentLevel === 1100 || currentLevel === 1200 || currentLevel === 1300 || currentLevel === 1400 || currentLevel === 1500 || currentLevel === 1700 || currentLevel === 1800 || currentLevel === 1900 || currentLevel === 2000 || currentLevel === 2100 || currentLevel === 2200 || currentLevel === 2300 || currentLevel === 2400) {
+            if ([10, 40, 150, 300, 500, 1000, 1100, 1200, 1300, 1400, 1500, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400].includes(currentLevel)) {
                 newLevel["0 Param data"]["0 double Capacity"] *= 2;
                 newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2;
             } else if (currentLevel === 80) {
@@ -88,15 +90,21 @@ function generateLevels_elevator() {
             } else if (currentLevel === 800) {
                 newLevel["0 Param data"]["0 double Capacity"] *= 1.5;
                 newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.5;
-            } else if (currentLevel === 800) {
+            } else if (currentLevel === 900) {
                 newLevel["0 Param data"]["0 double Capacity"] *= 2.25;
                 newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2.25;
             } else if (currentLevel === 1600) {
                 newLevel["0 Param data"]["0 double Capacity"] *= 3;
                 newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
-            } else if (currentLevel === 2500) {
+            } else if ([2000, 2100, 2200, 2300, 2400].includes(currentLevel)) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 400;
+            } else if ([2500, 2600, 2700, 2800, 2900].includes(currentLevel)) {
                 newLevel["0 Param data"]["0 double Capacity"] *= 3;
                 newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+            } else if (currentLevel === 3000) {
+                newLevel["0 Param data"]["0 double Capacity"] *= 5;
+                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 5;
                 newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
             } else {
                 newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
