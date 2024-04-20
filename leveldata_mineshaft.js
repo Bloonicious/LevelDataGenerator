@@ -199,7 +199,7 @@ function generateLevels_mineshaft() {
     displayLevels_mineshaft();
 }
 
-function displayLevels() {
+function displayLevels_mineshaft() {
     let outputDiv = document.getElementById('output');
     outputDiv.innerHTML = JSON.stringify(levelData_mineshaft, null, 4);
 }
