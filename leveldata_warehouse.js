@@ -52,7 +52,7 @@ function generateLevels_warehouse() {
         newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * 1.1; // Example multiplier, adjust as needed
 
         // Apply big update for specific levels
-        if (currentLevel === 20 || currentLevel === 50 || currentLevel === 100 || currentLevel === 200 || currentLevel === 400 || currentLevel === 600 || currentLevel === 800 || currentLevel === 850 || currentLevel === 950 || currentLevel === 1050 || currentLevel === 1150 || currentLevel === 1250) {
+        if ([20, 50, 100, 200, 400, 600, 800, 850, 950, 1050, 1150, 1250].includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
         } else {
@@ -61,11 +61,11 @@ function generateLevels_warehouse() {
         }
 
         // Increment worker speed and count based on current level
-        if (workerSpeedIncrementLevel[currentLevel]) {
-            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementLevel[currentLevel];
+        if (workerSpeedIncrementLevel[newLevel["0 Param data"]["0 int Level"]]) {
+            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementLevel[newLevel["0 Param data"]["0 int Level"]];
         }
-        if (workerCountIncrementLevel[currentLevel]) {
-            newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementLevel[currentLevel];
+        if (workerCountIncrementLevel[newLevel["0 Param data"]["0 int Level"]]) {
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementLevel[newLevel["0 Param data"]["0 int Level"]];
         }
 
         // Push the new level data
