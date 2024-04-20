@@ -12,6 +12,7 @@
             <button id="mainTabButton" class="tab-button active">Main</button>
             <button id="tutorialTabButton" class="tab-button">Tutorial</button>
             <button id="settingsTabButton" class="tab-button">Settings</button>
+            <button id="statsTabButton" class="tab-button">Statistics</button>
         </div>
         <div id="mainContent">
             <h1>Level Data Generator</h1>
@@ -77,10 +78,17 @@
                 <option value="warehouse">Warehouse</option>
             </select>
         </div>
+        <div id="statsContent" style="display: none;">
+            <h1>Statistics</h1>
+            <div id="statsOutput">
+                <!-- Total levels generated will be displayed here -->
+            </div>
+        </div>
     </div>
     <script src="leveldata_mineshaft.js"></script>
     <script src="leveldata_elevator.js"></script>
     <script src="leveldata_warehouse.js"></script>
     <script src="main.js"></script>
+    <script src="statistics.js"></script>
 </body>
 </html>
