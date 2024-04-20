@@ -1,20 +1,24 @@
 let levelData_warehouse = [];
 
-let workerSpeedIncrementLevel = {
-    1: 2,
-    535: 3,
-    1535: 4,
-    2409: 5
-};
+if (!window.workerSpeedIncrementLevel) {
+    var workerSpeedIncrementLevel = {
+        1: 2,
+        535: 3,
+        1535: 4,
+        2409: 5
+    };
+}
 
-let workerCountIncrementLevel = {
-    1: 1,
-    20: 2,
-    100: 3,
-    400: 4,
-    800: 5,
-    2600: 6
-};
+if (!window.workerCountIncrementLevel) {
+    var workerCountIncrementLevel = {
+        1: 1,
+        20: 2,
+        100: 3,
+        400: 4,
+        800: 5,
+        2600: 6
+    };
+}
 
 function generateLevels_warehouse() {
     let currentLevel = parseInt(document.getElementById('levelInput').value);
