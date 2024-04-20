@@ -46,8 +46,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Function to toggle visibility of JSON buttons based on the selected generator
-    function toggleJsonButtons(selectedGenerator) {
+    function toggleJsonButtons() {
+        var generatorSelect = document.getElementById('generatorBehaviorSelect');
+        var selectedGenerator = generatorSelect.value;
+
         var elevatorButton = document.getElementById('copyElevatorJsonButton');
         var warehouseButton = document.getElementById('copyWarehouseJsonButton');
         var mineshaftButton = document.getElementById('copyMineshaftJsonButton');
