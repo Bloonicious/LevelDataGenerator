@@ -80,39 +80,39 @@ function generateLevels_elevator() {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
 
-            // Update capacity and loading per second according to big update
-            if ([10, 40, 150, 300, 500, 1000, 1100, 1200, 1300, 1400, 1500, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400].includes(currentLevel)) {
-                newLevel["0 Param data"]["0 double Capacity"] *= 2;
-                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2;
-            } else if (currentLevel === 80) {
-                newLevel["0 Param data"]["0 double Capacity"] *= 1.25;
-                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.25;
-            } else if (currentLevel === 800) {
-                newLevel["0 Param data"]["0 double Capacity"] *= 1.5;
-                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.5;
-            } else if (currentLevel === 900) {
-                newLevel["0 Param data"]["0 double Capacity"] *= 2.25;
-                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2.25;
-            } else if (currentLevel === 1600) {
-                newLevel["0 Param data"]["0 double Capacity"] *= 3;
-                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
-            } else if ([2000, 2100, 2200, 2300, 2400].includes(currentLevel)) {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 400;
-            } else if ([2500, 2600, 2700, 2800, 2900].includes(currentLevel)) {
-                newLevel["0 Param data"]["0 double Capacity"] *= 3;
-                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
-            } else if (currentLevel === 3000) {
-                newLevel["0 Param data"]["0 double Capacity"] *= 5;
-                newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 5;
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
-            } else {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
-            }
+        // Update capacity and loading per second according to big update
+        if ([10, 40, 150, 300, 500, 1000, 1100, 1200, 1300, 1400, 1500, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400].includes(currentLevel)) {
+            newLevel["0 Param data"]["0 double Capacity"] *= 2;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2;
+        } else if (currentLevel === 80) {
+            newLevel["0 Param data"]["0 double Capacity"] *= 1.25;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.25;
+        } else if (currentLevel === 800) {
+            newLevel["0 Param data"]["0 double Capacity"] *= 1.5;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.5;
+        } else if (currentLevel === 900) {
+            newLevel["0 Param data"]["0 double Capacity"] *= 2.25;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2.25;
+        } else if (currentLevel === 1600) {
+            newLevel["0 Param data"]["0 double Capacity"] *= 3;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
+        } else if ([2000, 2100, 2200, 2300, 2400].includes(currentLevel)) {
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 400;
+        } else if ([2500, 2600, 2700, 2800, 2900].includes(currentLevel)) {
+            newLevel["0 Param data"]["0 double Capacity"] *= 3;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+        } else if (currentLevel === 3000) {
+            newLevel["0 Param data"]["0 double Capacity"] *= 5;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 5;
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
         } else {
-            newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 0;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
         }
+    } else {
+        newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 0;
+        newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
+    }
 
         // Push the new level data
         levelData_elevator.push(newLevel);
