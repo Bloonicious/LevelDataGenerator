@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Show input boxes based on the selected generator
         showInputBoxes(selectedGenerator);
+
+        // Toggle JSON buttons visibility based on the selected generator
+        toggleJsonButtons(selectedGenerator);
     });
 
     // Function to show input boxes based on the selected generator
@@ -120,10 +123,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    function toggleJsonButtons() {
-        var generatorSelect = document.getElementById('generatorBehaviorSelect'); // Corrected id here
-        var selectedGenerator = generatorSelect.value;
-    
+    // Function to toggle visibility of JSON buttons based on the selected generator
+    function toggleJsonButtons(selectedGenerator) {
         var elevatorButton = document.getElementById('copyElevatorJsonButton');
         var warehouseButton = document.getElementById('copyWarehouseJsonButton');
         var mineshaftButton = document.getElementById('copyMineshaftJsonButton');
