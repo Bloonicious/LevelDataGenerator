@@ -114,7 +114,17 @@ function generateLevels_warehouse() {
 
         // Increment cost, capacity, and loading per second based on the current level
         newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
+        if (workerCountIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
+        } else {
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
+        }
         newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * currentStatMultiplier;
+        if (workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
+            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
+        } else {
+            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"];
+        }
         newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * currentStatMultiplier;
 
         // Apply big update for specific levels if needed
@@ -151,15 +161,7 @@ function generateLevels_warehouse() {
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 4;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 300;
         }
-
-        // Increment worker speed and count based on current level
-        if (workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
-            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
-        }
-        if (workerCountIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
-            newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
-        }
-
+        
         // Push the new level data
         levelData_warehouse.push(newLevel);
         lastLevel = newLevel;
