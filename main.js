@@ -146,8 +146,10 @@ document.addEventListener("DOMContentLoaded", function() {
             generateLevels_elevator();
         } else if (selectedGenerator === "warehouse") {
             generateLevels_warehouse();
-        } else {
+        } else if (selectedGenerator === "mineshaft") {
             generateLevels_mineshaft();
+        } else if (selectedGenerator === "skillpoints") {
+            generateLevels_skillpoints();
         }
     });
 });
