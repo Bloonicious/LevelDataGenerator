@@ -76,7 +76,7 @@ body {
 }
 
 .image-gallery img {
-    width: 200px; /* Adjust the width as needed */
+    max-width: 25%; /* Set maximum width to the container width */
+    height: auto; /* Maintain aspect ratio */
     margin: 5px; /* Adjust the margin between images */
 }
-
