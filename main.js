@@ -23,6 +23,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Toggle JSON buttons visibility based on the selected generator
         toggleJsonButtons(selectedGenerator);
+
+        // Change text of "Generate Levels" button to "Generate Skillpoints" if selected generator is "skillpoints"
+        var generateLevelsButton = document.getElementById("generateLevelsButton");
+        if (selectedGenerator === "skillpoints") {
+            generateLevelsButton.textContent = "Generate Skillpoints";
+        } else {
+            generateLevelsButton.textContent = "Generate Levels";
+        }
     });
 
     // Function to show input boxes based on the selected generator
