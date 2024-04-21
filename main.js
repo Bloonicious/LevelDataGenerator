@@ -158,18 +158,27 @@ function toggleJsonButtons() {
     var elevatorButton = document.getElementById('copyElevatorJsonButton');
     var warehouseButton = document.getElementById('copyWarehouseJsonButton');
     var mineshaftButton = document.getElementById('copyMineshaftJsonButton');
+    var skillpointButton = document.getElementById('copySkillpointJsonButton');
 
     if (selectedGenerator === 'elevator') {
         elevatorButton.style.display = 'inline-block';
         warehouseButton.style.display = 'none';
         mineshaftButton.style.display = 'none';
+        skillpointButton.style.display = 'none';
     } else if (selectedGenerator === 'warehouse') {
         elevatorButton.style.display = 'none';
         warehouseButton.style.display = 'inline-block';
         mineshaftButton.style.display = 'none';
+        skillpointButton.style.display = 'none';
     } else if (selectedGenerator === 'mineshaft') {
         elevatorButton.style.display = 'none';
         warehouseButton.style.display = 'none';
         mineshaftButton.style.display = 'inline-block';
+        skillpointButton.style.display = 'none';
+    } else if (selectedGenerator === 'skillpoints') {
+        elevatorButton.style.display = 'none';
+        warehouseButton.style.display = 'none';
+        mineshaftButton.style.display = 'none';
+        skillpointButton.style.display = 'inline-block';
     }
 }
