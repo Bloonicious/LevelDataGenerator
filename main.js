@@ -30,17 +30,21 @@ document.addEventListener("DOMContentLoaded", function() {
         var elevatorInputs = document.getElementById("elevatorInputs");
         var warehouseInputs = document.getElementById("warehouseInputs");
         var mineshaftInputs = document.getElementById("mineshaftInputs");
+        var skillpointInputs = document.getElementById("skillpointInputs");
 
         // Hide all input boxes by default
         elevatorInputs.style.display = "none";
         warehouseInputs.style.display = "none";
         mineshaftInputs.style.display = "none";
+        skillpointInputs.style.display = "none";
 
         // Show input boxes based on the selected generator
         if (selectedGenerator === "elevator") {
             elevatorInputs.style.display = "block";
         } else if (selectedGenerator === "warehouse") {
             warehouseInputs.style.display = "block";
+        } else if (selectedGenerator === "skillpoints") {
+            skillpointInputs.style.display = "block";
         } else {
             mineshaftInputs.style.display = "block";
         }
