@@ -102,7 +102,7 @@ function generateLevels_mineshaft() {
     var tierInput = document.getElementById("tierInput");
 
     // Variables for specific input IDs
-    var costInput, gainInput, capacityInput;
+    var costInput, superCashInput, skillPointIDInput, gainInput, capacityInput;
 
     // Check the selected generator and set specific input IDs
     if (selectedGenerator === "elevator") {
@@ -113,6 +113,10 @@ function generateLevels_mineshaft() {
         costInput = document.getElementById("warehouseCostInput");
         gainInput = document.getElementById("loadingInput");
         capacityInput = document.getElementById("warehouseCapacityInput");
+    } else if (selectedGenerator === "skillpoints") {
+        skillPointIDInput = document.getElementById("skillPointIDInput");
+        costInput = document.getElementById("skillpointCostInput");
+        superCashInput = document.getElementById("skillpointSuperCashCostInput");
     } else {
         // For mineshaft, use the existing IDs
         costInput = document.getElementById("mineshaftCostInput");
