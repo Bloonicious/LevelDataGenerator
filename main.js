@@ -198,3 +198,16 @@ function toggleJsonButtons() {
         skillpointButton.style.display = 'inline-block';
     }
 }
+function removeGeneratedLines() {
+    // Clear the level data arrays for each type
+    levelData_mineshaft = [];
+    levelData_elevator = [];
+    levelData_warehouse = [];
+    levelData_skillpoints = [];
+
+    // Update the displayed levels
+    displayLevels_mineshaft();
+    displayLevels_elevator();
+    displayLevels_warehouse();
+    displayLevels_skillpoints();
+}
