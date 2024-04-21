@@ -94,23 +94,15 @@ let workerCountIncrementLevel = {
     1501: 8
 };
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Add event listener to tier input for generating levels
-    var tierInput = document.getElementById("tierInput");
-    tierInput.addEventListener("input", generateLevels_mineshaft);
-
-    // Generate levels when the page loads
-    generateLevels_mineshaft();
-});
-
 function generateLevels_mineshaft() {
     var selectedGenerator = generatorBehaviorSelect.value;
 
     // Common input IDs
     var levelInput = document.getElementById("mineshaftLevelInput");
+    var tierInput = document.getElementById("tierInput");
 
     // Variables for specific input IDs
-    var costInput, superCashInput, skillPointIDInput, gainInput, capacityInput;
+    var costInput, superCashInput, skillPointIDInput, tierInput, gainInput, capacityInput;
 
     // Check the selected generator and set specific input IDs
     if (selectedGenerator === "elevator") {
@@ -127,6 +119,7 @@ function generateLevels_mineshaft() {
         superCashInput = document.getElementById("skillpointSuperCashCostInput");
     } else {
         // For mineshaft, use the existing IDs
+        tierInput = document.getElementById("tierInput");
         costInput = document.getElementById("mineshaftCostInput");
         gainInput = document.getElementById("mineshaftGainInput");
         capacityInput = document.getElementById("mineshaftCapacityInput");
