@@ -125,7 +125,7 @@ function generateLevels_mineshaft() {
         capacityInput = document.getElementById("mineshaftCapacityInput");
     }
     let currentLevel = parseInt(document.getElementById('mineshaftLevelInput').value);
-    let currentTier = parseInt(document.getElementById('tierInput').value);
+    var currentTier = parseInt(tierInput.value);
     let currentCost = parseFloat(document.getElementById('mineshaftCostInput').value);
     let currentGain = parseFloat(document.getElementById('mineshaftGainInput').value);
     let currentCapacity = parseFloat(document.getElementById('mineshaftCapacityInput').value);
