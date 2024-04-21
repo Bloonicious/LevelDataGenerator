@@ -61,7 +61,7 @@ if (!window.workerCountIncrementWarehouseLevel) {
 }
 
 function generateLevels_warehouse() {
-    let currentLevel = parseInt(document.getElementById('levelInput').value);
+    let currentLevel = parseInt(document.getElementById('warehouseLevelInput').value);
     let currentCost = parseFloat(document.getElementById('warehouseCostInput').value);
     let currentCapacity = parseFloat(document.getElementById('warehouseCapacityInput').value);
     let currentLoadingPerSecond = parseFloat(document.getElementById('warehouseLoadingInput').value);
