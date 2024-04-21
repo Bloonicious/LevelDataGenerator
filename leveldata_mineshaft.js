@@ -98,7 +98,7 @@ function generateLevels_mineshaft() {
     var selectedGenerator = generatorBehaviorSelect.value;
 
     // Common input IDs
-    var levelInput = document.getElementById("levelInput");
+    var levelInput = document.getElementById("mineshaftLevelInput");
     var tierInput = document.getElementById("tierInput");
 
     // Variables for specific input IDs
@@ -123,7 +123,7 @@ function generateLevels_mineshaft() {
         gainInput = document.getElementById("mineshaftGainInput");
         capacityInput = document.getElementById("mineshaftCapacityInput");
     }
-    let currentLevel = parseInt(document.getElementById('levelInput').value);
+    let currentLevel = parseInt(document.getElementById('mineshaftLevelInput').value);
     let currentTier = parseInt(document.getElementById('tierInput').value);
     let currentCost = parseFloat(document.getElementById('mineshaftCostInput').value);
     let currentGain = parseFloat(document.getElementById('mineshaftGainInput').value);
