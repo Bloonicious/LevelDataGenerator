@@ -56,10 +56,19 @@
                 <label for="warehouseCapacityInput">Current Capacity:</label>
                 <input type="number" id="warehouseCapacityInput" value="1000">
             </div>
+            <div id="skillpointInputs" style="display: none;">
+                <label for="skillPointIDInput">SkillPoint ID:</label>
+                <input type="number" id="skillPointIDInput" value="1">
+                <label for="skillpointCostInput">Cost:</label>
+                <input type="number" id="skillpointCostInput" value="8470000000000000">
+                <label for="skillpointSuperCashCostInput">SuperCash Cost:</label>
+                <input type="number" id="skillpointSuperCashCostInput" value="200">
+            </div>
             <button id="generateLevelsButton"><p>Generate Levels</p></button>
+            <button id="copyMineshaftJsonButton" onclick="copyJsonMineshaft()" style="display: none;">Copy Mineshaft JSON</button>
             <button id="copyElevatorJsonButton" onclick="copyJsonElevator()" style="display: inline-block;">Copy Elevator JSON</button>
             <button id="copyWarehouseJsonButton" onclick="copyJsonWarehouse()" style="display: none;">Copy Warehouse JSON</button>
-            <button id="copyMineshaftJsonButton" onclick="copyJsonMineshaft()" style="display: none;">Copy Mineshaft JSON</button>
+            <button id="copySkillpointJsonButton" onclick="copyJsonSkillpoint()" style="display: none;">Copy Skillpoint JSON</button>
             <button onclick="removeGeneratedLines()"><p>Remove Generated Lines</p></button>
             <div id="output"></div>
         </div>
