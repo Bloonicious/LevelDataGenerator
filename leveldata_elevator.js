@@ -141,10 +141,3 @@ function copyJsonElevator() {
     a.click();
     URL.revokeObjectURL(url);
 }
-
-function removeGeneratedLines() {
-    // Clear the levelData_elevator array
-    levelData_elevator = [];
-    // Update the displayed levels
-    displayLevels_elevator();
-}
