@@ -63,7 +63,20 @@ body {
 
 #tutorialContent,
 #settingsContent,
-#statsContent {
+#statsContent,
+#changelogContent {
     max-width: 600px;
     margin: 0 auto;
 }
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.image-gallery img {
+    width: 200px; /* Adjust the width as needed */
+    margin: 5px; /* Adjust the margin between images */
+}
+
