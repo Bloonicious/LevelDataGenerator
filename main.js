@@ -12,6 +12,12 @@ document.addEventListener("DOMContentLoaded", function() {
         generatorBehaviorSelect.dispatchEvent(changeEvent);
     }
 
+    // Set initial text of "Generate Levels" button based on selected generator
+    var generateLevelsButton = document.getElementById("generateLevelsButton");
+    if (generatorBehaviorSelect.value === "skillpoints") {
+        generateLevelsButton.textContent = "Generate Skillpoints";
+    }
+
     // Add event listener to the generator behavior select
     generatorBehaviorSelect.addEventListener("change", function() {
         // Store the selected generator behavior in localStorage
