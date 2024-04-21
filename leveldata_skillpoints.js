@@ -31,7 +31,7 @@ function generateLevels_skillpoints() {
     for (var i = 1; i <= 10; i++) { // Generating data for 10 levels for demonstration
         levels.push({
             "0 Param data": {
-                "0 SInt64 SkillPointNo": parseInt(skillPointIDInput) + i - 1, // Increment SkillPointNo for each level
+                "0 SInt64 SkillPointNo": (parseInt(skillPointIDInput) + i - 1).toString(), // Increment SkillPointNo for each level
                 "0 double Cost": skillpointCostInput * Math.pow(1.1, i - 1),
                 "0 double SuperCashCost": skillpointSuperCashCostInput
             }
