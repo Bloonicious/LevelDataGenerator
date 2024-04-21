@@ -16,7 +16,7 @@ let elevatorCostMultiplier3001 = 1.18;
 let elevatorStatMultiplier3001 = 1.15;
 
 function generateLevels_elevator() {
-    let currentLevel = parseInt(document.getElementById('levelInput').value);
+    let currentLevel = parseInt(document.getElementById('elevatorLevelInput').value);
     let currentCost = parseFloat(document.getElementById('elevatorCostInput').value);
     let currentSpeed = parseFloat(document.getElementById('speedInput').value);
     let currentCapacity = parseFloat(document.getElementById('elevatorCapacityInput').value);
