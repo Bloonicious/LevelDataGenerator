@@ -43,10 +43,10 @@ document.addEventListener("DOMContentLoaded", function() {
             elevatorInputs.style.display = "block";
         } else if (selectedGenerator === "warehouse") {
             warehouseInputs.style.display = "block";
+        } else if (selectedGenerator === "mineshaft") {
+            mineshaftInputs.style.display = "block";
         } else if (selectedGenerator === "skillpoints") {
             skillpointInputs.style.display = "block";
-        } else {
-            mineshaftInputs.style.display = "block";
         }
     }
 
