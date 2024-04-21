@@ -188,10 +188,3 @@ function copyJsonWarehouse() {
     a.click();
     URL.revokeObjectURL(url);
 }
-
-function removeGeneratedLines() {
-    // Clear the levelData_warehouse array
-    levelData_warehouse = [];
-    // Update the displayed levels
-    displayLevels_warehouse();
-}
