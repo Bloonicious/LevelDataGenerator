@@ -246,10 +246,3 @@ function copyJsonMineshaft() {
     a.click();
     URL.revokeObjectURL(url);
 }
-
-function removeGeneratedLines() {
-    // Clear the levelData_mineshaft array
-    levelData_mineshaft = [];
-    // Update the displayed levels
-    displayLevels_mineshaft();
-}
