@@ -54,31 +54,37 @@ document.addEventListener("DOMContentLoaded", function() {
     var tutorialTabButton = document.getElementById("tutorialTabButton");
     var settingsTabButton = document.getElementById("settingsTabButton");
     var statsTabButton = document.getElementById("statsTabButton");
+    var changelogTabButton = document.getElementById("changelogTabButton");
 
     var mainContent = document.getElementById("mainContent");
     var tutorialContent = document.getElementById("tutorialContent");
     var settingsContent = document.getElementById("settingsContent");
     var statsContent = document.getElementById("statsContent");
+    var changelogContent = document.getElementById("changelogContent");
 
     mainTabButton.addEventListener("click", function() {
         mainTabButton.classList.add("active");
         tutorialTabButton.classList.remove("active");
         settingsTabButton.classList.remove("active");
         statsTabButton.classList.remove("active");
+        changelogTabButton.classList.remove("active");
 
         mainContent.style.display = "block";
         tutorialContent.style.display = "none";
         settingsContent.style.display = "none";
         statsContent.style.display = "none";
+        changelogContent.style.display = "none";
     });
 
     tutorialTabButton.addEventListener("click", function() {
         tutorialTabButton.classList.add("active");
+        changelogTabButton.classList.remove("active");
         settingsTabButton.classList.remove("active");
         statsTabButton.classList.remove("active");
         mainTabButton.classList.remove("active");
 
         tutorialContent.style.display = "block";
+        changelogContent.style.display = "none";
         settingsContent.style.display = "none";
         statsContent.style.display = "none";
         mainContent.style.display = "none";
@@ -86,11 +92,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     settingsTabButton.addEventListener("click", function() {
         settingsTabButton.classList.add("active");
+        changelogTabButton.classList.remove("active");
         statsTabButton.classList.remove("active");
         tutorialTabButton.classList.remove("active");
         mainTabButton.classList.remove("active");
 
         settingsContent.style.display = "block";
+        changelogContent.style.display = "none";
         statsContent.style.display = "none";
         tutorialContent.style.display = "none";
         mainContent.style.display = "none";
@@ -98,14 +106,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     statsTabButton.addEventListener("click", function() {
         statsTabButton.classList.add("active");
+        changelogTabButton.classList.remove("active");
         settingsTabButton.classList.remove("active");
         tutorialTabButton.classList.remove("active");
         mainTabButton.classList.remove("active");
 
         statsContent.style.display = "block";
+        changelogContent.style.display = "none";
         settingsContent.style.display = "none";
         tutorialContent.style.display = "none";
         mainContent.style.display = "none";
+    });
+
+    changelogTabButton.addEventListener("click", function() {
+        changelogTabButton.classList.add("active");
+        mainTabButton.classList.remove("active");
+        tutorialTabButton.classList.remove("active");
+        settingsTabButton.classList.remove("active");
+        statsTabButton.classList.remove("active");
+
+        changelogContent.style.display = "block";
+        mainContent.style.display = "none";
+        tutorialContent.style.display = "none";
+        settingsContent.style.display = "none";
+        statsContent.style.display = "none";
     });
 
     // Add event listener to the "Generate Levels" button
