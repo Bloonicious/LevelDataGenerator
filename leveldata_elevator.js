@@ -115,7 +115,7 @@ function generateLevels_elevator() {
             newLevel["0 Param data"]["0 double Capacity"] *= 3;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
-        } else if (newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 4000 || newLevel["0 Param data"]["0 int Level"] === 4200 || newLevel["0 Param data"]["0 int Level"] === 4400 || newLevel["0 Param data"]["0 int Level"] === 4500) {
+        } else if (newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 4000 || newLevel["0 Param data"]["0 int Level"] === 4500 || newLevel["0 Param data"]["0 int Level"] === 5000) {
             newLevel["0 Param data"]["0 double Capacity"] *= 5;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 5;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
@@ -123,7 +123,7 @@ function generateLevels_elevator() {
             newLevel["0 Param data"]["0 double Capacity"] *= 4;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 4;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 300;
-        } else if (newLevel["0 Param data"]["0 int Level"] === 4600 || newLevel["0 Param data"]["0 int Level"] === 4800 || newLevel["0 Param data"]["0 int Level"] === 5000) {
+        } else if (newLevel["0 Param data"]["0 int Level"] === 4200 || newLevel["0 Param data"]["0 int Level"] === 4400 || newLevel["0 Param data"]["0 int Level"] === 4600 || newLevel["0 Param data"]["0 int Level"] === 4800) {
             newLevel["0 Param data"]["0 double Capacity"] *= 6;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 6;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
