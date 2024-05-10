@@ -14,19 +14,21 @@ function generateLevels_skillpoints() {
     let currentSuperCashCost = parseFloat(document.getElementById('skillpointSuperCashCostInput').value);
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
 
-    let lastLevel = {};
+    let lastLevel = {
+        "0 Param data": {
+            "0 SInt64 SkillPointNo": currentLevel - 1,
+            "0 double Cost": currentSkillpointCost,
+            "0 double SuperCashCost": currentSuperCashCost
+        }
+    };
 
     for (let i = 0; i < levelsToGenerate; i++) {
-        let newLevel = {
-            "0 Param data": {
-                "0 SInt64 SkillPointNo": currentLevel - 1,
-                "0 double Cost": currentSkillpointCost,
-                "0 double SuperCashCost": currentSuperCashCost
-            }
-        };
+        let newLevel = {};
 
         newLevel["0 Param data"] = {};
         newLevel["0 Param data"]["0 SInt64 SkillPointNo"] = lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] + 1;
+        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * (currentCostMultiplier);
+        newLevel["0 Param data"]["0 double SuperCashCost"] = lastLevel["0 Param data"]["0 double SuperCashCost"];
 
         // Determine the correct multiplier based on the skillpoint id
         let currentCostMultiplier;
@@ -47,11 +49,8 @@ function generateLevels_skillpoints() {
         }
 
 
-        // Increment cost based on the current level and manager type
-        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * (currentCostMultiplier);
-
         // Push the new level data
-        levelData_managerCost.push(newLevel);
+        levelData_skillpoints.push(newLevel);
         lastLevel = newLevel;
     }
 
