@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", function() {
     var generateLevelsButton = document.getElementById("generateLevelsButton");
     if (generatorBehaviorSelect.value === "skillpoints") {
         generateLevelsButton.textContent = "Generate Skillpoints";
+    } else if (generatorBehaviorSelect.value === "managers") {
+        generateLevelsButton.textContent = "Generate Managers";
+    } else if (generatorBehaviorSelect.value === "managerCost") {
+        generateLevelsButton.textContent = "Generate Manager Costs";
     }
 
     // Add event listener to the generator behavior select
@@ -30,10 +34,14 @@ document.addEventListener("DOMContentLoaded", function() {
         // Toggle JSON buttons visibility based on the selected generator
         toggleJsonButtons(selectedGenerator);
 
-        // Change text of "Generate Levels" button to "Generate Skillpoints" if selected generator is "skillpoints"
+        // Change text of "Generate Levels" button if those selected generators are true
         var generateLevelsButton = document.getElementById("generateLevelsButton");
         if (selectedGenerator === "skillpoints") {
             generateLevelsButton.textContent = "Generate Skillpoints";
+        } else if (selectedGenerator === "managers") {
+            generateLevelsButton.textContent = "Generate Managers";
+        } else if (selectedGenerator === "managerCost") {
+            generateLevelsButton.textContent = "Generate Manager Costs";
         } else {
             generateLevelsButton.textContent = "Generate Levels";
         }
@@ -172,6 +180,10 @@ document.addEventListener("DOMContentLoaded", function() {
             generateLevels_mineshaft();
         } else if (selectedGenerator === "skillpoints") {
             generateLevels_skillpoints();
+        } else if (selectedGenerator === "managers") {
+            generateLevels_managers();
+        } else if (selectedGenerator === "managerCost") {
+            generateLevels_managerCost();
         }
     });
 });
