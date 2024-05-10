@@ -67,11 +67,40 @@
                 <label for="skillpointSuperCashCostInput">SuperCash Cost:</label>
                 <input type="number" id="skillpointSuperCashCostInput" value="200">
             </div>
+            <div id="managerInputs" style="display: none;">
+                <label for="managerIDInput">Manager ID:</label>
+                <input type="number" id="managerIDInput" value="1">
+                <label for="managerRarityInput">Manager Rarity:</label>
+                <input type="number" id="managerRarityInput" value="1">
+                <select id="managerAreaInput">
+                    <option value="areaMineshaft">Mineshaft</option>
+                    <option value="areaElevator">Elevator</option>
+                    <option value="areaWarehouse">Warehouse</option>
+                </select>
+                <label for="effectIDInput">Effect ID:</label>
+                <input type="number" id="effectIDInput" value="1">
+                <label for="activeTimeInput">Active Time:</label>
+                <input type="number" id="activeTimeInput" value="60">
+                <label for="activeCooldownInput">Active Cooldown:</label>
+                <input type="number" id="activeCooldownInput" value="300">
+            </div>
+            <div id="managerCostInputs" style="display: none;">
+                <label for="amountManagersInput">Manager Amount:</label>
+                <input type="number" id="amountManagersInput" value="1">
+                <label for="warehouseManagerCostInput">Warehouse Manager Cost:</label>
+                <input type="number" id="warehouseManagerCostInput" value="100">
+                <label for="elevatorManagerCostInput">Elevator Manager Cost:</label>
+                <input type="number" id="elevatorManagerCostInput" value="100">
+                <label for="mineshaftManagerCostInput">Mineshaft Manager Cost:</label>
+                <input type="number" id="mineshaftManagerCostInput" value="100">
+            </div>
             <button id="generateLevelsButton"><p>Generate Levels</p></button>
             <button id="copyMineshaftJsonButton" onclick="copyJsonMineshaft()" style="display: none;">Copy Mineshaft JSON</button>
             <button id="copyElevatorJsonButton" onclick="copyJsonElevator()" style="display: inline-block;">Copy Elevator JSON</button>
             <button id="copyWarehouseJsonButton" onclick="copyJsonWarehouse()" style="display: none;">Copy Warehouse JSON</button>
             <button id="copySkillpointJsonButton" onclick="copyJsonSkillpoint()" style="display: none;">Copy Skillpoint JSON</button>
+            <button id="copySkillpointJsonButton" onclick="copyJsonManager()" style="display: none;">Copy Manager JSON</button>
+            <button id="copySkillpointJsonButton" onclick="copyJsonManagerCost()" style="display: none;">Copy Manager Cost JSON</button>
             <button onclick="removeGeneratedLines()"><p>Remove Generated Lines</p></button>
             <pre id="output"></pre>
         </div>
@@ -94,6 +123,8 @@
                 <option value="elevator">Elevator</option>
                 <option value="warehouse">Warehouse</option>
                 <option value="skillpoints">Skillpoints</option>
+                <option value="managers">Managers</option>
+                <option value="managerCost">Manager Cost</option>
             </select>
         </div>
         <div id="statsContent" style="display: none;">
@@ -105,6 +136,22 @@
         <div id="changelogContent" style="display: none;">
             <h1>Changelog</h1>
             <p>Latest updates and changes to the generator.</p>
+            <h3>10th May 2024:</h3>
+            <h5>Update 1.1:</h5>
+            <p>
+            - Added a new generation option: Managers! You can finally generate random managers with random names as well as setting up your initial cost and cost ramping on them using the "Manager Cost" selection option for your classic producers!
+            <br>
+            - Fixed a bug with the Skillpoints generator not generating the accurate data.
+            <br>
+            - Added more big milestones for "Elevator" and "Warehouse" until level 5,000, as their cost/gain ramping goes up past level 4,000!
+            <br>
+            - It also won't be fair for "Mineshafts" to have more interesting updates as well! We've added 2 more milestones (level 1,600 and level 1,750) to make the efficiency much higher! Plus, tiers past 20 will have a much stronger Supercash gain on top!
+            </p>
+            <h3>19th April 2024:</h3>
+            <h5>Update 1.0:</h5>
+            <p>
+            - Initial release of Level Data Generator.
+            </p>
         </div>
     </div>
     <script src="leveldata_mineshaft.js"></script>
