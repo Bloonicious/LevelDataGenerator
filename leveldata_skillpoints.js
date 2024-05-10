@@ -60,7 +60,7 @@ function generateLevels_skillpoints() {
 
 function displayLevels_skillpoints() {
     let outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = JSON.stringify(levelData_managerCost, null, 4);
+    outputDiv.innerHTML = JSON.stringify(levelData_skillpoints, null, 4);
 }
 
 function copyJsonSkillpoint() {
