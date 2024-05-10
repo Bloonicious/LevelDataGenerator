@@ -29,18 +29,15 @@ function generateLevels_managerCost() {
         newLevel["0 Param data"] = {};
         newLevel["0 Param data"]["0 int AmountManagersBought"] = lastLevel["0 Param data"]["0 int AmountManagersBought"] + 1;
 
-        // Determine the correct multiplier based on the level
-        let currentCostMultiplier;
-        if (currentLevel < 21) {
-            currentCostMultiplier = currentWarehouseManagerCost, currentElevatorManagerCost, currentMineshaftManagerCost;
-        } else {
-            currentCostMultiplier = currentWarehouseManagerCost21, currentElevatorManagerCost21, currentMineshaftManagerCost21;
-        }
+        // Determine the correct multiplier based on the level and manager type
+        let warehouseCostMultiplier = currentLevel < 21 ? warehouseManagerCostMultiplier : warehouseManagerCostMultiplier21;
+        let elevatorCostMultiplier = currentLevel < 21 ? elevatorManagerCostMultiplier : elevatorManagerCostMultiplier21;
+        let mineshaftCostMultiplier = currentLevel < 21 ? mineshaftManagerCostMultiplier : mineshaftManagerCostMultiplier21;
 
-        // Increment cost, capacity, and loading per second based on the current level
-        newLevel["0 Param data"]["0 double Ground"] = lastLevel["0 Param data"]["0 double Ground"] * currentCostMultiplier;
-        newLevel["0 Param data"]["0 double Elevator"] = lastLevel["0 Param data"]["0 double Elevator"] * currentCostMultiplier;
-        newLevel["0 Param data"]["0 double Corridor"] = lastLevel["0 Param data"]["0 double Corridor"] * currentCostMultiplier;
+        // Increment cost based on the current level and manager type
+        newLevel["0 Param data"]["0 double Ground"] = lastLevel["0 Param data"]["0 double Ground"] * (warehouseCostMultiplier);
+        newLevel["0 Param data"]["0 double Elevator"] = lastLevel["0 Param data"]["0 double Elevator"] * (elevatorCostMultiplier);
+        newLevel["0 Param data"]["0 double Corridor"] = lastLevel["0 Param data"]["0 double Corridor"] * (mineshaftCostMultiplier);
 
         // Push the new level data
         levelData_managerCost.push(newLevel);
