@@ -25,7 +25,7 @@ function generateLevels_managers() {
     let currentEffect = parseInt(document.getElementById('effectIDInput').value);
     let currentActiveTime = parseFloat(document.getElementById('activeTimeInput').value);
     let currentCooldown = parseFloat(document.getElementById('activeCooldownInput').value);
-    let currentArea = parseFloat(document.getElementById('managerAreaInput').value);
+    let currentArea = document.getElementById('managerAreaInput').value;
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
 
     for (let i = 0; i < levelsToGenerate; i++) {
