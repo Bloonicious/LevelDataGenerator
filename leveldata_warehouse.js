@@ -16,6 +16,8 @@ let warehouseCostMultiplier3001 = 1.18;
 let warehouseStatMultiplier3001 = 1.15;
 let warehouseCostMultiplier4001 = 1.20;
 let warehouseStatMultiplier4001 = 1.1667;
+let warehouseCostMultiplier5001 = 1.225;
+let warehouseStatMultiplier5001 = 1.1875;
 
 if (!window.workerSpeedIncrementWarehouseLevel) {
     var workerSpeedIncrementWarehouseLevel = {
@@ -38,7 +40,11 @@ if (!window.workerSpeedIncrementWarehouseLevel) {
         2401: 4,
         2409: 5,
         2600: 5,
-        2601: 5
+        2601: 5,
+        2800: 5,
+        2801: 5,
+        3000: 5,
+        3001: 5
     };
 }
 
@@ -58,7 +64,11 @@ if (!window.workerCountIncrementWarehouseLevel) {
         2400: 5,
         2401: 5,
         2600: 6,
-        2601: 6
+        2601: 6,
+        2800: 6,
+        2801: 6,
+        3000: 6,
+        3001: 6
     };
 }
 
@@ -112,9 +122,12 @@ function generateLevels_warehouse() {
         } else if (currentLevel < 4001) {
             currentCostMultiplier = warehouseCostMultiplier3001;
             currentStatMultiplier = warehouseStatMultiplier3001;
-        } else {
+        } else if (currentLevel < 5001) {
             currentCostMultiplier = warehouseCostMultiplier4001;
             currentStatMultiplier = warehouseStatMultiplier4001;
+        } else {
+            currentCostMultiplier = warehouseCostMultiplier5001;
+            currentStatMultiplier = warehouseStatMultiplier5001;
         }
 
         // Increment cost, capacity, and loading per second based on the current level
@@ -133,7 +146,7 @@ function generateLevels_warehouse() {
         newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * currentStatMultiplier;
 
         // Apply big update for specific levels if needed
-        if (newLevel["0 Param data"]["0 int Level"] === 20 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 800 || newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 950 || newLevel["0 Param data"]["0 int Level"] === 1050 || newLevel["0 Param data"]["0 int Level"] === 1150 || newLevel["0 Param data"]["0 int Level"] === 1250 || newLevel["0 Param data"]["0 int Level"] === 1350 || newLevel["0 Param data"]["0 int Level"] === 1450 || newLevel["0 Param data"]["0 int Level"] === 1550 || newLevel["0 Param data"]["0 int Level"] === 1600 || newLevel["0 Param data"]["0 int Level"] === 1700 || newLevel["0 Param data"]["0 int Level"] === 1800 || newLevel["0 Param data"]["0 int Level"] === 1900 || newLevel["0 Param data"]["0 int Level"] === 2000 || newLevel["0 Param data"]["0 int Level"] === 2100 || newLevel["0 Param data"]["0 int Level"] === 2200 || newLevel["0 Param data"]["0 int Level"] === 2300 || newLevel["0 Param data"]["0 int Level"] === 2400 || newLevel["0 Param data"]["0 int Level"] === 2500 || newLevel["0 Param data"]["0 int Level"] === 2600 || newLevel["0 Param data"]["0 int Level"] === 2700 || newLevel["0 Param data"]["0 int Level"] === 2800 || newLevel["0 Param data"]["0 int Level"] === 2900 || newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3200 || newLevel["0 Param data"]["0 int Level"] === 3400 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 3700 || newLevel["0 Param data"]["0 int Level"] === 3900 || newLevel["0 Param data"]["0 int Level"] === 4000) {
+        if (newLevel["0 Param data"]["0 int Level"] === 20 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 800 || newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 950 || newLevel["0 Param data"]["0 int Level"] === 1050 || newLevel["0 Param data"]["0 int Level"] === 1150 || newLevel["0 Param data"]["0 int Level"] === 1250 || newLevel["0 Param data"]["0 int Level"] === 1350 || newLevel["0 Param data"]["0 int Level"] === 1450 || newLevel["0 Param data"]["0 int Level"] === 1550 || newLevel["0 Param data"]["0 int Level"] === 1600 || newLevel["0 Param data"]["0 int Level"] === 1700 || newLevel["0 Param data"]["0 int Level"] === 1800 || newLevel["0 Param data"]["0 int Level"] === 1900 || newLevel["0 Param data"]["0 int Level"] === 2000 || newLevel["0 Param data"]["0 int Level"] === 2100 || newLevel["0 Param data"]["0 int Level"] === 2200 || newLevel["0 Param data"]["0 int Level"] === 2300 || newLevel["0 Param data"]["0 int Level"] === 2400 || newLevel["0 Param data"]["0 int Level"] === 2500 || newLevel["0 Param data"]["0 int Level"] === 2600 || newLevel["0 Param data"]["0 int Level"] === 2700 || newLevel["0 Param data"]["0 int Level"] === 2800 || newLevel["0 Param data"]["0 int Level"] === 2900 || newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3200 || newLevel["0 Param data"]["0 int Level"] === 3400 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 3700 || newLevel["0 Param data"]["0 int Level"] === 3900 || newLevel["0 Param data"]["0 int Level"] === 4000 || newLevel["0 Param data"]["0 int Level"] === 4200 || newLevel["0 Param data"]["0 int Level"] === 4400 || newLevel["0 Param data"]["0 int Level"] === 4500 || newLevel["0 Param data"]["0 int Level"] === 4600 || newLevel["0 Param data"]["0 int Level"] === 4800 || newLevel["0 Param data"]["0 int Level"] === 5000) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
         } else {
@@ -157,13 +170,17 @@ function generateLevels_warehouse() {
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
-        } else if (newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 4000) {
+        } else if (newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 4000 || newLevel["0 Param data"]["0 int Level"] === 4500 || newLevel["0 Param data"]["0 int Level"] === 5000) {
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 5;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 5;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
         } else if (newLevel["0 Param data"]["0 int Level"] === 3200 || newLevel["0 Param data"]["0 int Level"] === 3400 || newLevel["0 Param data"]["0 int Level"] === 3700 || newLevel["0 Param data"]["0 int Level"] === 3900) {
             newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 4;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 4;
+            newLevel["0 Param data"]["0 double SuperCashReward"] = 300;
+        } else if (newLevel["0 Param data"]["0 int Level"] === 4200 || newLevel["0 Param data"]["0 int Level"] === 4400 || newLevel["0 Param data"]["0 int Level"] === 4600 || newLevel["0 Param data"]["0 int Level"] === 4800) {
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 6;
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 6;
             newLevel["0 Param data"]["0 double SuperCashReward"] = 300;
         }
         
