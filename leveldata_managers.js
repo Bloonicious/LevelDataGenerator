@@ -88,7 +88,7 @@ function displayLevels_managers() {
 }
 
 // Function to copy JSON data for managers
-function copyJsonManagers() {
+function copyJsonManager() {
     let filename = `managers.json`;
     let outputDiv = document.getElementById('output');
     let json = JSON.stringify(levelData_managers, null, 4);
