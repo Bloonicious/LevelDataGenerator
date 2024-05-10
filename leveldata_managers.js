@@ -19,7 +19,6 @@ function fetchManagerNames() {
 // Call the function to fetch manager names when the page loads
 fetchManagerNames();
 
-// Function to generate JSON data for managers
 function generateLevels_managers() {
     let currentLevel = parseInt(document.getElementById('managerIDInput').value);
     let currentRarity = parseInt(document.getElementById('managerRarityInput').value);
@@ -29,34 +28,26 @@ function generateLevels_managers() {
     let currentArea = parseFloat(document.getElementById('managerAreaInput').value);
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
 
-    let lastLevel = {
-        "0 Param data": {
-            "0 int ManagerID": currentLevel - 1,
-            "0 string Name": "", // Placeholder for manager name
-            "0 int RarityID": currentRarity,
-            "0 int EffectID": currentEffect,
-            "0 string Area": currentArea,
-            "0 double DelayPerClickInSeconds": 0.05,
-            "0 double ValueX": getValueX(currentEffect), // Calculate ValueX based on EffectID
-            "0 double ActiveTime": currentActiveTime,
-            "0 double Cooldown": currentCooldown,
-            "1 UInt8 AvailableThroughPurchase": 1,
-            "1 UInt8 RatingReward": 0,
-            "0 int ManagerBuyOrder": 0
-        }
-    };
-
     for (let i = 0; i < levelsToGenerate; i++) {
-        let newLevel = {};
-
-        newLevel["0 Param data"] = {};
-        newLevel["0 Param data"]["0 int ManagerID"] = lastLevel["0 Param data"]["0 int ManagerID"] + 1;
-        newLevel["0 Param data"]["0 string Name"] = getRandomManagerName(); // Assign a random manager name
-        newLevel["0 Param data"]["0 double ValueX"] = getValueX(currentEffect); // Update ValueX based on EffectID
+        let newLevel = {
+            "0 Param data": {
+                "0 int ManagerID": currentLevel + i,
+                "0 string Name": getRandomManagerName(), // Assign a random manager name
+                "0 int RarityID": currentRarity,
+                "0 int EffectID": currentEffect,
+                "0 string Area": currentArea,
+                "0 double DelayPerClickInSeconds": 0.05,
+                "0 double ValueX": getValueX(currentEffect), // Calculate ValueX based on EffectID
+                "0 double ActiveTime": currentActiveTime,
+                "0 double Cooldown": currentCooldown,
+                "1 UInt8 AvailableThroughPurchase": 1,
+                "1 UInt8 RatingReward": 0,
+                "0 int ManagerBuyOrder": 0
+            }
+        };
 
         // Push the new level data
         levelData_managers.push(newLevel);
-        lastLevel = newLevel;
     }
 
     // Display the generated levels
@@ -77,12 +68,14 @@ function getValueX(effectID) {
     }
 }
 
-// Function to randomly select a manager name
+// Function to display a random manager name
 function getRandomManagerName() {
     if (managerNames.length > 0) {
         // Generate a random index to select a manager name from the array
         const randomIndex = Math.floor(Math.random() * managerNames.length);
-        return managerNames[randomIndex].Name;
+        const firstName = managerNames[randomIndex].Name;
+        const surname = managerNames[randomIndex].Surname;
+        return `${firstName} ${surname}`;
     } else {
         return "Unknown"; // Default name if manager names array is empty
     }
