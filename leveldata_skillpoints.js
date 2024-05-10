@@ -27,17 +27,17 @@ function generateLevels_skillpoints() {
 
         // Determine the correct multiplier based on the skillpoint id
         let currentCostMultiplier;
-        if (newLevel["0 Param data"]["0 int Level"] < 31) {
+        if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 31) {
             currentCostMultiplier = skillpointCostMultiplier;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 101) {
+        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 101) {
             currentCostMultiplier = skillpointCostMultiplier31;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 151) {
+        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 151) {
             currentCostMultiplier = skillpointCostMultiplier101;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 501) {
+        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 501) {
             currentCostMultiplier = skillpointCostMultiplier151;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 816) {
+        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 816) {
             ccurrentCostMultiplier = skillpointCostMultiplier501;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 2501) {
+        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 2501) {
             currentCostMultiplier = skillpointCostMultiplier816;
         } else {
             currentCostMultiplier = skillpointCostMultiplier2501;
