@@ -45,12 +45,16 @@ document.addEventListener("DOMContentLoaded", function() {
         var warehouseInputs = document.getElementById("warehouseInputs");
         var mineshaftInputs = document.getElementById("mineshaftInputs");
         var skillpointInputs = document.getElementById("skillpointInputs");
+        var managerInputs = document.getElementById("managerInputs");
+        var managerCostInputs = document.getElementById("managerCostInputs");
 
         // Hide all input boxes by default
         elevatorInputs.style.display = "none";
         warehouseInputs.style.display = "none";
         mineshaftInputs.style.display = "none";
         skillpointInputs.style.display = "none";
+        managerInputs.style.display = "none";
+        managerCostInputs.style.display = "none";
 
         // Show input boxes based on the selected generator
         if (selectedGenerator === "elevator") {
@@ -61,6 +65,10 @@ document.addEventListener("DOMContentLoaded", function() {
             mineshaftInputs.style.display = "block";
         } else if (selectedGenerator === "skillpoints") {
             skillpointInputs.style.display = "block";
+        } else if (selectedGenerator === "managers") {
+            managerInputs.style.display = "block";
+        } else if (selectedGenerator === "managerCost") {
+            managerCostInputs.style.display = "block";
         }
     }
 
@@ -175,27 +183,51 @@ function toggleJsonButtons() {
     var warehouseButton = document.getElementById('copyWarehouseJsonButton');
     var mineshaftButton = document.getElementById('copyMineshaftJsonButton');
     var skillpointButton = document.getElementById('copySkillpointJsonButton');
+    var managerButton = document.getElementById('copyManagerJsonButton');
+    var managerCostButton = document.getElementById('copyManagerCostJsonButton');
 
     if (selectedGenerator === 'elevator') {
         elevatorButton.style.display = 'inline-block';
         warehouseButton.style.display = 'none';
         mineshaftButton.style.display = 'none';
         skillpointButton.style.display = 'none';
+        managerButton.style.display = 'none';
+        managerCostButton.style.display = 'none';
     } else if (selectedGenerator === 'warehouse') {
         elevatorButton.style.display = 'none';
         warehouseButton.style.display = 'inline-block';
         mineshaftButton.style.display = 'none';
         skillpointButton.style.display = 'none';
+        managerButton.style.display = 'none';
+        managerCostButton.style.display = 'none';
     } else if (selectedGenerator === 'mineshaft') {
         elevatorButton.style.display = 'none';
         warehouseButton.style.display = 'none';
         mineshaftButton.style.display = 'inline-block';
         skillpointButton.style.display = 'none';
+        managerButton.style.display = 'none';
+        managerCostButton.style.display = 'none';
     } else if (selectedGenerator === 'skillpoints') {
         elevatorButton.style.display = 'none';
         warehouseButton.style.display = 'none';
         mineshaftButton.style.display = 'none';
         skillpointButton.style.display = 'inline-block';
+        managerButton.style.display = 'none';
+        managerCostButton.style.display = 'none';
+    } else if (selectedGenerator === 'managers') {
+        elevatorButton.style.display = 'none';
+        warehouseButton.style.display = 'none';
+        mineshaftButton.style.display = 'none';
+        skillpointButton.style.display = 'none';
+        managerButton.style.display = 'inline-block';
+        managerCostButton.style.display = 'none';
+    } else if (selectedGenerator === 'managerCost') {
+        elevatorButton.style.display = 'none';
+        warehouseButton.style.display = 'none';
+        mineshaftButton.style.display = 'none';
+        skillpointButton.style.display = 'none';
+        managerButton.style.display = 'none';
+        managerCostButton.style.display = 'inline-block';
     }
 }
 function removeGeneratedLines() {
@@ -204,10 +236,14 @@ function removeGeneratedLines() {
     levelData_elevator = [];
     levelData_warehouse = [];
     levelData_skillpoints = [];
+    levelData_managers = [];
+    levelData_managerCost = [];
 
     // Update the displayed levels
     displayLevels_mineshaft();
     displayLevels_elevator();
     displayLevels_warehouse();
     displayLevels_skillpoints();
+    displayLevels_managers();
+    displayLevels_managerCost();
 }
