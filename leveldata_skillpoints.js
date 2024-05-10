@@ -14,19 +14,19 @@ function generateLevels_skillpoints() {
     let currentSuperCashCost = parseFloat(document.getElementById('skillpointSuperCashCostInput').value);
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
 
-    let lastLevel = {
-        "0 Param data": {
-            "0 SInt64 SkillPointNo": currentLevel - 1,
-            "0 double Cost": currentSkillpointCost,
-            "0 double SuperCashCost": currentSuperCashCost
-        }
-    };
+    let lastLevel = {};
 
     for (let i = 0; i < levelsToGenerate; i++) {
-        let newLevel = {};
+        let newLevel = {
+            "0 Param data": {
+                "0 SInt64 SkillPointNo": currentLevel - 1,
+                "0 double Cost": currentSkillpointCost,
+                "0 double SuperCashCost": currentSuperCashCost
+            }
+        };
 
         newLevel["0 Param data"] = {};
-        newLevel["0 Param data"]["0 int AmountManagersBought"] = lastLevel["0 Param data"]["0 int AmountManagersBought"] + 1;
+        newLevel["0 Param data"]["0 SInt64 SkillPointNo"] = lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] + 1;
 
         // Determine the correct multiplier based on the skillpoint id
         let currentCostMultiplier;
