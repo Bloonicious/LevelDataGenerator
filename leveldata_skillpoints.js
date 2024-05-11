@@ -25,7 +25,7 @@ function generateLevels_skillpoints() {
     for (let i = 0; i < levelsToGenerate; i++) {
         let newLevel = {};
         newLevel["0 Param data"] = {};
-        newLevel["0 Param data"]["0 SInt64 SkillPointNo"] = lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] + 1;
+        newLevel["0 Param data"]["0 SInt64 SkillPointNo"] = (lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] + 1).toString();
 
         // Determine the correct multiplier based on the skillpoint id
         let currentCostMultiplier;
@@ -46,7 +46,7 @@ function generateLevels_skillpoints() {
         }
 
         newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * (currentCostMultiplier);
-        newLevel["0 Param data"]["0 double SuperCashCost"] = lastLevel["0 Param data"]["0 double SuperCashCost"];
+        newLevel["0 Param data"]["0 double SuperCashCost"] = lastLevel["0 Param data"]["0 double SuperCashCost"].toString();
 
 
         // Push the new level data
