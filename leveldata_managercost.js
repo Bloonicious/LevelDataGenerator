@@ -45,9 +45,9 @@ function generateLevels_managerCost() {
         }
 
         // Increment cost based on the current level and manager type
-        newLevel["0 Param data"]["0 double Ground"] = lastLevel["0 Param data"]["0 double Ground"] * (warehouseCostMultiplier);
-        newLevel["0 Param data"]["0 double Elevator"] = lastLevel["0 Param data"]["0 double Elevator"] * (elevatorCostMultiplier);
-        newLevel["0 Param data"]["0 double Corridor"] = lastLevel["0 Param data"]["0 double Corridor"] * (mineshaftCostMultiplier);
+        newLevel["0 Param data"]["0 double Ground"] = lastLevel["0 Param data"]["0 double Ground"] * (currentWarehouseMultiplier);
+        newLevel["0 Param data"]["0 double Elevator"] = lastLevel["0 Param data"]["0 double Elevator"] * (currentElevatorMultiplier);
+        newLevel["0 Param data"]["0 double Corridor"] = lastLevel["0 Param data"]["0 double Corridor"] * (currentMineshaftMultiplier);
 
         // Push the new level data
         levelData_managerCost.push(newLevel);
