@@ -54,15 +54,88 @@ function generateLevels_managers() {
     displayLevels_managers();
 }
 
-// Function to calculate ValueX based on EffectID
-function getValueX(effectID) {
-    switch (effectID) {
+// Function to get the manager values based on rarity and effect IDs
+function getValueX(rarityID, effectID) {
+    // Check if the effect ID is for upgrade cost reduction
+    if (effectID === 3 || effectID === 10 || effectID === 16) {
+        // Use default values regardless of rarity ID
+        switch (rarityID) {
+            case 1: // Junior
+                return 0.4;
+            case 2: // Senior
+                return 0.7;
+            case 3: // Executive
+                return 0.8;
+            default:
+                return 0; // Default value
+        }
+    }
+    
+    // Check if the effect ID is for warehouse walking speed boost, mineshaft mining speed boost and elevator loading expansion
+    if (effectID === 1 || effectID === 8 || effectID === 12) {
+        switch (rarityID) {
+            case 1: // Junior
+                return 3;
+            case 2: // Senior
+                return 5;
+            case 3: // Executive
+                return 7;
+            default:
+                return 0; // Default value
+        }
+    }
+
+    // Check if the effect ID is for elevator moving speed boost
+    if (effectID === 11) {
+        switch (rarityID) {
+            case 1: // Junior
+                return 2;
+            case 2: // Senior
+                return 4;
+            case 3: // Executive
+                return 6;
+            default:
+                return 0; // Default value
+        }
+    }
+
+    // Check if the effect ID is for warehouse loading speed boost and loading expansion
+    if (effectID === 4 || effectID === 5) {
+        switch (rarityID) {
+            case 1: // Junior
+                return 3;
+            case 2: // Senior
+                return 5;
+            case 3: // Executive
+                return 8;
+            default:
+                return 0; // Default value
+        }
+    }
+
+    // Check if the effect ID is for income beam
+    if (effectID === 7 || effectID === 14) {
+        // Use default values regardless of rarity ID
+        switch (rarityID) {
+            case 1: // Junior
+                return 0.2;
+            case 2: // Senior
+                return 0.4;
+            case 3: // Executive
+                return 0.6;
+            default:
+                return 0; // Default value
+        }
+    }
+    
+    // For other effect IDs, return default values based on rarity ID
+    switch (rarityID) {
         case 1: // Junior
-            return 0.4;
+            return 1.5;
         case 2: // Senior
-            return 0.7;
+            return 2.5;
         case 3: // Executive
-            return 0.8;
+            return 4;
         default:
             return 0; // Default value
     }
