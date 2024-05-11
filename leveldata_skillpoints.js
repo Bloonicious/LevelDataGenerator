@@ -38,16 +38,15 @@ function generateLevels_skillpoints() {
         } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 501) {
             currentCostMultiplier = skillpointCostMultiplier151;
         } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 816) {
-            ccurrentCostMultiplier = skillpointCostMultiplier501;
+            currentCostMultiplier = skillpointCostMultiplier501;
         } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 2501) {
             currentCostMultiplier = skillpointCostMultiplier816;
         } else {
             currentCostMultiplier = skillpointCostMultiplier2501;
         }
 
-        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * (currentCostMultiplier);
+        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
         newLevel["0 Param data"]["0 double SuperCashCost"] = lastLevel["0 Param data"]["0 double SuperCashCost"].toString();
-
 
         // Push the new level data
         levelData_skillpoints.push(newLevel);
