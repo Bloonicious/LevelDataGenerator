@@ -34,7 +34,7 @@ function generateLevels_managerCost() {
         let currentElevatorMultiplier;
         let currentMineshaftMultiplier;
 
-        if (newLevel["0 Param data"]["0 int Level"] < 21) {
+        if (newLevel["0 Param data"]["0 int AmountManagersBought"] < 21) {
             currentWarehouseMultiplier = warehouseManagerCostMultiplier;
             currentElevatorMultiplier = elevatorManagerCostMultiplier;
             currentMineshaftMultiplier = mineshaftManagerCostMultiplier;
