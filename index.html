@@ -71,7 +71,11 @@
                 <label for="managerIDInput">Manager ID:</label>
                 <input type="number" id="managerIDInput" value="1">
                 <label for="managerRarityInput">Manager Rarity:</label>
-                <input type="number" id="managerRarityInput" value="1">
+                <select id="managerRarityInput">
+                    <option value=1>Junior</option>
+                    <option value=2>Senior</option>
+                    <option value=3>Executive</option>
+                </select>
                 <label for="managerAreaInput">Manager Area:</label>
                 <select id="managerAreaInput">
                     <option value="Corridor">Mineshaft</option>
@@ -79,7 +83,24 @@
                     <option value="Ground">Warehouse</option>
                 </select>
                 <label for="effectIDInput">Effect ID:</label>
-                <input type="number" id="effectIDInput" value="1">
+                <select id="effectIDInput">
+                    <option value=1>Walking Speed Boost (Warehouse)</option>
+                    <option value=2>Income Multiplier (Warehouse)</option>
+                    <option value=3>Upgrade Cost Reduction (Warehouse)</option>
+                    <option value=4>Loading Speed Boost (Warehouse)</option>
+                    <option value=5>Load Expansion (Warehouse)</option>
+                    <option value=6>Income Multiplier (Mineshaft)</option>
+                    <option value=7>Income Beam (Mineshaft)</option>
+                    <option value=8>Mining Speed Boost (Mineshaft)</option>
+                    <option value=9>Walking Speed Boost (Mineshaft)</option>
+                    <option value=10>Upgrade Cost Reduction (Mineshaft)</option>
+                    <option value=11>Movement Speed Boost (Elevator)</option>
+                    <option value=12>Load Expansion (Elevator)</option>
+                    <option value=13>Loading Speed Boost (Elevator)</option>
+                    <option value=14>Income Beam (Elevator)</option>
+                    <option value=15>Income Multiplier (Elevator)</option>
+                    <option value=16>Upgrade Cost Reduction (Elevator)</option>
+                </select>
                 <label for="activeTimeInput">Active Time:</label>
                 <input type="number" id="activeTimeInput" value="60">
                 <label for="activeCooldownInput">Active Cooldown:</label>
@@ -137,6 +158,17 @@
         <div id="changelogContent" style="display: none;">
             <h1>Changelog</h1>
             <p>Latest updates and changes to the generator.</p>
+            <h3>11th May 2024:</h3>
+            <h5>Update 1.1.1:</h5>
+            <p>
+            - Adjusted "managerRarityInput" to selection boxes where you can choose between "Junior", "Senior" and "Executive" for your own needs with the proper stat bonuses.
+            <br>
+            - Manager Effect IDs were also adjusted for better interface, choose between "Walking Speed Boost", "Income Multiplier", "Upgrade Cost Reduction" and more for the area's effect! 
+            <br>
+            - Fixed a bug with manager cost ramping not taking into account past 21 of them.
+            <br>
+            - Fixed skillpoints' ids and supercashcosts not being stringified.
+            </p>
             <h3>10th May 2024:</h3>
             <h5>Update 1.1:</h5>
             <p>
