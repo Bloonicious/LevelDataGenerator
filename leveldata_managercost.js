@@ -30,9 +30,19 @@ function generateLevels_managerCost() {
         newLevel["0 Param data"]["0 int AmountManagersBought"] = lastLevel["0 Param data"]["0 int AmountManagersBought"] + 1;
 
         // Determine the correct multiplier based on the level and manager type
-        let warehouseCostMultiplier = currentLevel < 21 ? warehouseManagerCostMultiplier : warehouseManagerCostMultiplier21;
-        let elevatorCostMultiplier = currentLevel < 21 ? elevatorManagerCostMultiplier : elevatorManagerCostMultiplier21;
-        let mineshaftCostMultiplier = currentLevel < 21 ? mineshaftManagerCostMultiplier : mineshaftManagerCostMultiplier21;
+        let currentWarehouseMultiplier;
+        let currentElevatorMultiplier;
+        let currentMineshaftMultiplier;
+
+        if (newLevel["0 Param data"]["0 int Level"] < 21) {
+            currentWarehouseMultiplier = warehouseManagerCostMultiplier;
+            currentElevatorMultiplier = elevatorManagerCostMultiplier;
+            currentMineshaftMultiplier = mineshaftManagerCostMultiplier;
+        } else {
+            currentWarehouseMultiplier = warehouseManagerCostMultiplier21;
+            currentElevatorMultiplier = elevatorManagerCostMultiplier21;
+            currentMineshaftMultiplier = mineshaftManagerCostMultiplier21;
+        }
 
         // Increment cost based on the current level and manager type
         newLevel["0 Param data"]["0 double Ground"] = lastLevel["0 Param data"]["0 double Ground"] * (warehouseCostMultiplier);
