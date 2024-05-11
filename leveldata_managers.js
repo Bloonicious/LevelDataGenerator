@@ -37,7 +37,7 @@ function generateLevels_managers() {
                 "0 int EffectID": currentEffect,
                 "0 string Area": currentArea,
                 "0 double DelayPerClickInSeconds": 0.05,
-                "0 double ValueX": getValueX(currentEffect), // Calculate ValueX based on EffectID
+                "0 double ValueX": getValueX(currentRarity), // Calculate ValueX based on RarityID
                 "0 double ActiveTime": currentActiveTime,
                 "0 double Cooldown": currentCooldown,
                 "1 UInt8 AvailableThroughPurchase": 1,
