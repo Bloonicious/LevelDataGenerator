@@ -27,22 +27,20 @@ function generateLevels_skillpoints() {
         newLevel["0 Param data"] = {};
         newLevel["0 Param data"]["0 SInt64 SkillPointNo"] = lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] + 1;
 
-        // Convert the skillpoint ID to a string only when displaying it or storing it in JSON
-        let skillpointIDAsString = newLevel["0 Param data"]["0 SInt64 SkillPointNo"].toString();
-
         // Determine the correct multiplier based on the skillpoint id
+        let skillPointNo = newLevel["0 Param data"]["0 SInt64 SkillPointNo"];
         let currentCostMultiplier;
-        if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 31) {
+        if (skillPointNo < 31) {
             currentCostMultiplier = skillpointCostMultiplier;
-        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 101) {
+        } else if (skillPointNo < 101) {
             currentCostMultiplier = skillpointCostMultiplier31;
-        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 151) {
+        } else if (skillPointNo < 151) {
             currentCostMultiplier = skillpointCostMultiplier101;
-        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 501) {
+        } else if (skillPointNo < 501) {
             currentCostMultiplier = skillpointCostMultiplier151;
-        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 816) {
+        } else if (skillPointNo < 816) {
             currentCostMultiplier = skillpointCostMultiplier501;
-        } else if (newLevel["0 Param data"]["0 SInt64 SkillPointNo"] < 2501) {
+        } else if (skillPointNo < 2501) {
             currentCostMultiplier = skillpointCostMultiplier816;
         } else {
             currentCostMultiplier = skillpointCostMultiplier2501;
@@ -51,8 +49,8 @@ function generateLevels_skillpoints() {
         newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
         newLevel["0 Param data"]["0 double SuperCashCost"] = lastLevel["0 Param data"]["0 double SuperCashCost"];
 
-        // Store the skillpoint ID as a string in the level data
-        newLevel["0 Param data"]["0 SInt64 SkillPointNo"] = skillpointIDAsString;
+        // Convert the skillpoint ID to a string for storage in the JSON output
+        newLevel["0 Param data"]["0 SInt64 SkillPointNo"] = skillPointNo.toString();
 
         // Push the new level data
         levelData_skillpoints.push(newLevel);
