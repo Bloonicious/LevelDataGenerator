@@ -16,12 +16,12 @@
             <button id="statsTabButton" class="tab-button">Statistics</button>
             <button id="changelogTabButton" class="tab-button">Changelog</button>
         </div>
-        <div id="mainContent">
+        <div id="mainContent" class="main-panel">
             <h1>Level Data Generator</h1>
             <div class="intro">
                 <p>Generate your levels without taking a hassle! Click on 'Generate Levels' to build your levels depending on the amount through the level input box. Use 'Copy JSON' to download your level param data in a *.json format, with different numbers depending on the tier you've inputted. If generation becomes a mess, use 'Remove Generated Lines' to clean up the page for preparation of new level data. NOTE: generating over 1,000 levels may cause lag.</p>
             </div>
-            <div>
+            <div class="levels-config">
                 <label for="levelsToGenerateInput">Levels to Generate:</label>
                 <input type="number" id="levelsToGenerateInput" value="10">
             </div>
@@ -59,6 +59,26 @@
                 <label for="warehouseCapacityInput">Current Capacity:</label>
                 <input type="number" id="warehouseCapacityInput" value="1000">
             </div>
+            <div id="barrierInputs" style="display: none;">
+                <label for="barrierOrderInput">Current Order:</label>
+                <input type="number" id="barrierOrderInput" value="0">
+                <label for="barrierFromTierInput">From Tier:</label>
+                <input type="number" id="barrierFromTierInput" value="1">
+                <label for="barrierToTierInput">To Tier:</label>
+                <input type="number" id="barrierToTierInput" value="5">
+                <label for="barrierCostInput">Current Cost:</label>
+                <input type="number" id="barrierCostInput" value="0">
+                <label for="barrierBuildTimeInput">Build Time (Seconds):</label>
+                <input type="number" id="barrierBuildTimeInput" value="0">
+                <label for="barrierSecondsReducedInput">Seconds Reduced Per Video:</label>
+                <input type="number" id="barrierSecondsReducedInput" value="0">
+                <label for="barrierMaxVideosInput">Max Videos Per Hour:</label>
+                <input type="number" id="barrierMaxVideosInput" value="0">
+                <label for="barrierCostMultiplierInput">Barrier Cost Multiplier:</label>
+                <input type="number" id="barrierCostMultiplierInput" value="1" step="0.01">
+                <label for="barrierBuildTimeMultiplierInput">Barrier Build Time Multiplier:</label>
+                <input type="number" id="barrierBuildTimeMultiplierInput" value="1" step="0.01">
+            </div>
             <div id="skillpointInputs" style="display: none;">
                 <label for="skillPointIDInput">SkillPoint ID:</label>
                 <input type="number" id="skillPointIDInput" value="1">
@@ -66,6 +86,8 @@
                 <input type="number" id="skillpointCostInput" value="8470000000000000">
                 <label for="skillpointSuperCashCostInput">SuperCash Cost:</label>
                 <input type="number" id="skillpointSuperCashCostInput" value="200">
+                <label for="skillpointCostMultiplierInput">Cost Multiplier:</label>
+                <input type="number" id="skillpointCostMultiplierInput" value="1.5" step="0.01">
             </div>
             <div id="managerInputs" style="display: none;">
                 <label for="managerIDInput">Manager ID:</label>
@@ -75,7 +97,15 @@
                     <option value=1>Junior</option>
                     <option value=2>Senior</option>
                     <option value=3>Executive</option>
+                    <option value=4>Professional</option>
                 </select>
+                <label for="managerGenderInput">Gender:</label>
+                <select id="managerGenderInput">
+                    <option value=0>Male</option>
+                    <option value=1>Female</option>
+                </select>
+                <label for="legacyManagerFormatInput">Legacy Manager Format (No GenderId):</label>
+                <input type="checkbox" id="legacyManagerFormatInput">
                 <label for="managerAreaInput">Manager Area:</label>
                 <select id="managerAreaInput">
                     <option value="Corridor">Mineshaft</option>
@@ -105,6 +135,9 @@
                 <input type="number" id="activeTimeInput" value="60">
                 <label for="activeCooldownInput">Active Cooldown:</label>
                 <input type="number" id="activeCooldownInput" value="300">
+                <label for="managerResetNamesOnRemoveInput">Reset Used Names When Removing Lines:</label>
+                <input type="checkbox" id="managerResetNamesOnRemoveInput" checked>
+                <button type="button" id="resetManagerNameHistoryButton" onclick="resetUsedManagerNames()">Reset Used Manager Names</button>
             </div>
             <div id="managerCostInputs" style="display: none;">
                 <label for="amountManagersInput">Manager Amount:</label>
@@ -115,21 +148,86 @@
                 <input type="number" id="elevatorManagerCostInput" value="100">
                 <label for="mineshaftManagerCostInput">Mineshaft Manager Cost:</label>
                 <input type="number" id="mineshaftManagerCostInput" value="100">
+                <label for="managerCostElevatorWarehouseMultiplierInput">Elevator/Warehouse Cost Mult:</label>
+                <input type="number" id="managerCostElevatorWarehouseMultiplierInput" value="5" step="0.01">
+                <label for="managerCostShaftMultiplierInput">Shaft Cost Mult:</label>
+                <input type="number" id="managerCostShaftMultiplierInput" value="2" step="0.01">
             </div>
-            <button id="generateLevelsButton"><p>Generate Levels</p></button>
-            <button id="copyMineshaftJsonButton" onclick="copyJsonMineshaft()" style="display: none;">Copy Mineshaft JSON</button>
-            <button id="copyElevatorJsonButton" onclick="copyJsonElevator()" style="display: inline-block;">Copy Elevator JSON</button>
-            <button id="copyWarehouseJsonButton" onclick="copyJsonWarehouse()" style="display: none;">Copy Warehouse JSON</button>
-            <button id="copySkillpointJsonButton" onclick="copyJsonSkillpoint()" style="display: none;">Copy Skillpoint JSON</button>
-            <button id="copyManagerJsonButton" onclick="copyJsonManager()" style="display: none;">Copy Manager JSON</button>
-            <button id="copyManagerCostJsonButton" onclick="copyJsonManagerCost()" style="display: none;">Copy Manager Cost JSON</button>
-            <button onclick="removeGeneratedLines()"><p>Remove Generated Lines</p></button>
+            <div id="collectiblesInputs" style="display: none;">
+                <label for="collectibleIDInput">Collectible ID:</label>
+                <input type="number" id="collectibleIDInput" value="1">
+                <label for="collectibleTypeInput">Collectible Type:</label>
+                <select id="collectibleTypeInput">
+                    <option value="Corridor">Corridor</option>
+                    <option value="Ground">Ground</option>
+                    <option value="Elevator">Elevator</option>
+                </select>
+                <label for="collectibleRarityInput">Rarity ID:</label>
+                <select id="collectibleRarityInput">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <label for="collectibleVariantInput">Variant:</label>
+                <input type="number" id="collectibleVariantInput" value="1">
+                <label for="collectibleMaxLevelInput">Max Level:</label>
+                <input type="number" id="collectibleMaxLevelInput" value="50">
+                <label for="collectibleIsActivatedInput">Is Activated:</label>
+                <select id="collectibleIsActivatedInput">
+                    <option value="1">1</option>
+                    <option value="0">0</option>
+                </select>
+                <label for="collectibleSecondaryEffectIdInput">Secondary Effect ID:</label>
+                <input type="number" id="collectibleSecondaryEffectIdInput" value="0">
+                <label for="collectibleSecondaryEffectTargetIdInput">Secondary Effect Target ID:</label>
+                <input type="number" id="collectibleSecondaryEffectTargetIdInput" value="0">
+                <label for="collectibleIncrementVariantInput">Increment Variant Each Entry:</label>
+                <input type="checkbox" id="collectibleIncrementVariantInput">
+            </div>
+            <div id="collectibleFactorInputs" style="display: none;">
+                <label for="collectibleFactorCollectibleIDInput">Collectible ID:</label>
+                <input type="number" id="collectibleFactorCollectibleIDInput" value="1">
+                <label for="collectibleFactorLevelInput">Starting Collectible Level:</label>
+                <input type="number" id="collectibleFactorLevelInput" value="0">
+                <label for="collectibleFactorProductionInput">Starting Production Factor:</label>
+                <input type="number" id="collectibleFactorProductionInput" value="1" step="0.01">
+                <label for="collectibleFactorPartsInput">Starting Parts Required:</label>
+                <input type="number" id="collectibleFactorPartsInput" value="0">
+                <label for="collectibleFactorSecondaryInput">Starting Secondary Effect Factor:</label>
+                <input type="number" id="collectibleFactorSecondaryInput" value="1" step="0.01">
+                <label for="collectibleFactorProductionMultiplierInput">Production Factor Multiplier:</label>
+                <input type="number" id="collectibleFactorProductionMultiplierInput" value="1.1" step="0.01">
+                <label for="collectibleFactorPartsMultiplierInput">Parts Required Multiplier:</label>
+                <input type="number" id="collectibleFactorPartsMultiplierInput" value="1.2" step="0.01">
+                <label for="collectibleFactorSecondaryMultiplierInput">Secondary Effect Multiplier:</label>
+                <input type="number" id="collectibleFactorSecondaryMultiplierInput" value="1" step="0.01">
+            </div>
+            <div class="action-buttons">
+                <button id="generateLevelsButton"><p>Generate Levels</p></button>
+                <button id="copyMineshaftJsonButton" onclick="copyJsonMineshaft()" style="display: none;">Copy Mineshaft JSON</button>
+                <button id="copyElevatorJsonButton" onclick="copyJsonElevator()" style="display: inline-block;">Copy Elevator JSON</button>
+                <button id="copyWarehouseJsonButton" onclick="copyJsonWarehouse()" style="display: none;">Copy Warehouse JSON</button>
+                <button id="copyBarrierJsonButton" onclick="copyJsonBarrier()" style="display: none;">Copy Barrier JSON</button>
+                <button id="copySkillpointJsonButton" onclick="copyJsonSkillpoint()" style="display: none;">Copy Skillpoint JSON</button>
+                <button id="copyManagerJsonButton" onclick="copyJsonManager()" style="display: none;">Copy Manager JSON</button>
+                <button id="copyManagerCostJsonButton" onclick="copyJsonManagerCost()" style="display: none;">Copy Manager Cost JSON</button>
+                <button id="copyCollectiblesJsonButton" onclick="copyJsonCollectibles()" style="display: none;">Copy Collectibles JSON</button>
+                <button id="copyCollectibleFactorJsonButton" onclick="copyJsonCollectibleFactors()" style="display: none;">Copy Collectible Factors JSON</button>
+                <button onclick="removeGeneratedLines()"><p>Remove Generated Lines</p></button>
+            </div>
             <pre id="output"></pre>
         </div>
-        <div id="tutorialContent" style="display: none;">
+        <div id="tutorialContent" class="tab-panel" style="display: none;">
             <h1>Tutorial</h1>
             <div class="intro">
-                <p>Welcome to the vivacious and amazing level generation tool that is never-seen-before!</p>
+                <p>Use this quick flow to generate valid level files in under a minute.</p>
+                <ol class="tutorial-steps">
+                    <li>Open <b>Settings</b> and pick the generator mode you need.</li>
+                    <li>Return to <b>Main</b>, set your starting stats, and choose how many entries to create.</li>
+                    <li>Click <b>Generate</b>, review the JSON preview, then use the matching <b>Copy ... JSON</b> button.</li>
+                    <li>If you are generating managers and want to reuse previous names, keep name history; otherwise reset it from the manager options.</li>
+                </ol>
                 <div class="image-gallery">
                     <img src="generator_sample_1.png" alt="Sample Image 1">
                     <img src="generator_sample_2.png" alt="Sample Image 2">
@@ -137,27 +235,58 @@
                 </div>
             </div>
         </div>
-        <div id="settingsContent" style="display: none;">
+        <div id="settingsContent" class="tab-panel" style="display: none;">
             <h1>Settings</h1>
             <p>Select generator behaviour:</p>
             <select id="generatorBehaviorSelect" onchange="toggleJsonButtons()">
                 <option value="mineshaft">Mineshaft</option>
                 <option value="elevator">Elevator</option>
                 <option value="warehouse">Warehouse</option>
+                <option value="barriers">Barriers</option>
                 <option value="skillpoints">Skillpoints</option>
                 <option value="managers">Managers</option>
                 <option value="managerCost">Manager Cost</option>
+                <option value="collectibles">Collectibles</option>
+                <option value="collectibleFactors">Collectible Production Factors</option>
             </select>
+            <div id="legacyDataOptions" class="settings-legacy" style="display: none;">
+                <p>Legacy Data Options</p>
+                <div class="settings-legacy-row">
+                    <input type="checkbox" id="legacySuperCashInput">
+                    <label for="legacySuperCashInput">Include Legacy SuperCashReward for Mineshaft/Elevator/Warehouse</label>
+                </div>
+            </div>
         </div>
-        <div id="statsContent" style="display: none;">
+        <div id="statsContent" class="tab-panel" style="display: none;">
             <h1>Statistics</h1>
             <div id="statsOutput">
                 <p>Total Levels Generated: <span id="totalLevelsOutput">0</span></p>
             </div>
         </div>
-        <div id="changelogContent" style="display: none;">
+        <div id="changelogContent" class="tab-panel" style="display: none;">
             <h1>Changelog</h1>
             <p>Latest updates and changes to the generator.</p>
+            <h3>4th March 2026:</h3>
+            <h5>Update 1.2:</h5>
+            <p>
+            - Added Barrier generation with custom order, tier ranges, costs, build times, and video settings.
+            <br>
+            - Added Collectibles and Collectible Production Factor generators using modern param structures.
+            <br>
+            - Added modern Manager generation updates (Professional rarity, GenderId support, female ID offset rules) with a legacy format toggle.
+            <br>
+            - Manager names now load offline from a local database, support gender-aware pools, and avoid duplicate naming across generations.
+            <br>
+            - Added reset tools for used manager names, including optional reset when removing generated lines in manager mode.
+            <br>
+            - Added custom multiplier fields for Skillpoint and Manager Cost generation.
+            <br>
+            - Added a legacy SuperCashReward toggle for Mineshaft, Elevator, and Warehouse data formats.
+            <br>
+            - Improved local statistics tracking with persistent generated-level counts.
+            <br>
+            - Refined UI layout for centered tab pages, cleaner settings/stats/changelog views, and larger tutorial screenshots.
+            </p>
             <h3>30th July 2024:</h3>
             <h5>Update 1.1.3:</h5>
             <p>
@@ -200,7 +329,11 @@
     <script src="leveldata_mineshaft.js"></script>
     <script src="leveldata_elevator.js"></script>
     <script src="leveldata_warehouse.js"></script>
+    <script src="leveldata_barriers.js"></script>
     <script src="leveldata_skillpoints.js"></script>
+    <script src="leveldata_collectibles.js"></script>
+    <script src="leveldata_collectiblefactors.js"></script>
+    <script src="manager_names.js"></script>
     <script src="leveldata_managers.js"></script>
     <script src="leveldata_managercost.js"></script>
     <script src="main.js"></script>

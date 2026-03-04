@@ -1,4 +1,4 @@
-{
+window.managerNamesDb = {
     "maleFullNames": [
         "Abdul Armas",
         "Abram Almy",
@@ -7401,4 +7401,4 @@
         "Zurita",
         "Zweifel"
     ]
-}
+};

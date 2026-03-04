@@ -1,39 +1,31 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Initialize total levels count
-    let totalLevels = 0;
+    const storageKey = "totalLevelsGenerated";
+    let totalLevels = parseInt(localStorage.getItem(storageKey), 10);
 
-    // Function to update total levels count
-    function updateTotalLevels() {
-        document.getElementById('totalLevelsOutput').innerText = totalLevels;
+    if (!Number.isFinite(totalLevels) || totalLevels < 0) {
+        totalLevels = 0;
     }
 
-    // Listen for changes in mineshaft level data
-    document.addEventListener('mineshaftDataChanged', function(event) {
-        totalLevels += levelData_mineshaft.length;
-        updateTotalLevels();
-    });
+    function updateTotalLevels() {
+        document.getElementById("totalLevelsOutput").innerText = totalLevels;
+    }
 
-    // Listen for changes in elevator level data
-    document.addEventListener('elevatorDataChanged', function(event) {
-        totalLevels += levelData_elevator.length;
-        updateTotalLevels();
-    });
-
-    // Listen for changes in warehouse level data
-    document.addEventListener('warehouseDataChanged', function(event) {
-        totalLevels += levelData_warehouse.length;
-        updateTotalLevels();
-    });
-
-    // Listen for changes in levelsToGenerateInput box for warehouse
-    document.getElementById('levelsToGenerateInput').addEventListener('change', function(event) {
-        let levelsToGenerate = parseInt(event.target.value);
-        if (!isNaN(levelsToGenerate)) {
-            totalLevels += levelsToGenerate;
-            updateTotalLevels();
+    window.recordGeneratedCount = function(levelCount) {
+        const parsedCount = parseInt(levelCount, 10);
+        if (!Number.isFinite(parsedCount) || parsedCount <= 0) {
+            return;
         }
-    });
 
-    // Update total levels count on page load
+        totalLevels += parsedCount;
+        localStorage.setItem(storageKey, totalLevels.toString());
+        updateTotalLevels();
+    };
+
+    window.resetGeneratedCount = function() {
+        totalLevels = 0;
+        localStorage.setItem(storageKey, "0");
+        updateTotalLevels();
+    };
+
     updateTotalLevels();
 });

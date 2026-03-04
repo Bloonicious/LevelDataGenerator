@@ -126,66 +126,50 @@ let workerCountIncrementLevel = {
 };
 
 function generateLevels_mineshaft() {
-    var selectedGenerator = generatorBehaviorSelect.value;
-
-    // Common input IDs
-    var levelInput = document.getElementById("mineshaftLevelInput");
-    var tierInput = document.getElementById("tierInput");
-
-    // Variables for specific input IDs
-    var costInput, superCashInput, skillPointIDInput, tierInput, gainInput, capacityInput, managerIDInput, managerRarityInput, managerAreaInput, effectIDInput, activeTimeInput, activeCooldownInput, amountManagersInput, warehouseManagerCostInput, elevatorManagerCostInput, mineshaftManagerCostInput;
-
-    // Check the selected generator and set specific input IDs
-    if (selectedGenerator === "elevator") {
-        costInput = document.getElementById("elevatorCostInput");
-        gainInput = document.getElementById("speedInput");
-        capacityInput = document.getElementById("elevatorCapacityInput");
-    } else if (selectedGenerator === "warehouse") {
-        costInput = document.getElementById("warehouseCostInput");
-        gainInput = document.getElementById("loadingInput");
-        capacityInput = document.getElementById("warehouseCapacityInput");
-    } else if (selectedGenerator === "skillpoints") {
-        skillPointIDInput = document.getElementById("skillPointIDInput");
-        costInput = document.getElementById("skillpointCostInput");
-        superCashInput = document.getElementById("skillpointSuperCashCostInput");
-    } else if (selectedGenerator === "managers") {
-        managerIDInput = document.getElementById("managerIDInput");
-        managerRarityInput = document.getElementById("managerRarityInput");
-        managerAreaInput = document.getElementById("managerAreaInput");
-        effectIDInput = document.getElementById("effectIDInput");
-        activeTimeInput = document.getElementById("activeTimeInput");
-        activeCooldownInput = document.getElementById("activeCooldownInput");
-    } else if (selectedGenerator === "managerCost") {
-        amountManagersInput = document.getElementById("amountManagersInput");
-        warehouseManagerCostInput = document.getElementById("warehouseManagerCostInput");
-        elevatorManagerCostInput = document.getElementById("elevatorManagerCostInput");
-        mineshaftManagerCostInput = document.getElementById("mineshaftManagerCostInput");
-    } else {
-        // For mineshaft, use the existing IDs
-        tierInput = document.getElementById("tierInput");
-        costInput = document.getElementById("mineshaftCostInput");
-        gainInput = document.getElementById("mineshaftGainInput");
-        capacityInput = document.getElementById("mineshaftCapacityInput");
-    }
     let currentLevel = parseInt(document.getElementById('mineshaftLevelInput').value);
     let currentTier = parseInt(document.getElementById('tierInput').value);
     let currentCost = parseFloat(document.getElementById('mineshaftCostInput').value);
     let currentGain = parseFloat(document.getElementById('mineshaftGainInput').value);
     let currentCapacity = parseFloat(document.getElementById('mineshaftCapacityInput').value);
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
+    let includeLegacySuperCash = document.getElementById("legacySuperCashInput").checked;
+
+    if (!Number.isFinite(currentLevel)) {
+        currentLevel = 1;
+    }
+    if (!Number.isFinite(currentTier)) {
+        currentTier = 1;
+    }
+    if (!Number.isFinite(currentCost)) {
+        currentCost = 0;
+    }
+    if (!Number.isFinite(currentGain)) {
+        currentGain = 0;
+    }
+    if (!Number.isFinite(currentCapacity)) {
+        currentCapacity = 0;
+    }
+    if (!Number.isFinite(levelsToGenerate) || levelsToGenerate <= 0) {
+        displayLevels_mineshaft();
+        return;
+    }
+
+    let lastLevelData = {
+        "0 int Tier": currentTier,
+        "0 int Level": currentLevel - 1,
+        "0 double Cost": currentCost,
+        "0 int NumberOfWorkers": 1,
+        "0 double GainPerSecondPerWorker": currentGain,
+        "0 double CapacityPerWorker": currentCapacity,
+        "0 int WorkerWalkingSpeedPerSecond": 2,
+        "1 UInt8 BigUpdate": 0
+    };
+    if (includeLegacySuperCash) {
+        lastLevelData["0 double SuperCashReward"] = 0;
+    }
 
     let lastLevel = {
-        "0 Param data": {
-            "0 int Tier": currentTier,
-            "0 int Level": currentLevel - 1,
-            "0 double Cost": currentCost,
-            "0 int NumberOfWorkers": 1,
-            "0 double GainPerSecondPerWorker": currentGain,
-            "0 double CapacityPerWorker": currentCapacity,
-            "0 int WorkerWalkingSpeedPerSecond": 2,
-            "1 UInt8 BigUpdate": 0,
-            "0 double SuperCashReward": 0
-        }
+        "0 Param data": lastLevelData
     };
 
     // Define super cash rewards based on tier ranges
@@ -253,16 +237,20 @@ function generateLevels_mineshaft() {
         const bigUpdateLevels = [10, 25, 50, 100, 200, 400, 500, 600, 700, 800, 850, 900, 1000, 1200, 1400, 1500, 1600, 1750, 1875, 2000];
         if (bigUpdateLevels.includes(newLevel["0 Param data"]["0 int Level"])) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
-            let reward = 2;  // Default reward
-            for (let tier in superCashRewards) {
-                if (currentTier >= tier) {
-                    reward = superCashRewards[tier];
+            if (includeLegacySuperCash) {
+                let reward = 2;  // Default reward
+                for (let tier in superCashRewards) {
+                    if (currentTier >= tier) {
+                        reward = superCashRewards[tier];
+                    }
                 }
+                newLevel["0 Param data"]["0 double SuperCashReward"] = reward;
             }
-            newLevel["0 Param data"]["0 double SuperCashReward"] = reward;
         } else {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 0;
-            newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
+            }
         }
 
         // Apply special conditions for specific levels
@@ -289,6 +277,10 @@ function generateLevels_mineshaft() {
         // Copy the generated level to the output
         levelData_mineshaft.push(newLevel);
         lastLevel = newLevel;
+    }
+
+    if (typeof window.recordGeneratedCount === "function") {
+        window.recordGeneratedCount(levelsToGenerate);
     }
 
     // Display the generated levels

@@ -1,89 +1,123 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Get the generator behavior select element
     var generatorBehaviorSelect = document.getElementById("generatorBehaviorSelect");
-
-    // Retrieve the selected generator behavior from localStorage
-    var savedGeneratorBehavior = localStorage.getItem("generatorBehavior");
-    if (savedGeneratorBehavior) {
-        generatorBehaviorSelect.value = savedGeneratorBehavior;
-
-        // Trigger change event to show the correct input boxes
-        var changeEvent = new Event("change");
-        generatorBehaviorSelect.dispatchEvent(changeEvent);
-    }
-
-    // Set initial text of "Generate Levels" button based on selected generator
     var generateLevelsButton = document.getElementById("generateLevelsButton");
-    if (generatorBehaviorSelect.value === "skillpoints") {
-        generateLevelsButton.textContent = "Generate Skillpoints";
-    } else if (generatorBehaviorSelect.value === "managers") {
-        generateLevelsButton.textContent = "Generate Managers";
-    } else if (generatorBehaviorSelect.value === "managerCost") {
-        generateLevelsButton.textContent = "Generate Manager Costs";
-    }
+    var managerRarityInput = document.getElementById("managerRarityInput");
+    var activeTimeInput = document.getElementById("activeTimeInput");
+    var activeCooldownInput = document.getElementById("activeCooldownInput");
+    var managerGenderInput = document.getElementById("managerGenderInput");
+    var legacyManagerFormatInput = document.getElementById("legacyManagerFormatInput");
+    var legacyDataOptions = document.getElementById("legacyDataOptions");
 
-    // Add event listener to the generator behavior select
-    generatorBehaviorSelect.addEventListener("change", function() {
-        // Store the selected generator behavior in localStorage
-        var selectedGenerator = generatorBehaviorSelect.value;
-        localStorage.setItem("generatorBehavior", selectedGenerator);
-
-        // Show input boxes based on the selected generator
-        showInputBoxes(selectedGenerator);
-
-        // Toggle JSON buttons visibility based on the selected generator
-        toggleJsonButtons(selectedGenerator);
-
-        // Change text of "Generate Levels" button if those selected generators are true
-        var generateLevelsButton = document.getElementById("generateLevelsButton");
+    function setGenerateButtonText(selectedGenerator) {
         if (selectedGenerator === "skillpoints") {
             generateLevelsButton.textContent = "Generate Skillpoints";
         } else if (selectedGenerator === "managers") {
             generateLevelsButton.textContent = "Generate Managers";
         } else if (selectedGenerator === "managerCost") {
             generateLevelsButton.textContent = "Generate Manager Costs";
+        } else if (selectedGenerator === "barriers") {
+            generateLevelsButton.textContent = "Generate Barriers";
+        } else if (selectedGenerator === "collectibles") {
+            generateLevelsButton.textContent = "Generate Collectibles";
+        } else if (selectedGenerator === "collectibleFactors") {
+            generateLevelsButton.textContent = "Generate Collectible Factors";
         } else {
             generateLevelsButton.textContent = "Generate Levels";
         }
-    });
+    }
 
-    // Function to show input boxes based on the selected generator
     function showInputBoxes(selectedGenerator) {
-        var elevatorInputs = document.getElementById("elevatorInputs");
-        var warehouseInputs = document.getElementById("warehouseInputs");
-        var mineshaftInputs = document.getElementById("mineshaftInputs");
-        var skillpointInputs = document.getElementById("skillpointInputs");
-        var managerInputs = document.getElementById("managerInputs");
-        var managerCostInputs = document.getElementById("managerCostInputs");
+        var inputGroups = {
+            mineshaft: document.getElementById("mineshaftInputs"),
+            elevator: document.getElementById("elevatorInputs"),
+            warehouse: document.getElementById("warehouseInputs"),
+            barriers: document.getElementById("barrierInputs"),
+            skillpoints: document.getElementById("skillpointInputs"),
+            managers: document.getElementById("managerInputs"),
+            managerCost: document.getElementById("managerCostInputs"),
+            collectibles: document.getElementById("collectiblesInputs"),
+            collectibleFactors: document.getElementById("collectibleFactorInputs")
+        };
 
-        // Hide all input boxes by default
-        elevatorInputs.style.display = "none";
-        warehouseInputs.style.display = "none";
-        mineshaftInputs.style.display = "none";
-        skillpointInputs.style.display = "none";
-        managerInputs.style.display = "none";
-        managerCostInputs.style.display = "none";
+        Object.keys(inputGroups).forEach(function(key) {
+            inputGroups[key].style.display = "none";
+        });
 
-        // Show input boxes based on the selected generator
-        if (selectedGenerator === "elevator") {
-            elevatorInputs.style.display = "block";
-        } else if (selectedGenerator === "warehouse") {
-            warehouseInputs.style.display = "block";
-        } else if (selectedGenerator === "mineshaft") {
-            mineshaftInputs.style.display = "block";
-        } else if (selectedGenerator === "skillpoints") {
-            skillpointInputs.style.display = "block";
-        } else if (selectedGenerator === "managers") {
-            managerInputs.style.display = "block";
-        } else if (selectedGenerator === "managerCost") {
-            managerCostInputs.style.display = "block";
+        if (inputGroups[selectedGenerator]) {
+            inputGroups[selectedGenerator].style.display = "block";
         }
     }
 
-    // Call showInputBoxes to initially display input boxes based on the selected generator
-    showInputBoxes(generatorBehaviorSelect.value);
+    function syncManagerLegacyState() {
+        if (!legacyManagerFormatInput || !managerGenderInput) {
+            return;
+        }
 
-    // Add event listeners to the tab buttons
+        managerGenderInput.disabled = legacyManagerFormatInput.checked;
+    }
+
+    function applyManagerTimingDefaults() {
+        if (!managerRarityInput || !activeTimeInput || !activeCooldownInput) {
+            return;
+        }
+
+        var timingByRarity = {
+            1: { activeTime: 60, cooldown: 300 },
+            2: { activeTime: 180, cooldown: 900 },
+            3: { activeTime: 600, cooldown: 3000 },
+            4: { activeTime: 900, cooldown: 3600 }
+        };
+        var selectedRarity = parseInt(managerRarityInput.value, 10);
+
+        if (!timingByRarity[selectedRarity]) {
+            selectedRarity = 1;
+        }
+
+        activeTimeInput.value = timingByRarity[selectedRarity].activeTime;
+        activeCooldownInput.value = timingByRarity[selectedRarity].cooldown;
+    }
+
+    function toggleLegacyDataOptionVisibility(selectedGenerator) {
+        if (!legacyDataOptions) {
+            return;
+        }
+
+        var showLegacyOption = selectedGenerator === "mineshaft" ||
+            selectedGenerator === "elevator" ||
+            selectedGenerator === "warehouse";
+
+        legacyDataOptions.style.display = showLegacyOption ? "block" : "none";
+    }
+
+    var savedGeneratorBehavior = localStorage.getItem("generatorBehavior");
+    if (savedGeneratorBehavior) {
+        generatorBehaviorSelect.value = savedGeneratorBehavior;
+    }
+
+    showInputBoxes(generatorBehaviorSelect.value);
+    setGenerateButtonText(generatorBehaviorSelect.value);
+    toggleLegacyDataOptionVisibility(generatorBehaviorSelect.value);
+    toggleJsonButtons();
+    applyManagerTimingDefaults();
+    syncManagerLegacyState();
+
+    generatorBehaviorSelect.addEventListener("change", function() {
+        var selectedGenerator = generatorBehaviorSelect.value;
+        localStorage.setItem("generatorBehavior", selectedGenerator);
+        showInputBoxes(selectedGenerator);
+        setGenerateButtonText(selectedGenerator);
+        toggleLegacyDataOptionVisibility(selectedGenerator);
+        toggleJsonButtons();
+    });
+
+    if (legacyManagerFormatInput) {
+        legacyManagerFormatInput.addEventListener("change", syncManagerLegacyState);
+    }
+
+    if (managerRarityInput) {
+        managerRarityInput.addEventListener("change", applyManagerTimingDefaults);
+    }
+
     var mainTabButton = document.getElementById("mainTabButton");
     var tutorialTabButton = document.getElementById("tutorialTabButton");
     var settingsTabButton = document.getElementById("settingsTabButton");
@@ -166,96 +200,100 @@ document.addEventListener("DOMContentLoaded", function() {
         statsContent.style.display = "none";
     });
 
-    // Add event listener to the "Generate Levels" button
-    var generateLevelsButton = document.getElementById("generateLevelsButton");
     generateLevelsButton.addEventListener("click", function() {
         var selectedGenerator = generatorBehaviorSelect.value;
 
-        // Call the appropriate function to generate levels based on the selected generator
         if (selectedGenerator === "elevator") {
             generateLevels_elevator();
         } else if (selectedGenerator === "warehouse") {
             generateLevels_warehouse();
         } else if (selectedGenerator === "mineshaft") {
             generateLevels_mineshaft();
+        } else if (selectedGenerator === "barriers") {
+            generateLevels_barriers();
         } else if (selectedGenerator === "skillpoints") {
             generateLevels_skillpoints();
         } else if (selectedGenerator === "managers") {
             generateLevels_managers();
         } else if (selectedGenerator === "managerCost") {
             generateLevels_managerCost();
+        } else if (selectedGenerator === "collectibles") {
+            generateLevels_collectibles();
+        } else if (selectedGenerator === "collectibleFactors") {
+            generateLevels_collectibleFactors();
         }
     });
 });
+
 function toggleJsonButtons() {
-    var generatorSelect = document.getElementById('generatorBehaviorSelect');
-    var selectedGenerator = generatorSelect.value;
+    var selectedGenerator = document.getElementById("generatorBehaviorSelect").value;
+    var buttonMap = {
+        mineshaft: document.getElementById("copyMineshaftJsonButton"),
+        elevator: document.getElementById("copyElevatorJsonButton"),
+        warehouse: document.getElementById("copyWarehouseJsonButton"),
+        barriers: document.getElementById("copyBarrierJsonButton"),
+        skillpoints: document.getElementById("copySkillpointJsonButton"),
+        managers: document.getElementById("copyManagerJsonButton"),
+        managerCost: document.getElementById("copyManagerCostJsonButton"),
+        collectibles: document.getElementById("copyCollectiblesJsonButton"),
+        collectibleFactors: document.getElementById("copyCollectibleFactorJsonButton")
+    };
 
-    var elevatorButton = document.getElementById('copyElevatorJsonButton');
-    var warehouseButton = document.getElementById('copyWarehouseJsonButton');
-    var mineshaftButton = document.getElementById('copyMineshaftJsonButton');
-    var skillpointButton = document.getElementById('copySkillpointJsonButton');
-    var managerButton = document.getElementById('copyManagerJsonButton');
-    var managerCostButton = document.getElementById('copyManagerCostJsonButton');
+    Object.keys(buttonMap).forEach(function(key) {
+        buttonMap[key].style.display = "none";
+    });
 
-    if (selectedGenerator === 'elevator') {
-        elevatorButton.style.display = 'inline-block';
-        warehouseButton.style.display = 'none';
-        mineshaftButton.style.display = 'none';
-        skillpointButton.style.display = 'none';
-        managerButton.style.display = 'none';
-        managerCostButton.style.display = 'none';
-    } else if (selectedGenerator === 'warehouse') {
-        elevatorButton.style.display = 'none';
-        warehouseButton.style.display = 'inline-block';
-        mineshaftButton.style.display = 'none';
-        skillpointButton.style.display = 'none';
-        managerButton.style.display = 'none';
-        managerCostButton.style.display = 'none';
-    } else if (selectedGenerator === 'mineshaft') {
-        elevatorButton.style.display = 'none';
-        warehouseButton.style.display = 'none';
-        mineshaftButton.style.display = 'inline-block';
-        skillpointButton.style.display = 'none';
-        managerButton.style.display = 'none';
-        managerCostButton.style.display = 'none';
-    } else if (selectedGenerator === 'skillpoints') {
-        elevatorButton.style.display = 'none';
-        warehouseButton.style.display = 'none';
-        mineshaftButton.style.display = 'none';
-        skillpointButton.style.display = 'inline-block';
-        managerButton.style.display = 'none';
-        managerCostButton.style.display = 'none';
-    } else if (selectedGenerator === 'managers') {
-        elevatorButton.style.display = 'none';
-        warehouseButton.style.display = 'none';
-        mineshaftButton.style.display = 'none';
-        skillpointButton.style.display = 'none';
-        managerButton.style.display = 'inline-block';
-        managerCostButton.style.display = 'none';
-    } else if (selectedGenerator === 'managerCost') {
-        elevatorButton.style.display = 'none';
-        warehouseButton.style.display = 'none';
-        mineshaftButton.style.display = 'none';
-        skillpointButton.style.display = 'none';
-        managerButton.style.display = 'none';
-        managerCostButton.style.display = 'inline-block';
+    if (buttonMap[selectedGenerator]) {
+        buttonMap[selectedGenerator].style.display = "inline-block";
     }
 }
+
 function removeGeneratedLines() {
-    // Clear the level data arrays for each type
+    var selectedGenerator = document.getElementById("generatorBehaviorSelect").value;
+    var resetNamesOnRemoveInput = document.getElementById("managerResetNamesOnRemoveInput");
+
     levelData_mineshaft = [];
     levelData_elevator = [];
     levelData_warehouse = [];
+    levelData_barriers = [];
     levelData_skillpoints = [];
     levelData_managers = [];
     levelData_managerCost = [];
+    levelData_collectibles = [];
+    levelData_collectibleFactors = [];
 
-    // Update the displayed levels
-    displayLevels_mineshaft();
-    displayLevels_elevator();
-    displayLevels_warehouse();
-    displayLevels_skillpoints();
-    displayLevels_managers();
-    displayLevels_managerCost();
+    if (typeof displayLevels_mineshaft === "function") {
+        displayLevels_mineshaft();
+    }
+    if (typeof displayLevels_elevator === "function") {
+        displayLevels_elevator();
+    }
+    if (typeof displayLevels_warehouse === "function") {
+        displayLevels_warehouse();
+    }
+    if (typeof displayLevels_barriers === "function") {
+        displayLevels_barriers();
+    }
+    if (typeof displayLevels_skillpoints === "function") {
+        displayLevels_skillpoints();
+    }
+    if (typeof displayLevels_managers === "function") {
+        displayLevels_managers();
+    }
+    if (typeof displayLevels_managerCost === "function") {
+        displayLevels_managerCost();
+    }
+    if (typeof displayLevels_collectibles === "function") {
+        displayLevels_collectibles();
+    }
+    if (typeof displayLevels_collectibleFactors === "function") {
+        displayLevels_collectibleFactors();
+    }
+
+    if (selectedGenerator === "managers" &&
+        resetNamesOnRemoveInput &&
+        resetNamesOnRemoveInput.checked &&
+        typeof window.resetUsedManagerNames === "function") {
+        window.resetUsedManagerNames();
+    }
 }

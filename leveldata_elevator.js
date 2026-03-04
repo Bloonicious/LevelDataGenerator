@@ -26,17 +26,42 @@ function generateLevels_elevator() {
     let currentCapacity = parseFloat(document.getElementById('elevatorCapacityInput').value);
     let currentLoadingPerSecond = parseFloat(document.getElementById('elevatorLoadingInput').value);
     let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
+    let includeLegacySuperCash = document.getElementById("legacySuperCashInput").checked;
+
+    if (!Number.isFinite(currentLevel)) {
+        currentLevel = 1;
+    }
+    if (!Number.isFinite(currentCost)) {
+        currentCost = 0;
+    }
+    if (!Number.isFinite(currentSpeed)) {
+        currentSpeed = 0;
+    }
+    if (!Number.isFinite(currentCapacity)) {
+        currentCapacity = 0;
+    }
+    if (!Number.isFinite(currentLoadingPerSecond)) {
+        currentLoadingPerSecond = 0;
+    }
+    if (!Number.isFinite(levelsToGenerate) || levelsToGenerate <= 0) {
+        displayLevels_elevator();
+        return;
+    }
+
+    let lastLevelData = {
+        "0 int Level": currentLevel - 1,
+        "0 double Cost": currentCost,
+        "0 double Speed": currentSpeed,
+        "0 double Capacity": currentCapacity,
+        "0 double LoadingPerSecond": currentLoadingPerSecond,
+        "1 UInt8 BigUpdate": 0
+    };
+    if (includeLegacySuperCash) {
+        lastLevelData["0 double SuperCashReward"] = 0;
+    }
 
     let lastLevel = {
-        "0 Param data": {
-            "0 int Level": currentLevel - 1,
-            "0 double Cost": currentCost,
-            "0 double Speed": currentSpeed,
-            "0 double Capacity": currentCapacity,
-            "0 double LoadingPerSecond": currentLoadingPerSecond,
-            "1 UInt8 BigUpdate": 0,
-            "0 double SuperCashReward": 0
-        }
+        "0 Param data": lastLevelData
     };
 
     for (let i = 0; i < levelsToGenerate; i++) {
@@ -87,10 +112,14 @@ function generateLevels_elevator() {
         // Apply big update for specific levels if needed
         if (newLevel["0 Param data"]["0 int Level"] === 10 || newLevel["0 Param data"]["0 int Level"] === 40 || newLevel["0 Param data"]["0 int Level"] === 80 || newLevel["0 Param data"]["0 int Level"] === 150 || newLevel["0 Param data"]["0 int Level"] === 300 || newLevel["0 Param data"]["0 int Level"] === 500 || newLevel["0 Param data"]["0 int Level"] === 800 || newLevel["0 Param data"]["0 int Level"] === 900 || newLevel["0 Param data"]["0 int Level"] === 1000 || newLevel["0 Param data"]["0 int Level"] === 1100 || newLevel["0 Param data"]["0 int Level"] === 1200 || newLevel["0 Param data"]["0 int Level"] === 1300 || newLevel["0 Param data"]["0 int Level"] === 1400 || newLevel["0 Param data"]["0 int Level"] === 1500 || newLevel["0 Param data"]["0 int Level"] === 1600 || newLevel["0 Param data"]["0 int Level"] === 1700 || newLevel["0 Param data"]["0 int Level"] === 1800 || newLevel["0 Param data"]["0 int Level"] === 1900 || newLevel["0 Param data"]["0 int Level"] === 2000 || newLevel["0 Param data"]["0 int Level"] === 2100 || newLevel["0 Param data"]["0 int Level"] === 2200 || newLevel["0 Param data"]["0 int Level"] === 2300 || newLevel["0 Param data"]["0 int Level"] === 2400 || newLevel["0 Param data"]["0 int Level"] === 2500 || newLevel["0 Param data"]["0 int Level"] === 2600 || newLevel["0 Param data"]["0 int Level"] === 2700 || newLevel["0 Param data"]["0 int Level"] === 2800 || newLevel["0 Param data"]["0 int Level"] === 2900 || newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3200 || newLevel["0 Param data"]["0 int Level"] === 3400 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 3700 || newLevel["0 Param data"]["0 int Level"] === 3900 || newLevel["0 Param data"]["0 int Level"] === 4000 || newLevel["0 Param data"]["0 int Level"] === 4200 || newLevel["0 Param data"]["0 int Level"] === 4400 || newLevel["0 Param data"]["0 int Level"] === 4500 || newLevel["0 Param data"]["0 int Level"] === 4600 || newLevel["0 Param data"]["0 int Level"] === 4800 || newLevel["0 Param data"]["0 int Level"] === 5000 || newLevel["0 Param data"]["0 int Level"] === 5200 || newLevel["0 Param data"]["0 int Level"] === 5400 || newLevel["0 Param data"]["0 int Level"] === 5500) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
-            newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
+            }
         } else {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 0;
-            newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
+            }
         }
 
         // Update capacity and loading per second according to big update
@@ -110,28 +139,42 @@ function generateLevels_elevator() {
             newLevel["0 Param data"]["0 double Capacity"] *= 3;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
         } else if (newLevel["0 Param data"]["0 int Level"] === 2000 || newLevel["0 Param data"]["0 int Level"] === 2100 || newLevel["0 Param data"]["0 int Level"] === 2200 || newLevel["0 Param data"]["0 int Level"] === 2300 || newLevel["0 Param data"]["0 int Level"] === 2400) {
-            newLevel["0 Param data"]["0 double SuperCashReward"] = 400;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 400;
+            }
         } else if (newLevel["0 Param data"]["0 int Level"] === 2500 || newLevel["0 Param data"]["0 int Level"] === 2600 || newLevel["0 Param data"]["0 int Level"] === 2700 || newLevel["0 Param data"]["0 int Level"] === 2800 || newLevel["0 Param data"]["0 int Level"] === 2900) {
             newLevel["0 Param data"]["0 double Capacity"] *= 3;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
-            newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+            }
         } else if (newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 4000 || newLevel["0 Param data"]["0 int Level"] === 4500 || newLevel["0 Param data"]["0 int Level"] === 5000 || newLevel["0 Param data"]["0 int Level"] === 5500) {
             newLevel["0 Param data"]["0 double Capacity"] *= 5;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 5;
-            newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+            }
         } else if (newLevel["0 Param data"]["0 int Level"] === 3200 || newLevel["0 Param data"]["0 int Level"] === 3400 || newLevel["0 Param data"]["0 int Level"] === 3700 || newLevel["0 Param data"]["0 int Level"] === 3900) {
             newLevel["0 Param data"]["0 double Capacity"] *= 4;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 4;
-            newLevel["0 Param data"]["0 double SuperCashReward"] = 300;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 300;
+            }
         } else if (newLevel["0 Param data"]["0 int Level"] === 4200 || newLevel["0 Param data"]["0 int Level"] === 4400 || newLevel["0 Param data"]["0 int Level"] === 4600 || newLevel["0 Param data"]["0 int Level"] === 4800 || newLevel["0 Param data"]["0 int Level"] === 5200 || newLevel["0 Param data"]["0 int Level"] === 5400) {
             newLevel["0 Param data"]["0 double Capacity"] *= 6;
             newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 6;
-            newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
+            }
         }
 
         // Push the new level data
         levelData_elevator.push(newLevel);
         lastLevel = newLevel;
+    }
+
+    if (typeof window.recordGeneratedCount === "function") {
+        window.recordGeneratedCount(levelsToGenerate);
     }
 
     // Display the generated levels

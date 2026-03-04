@@ -8,11 +8,46 @@ let skillpointCostMultiplier501 = 1.4;
 let skillpointCostMultiplier816 = 1.1;
 let skillpointCostMultiplier2501 = 1.2;
 
+function getLegacySkillpointMultiplier(skillPointNo) {
+    if (skillPointNo < 31) {
+        return skillpointCostMultiplier;
+    } else if (skillPointNo < 101) {
+        return skillpointCostMultiplier31;
+    } else if (skillPointNo < 151) {
+        return skillpointCostMultiplier101;
+    } else if (skillPointNo < 501) {
+        return skillpointCostMultiplier151;
+    } else if (skillPointNo < 816) {
+        return skillpointCostMultiplier501;
+    } else if (skillPointNo < 2501) {
+        return skillpointCostMultiplier816;
+    }
+
+    return skillpointCostMultiplier2501;
+}
+
 function generateLevels_skillpoints() {
-    let currentLevel = parseInt(document.getElementById('skillPointIDInput').value);
-    let currentSkillpointCost = parseFloat(document.getElementById('skillpointCostInput').value);
-    let currentSuperCashCost = parseFloat(document.getElementById('skillpointSuperCashCostInput').value);
-    let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
+    let currentLevel = parseInt(document.getElementById("skillPointIDInput").value, 10);
+    let currentSkillpointCost = parseFloat(document.getElementById("skillpointCostInput").value);
+    let currentSuperCashCost = parseFloat(document.getElementById("skillpointSuperCashCostInput").value);
+    let customCostMultiplier = parseFloat(document.getElementById("skillpointCostMultiplierInput").value);
+    let levelsToGenerate = parseInt(document.getElementById("levelsToGenerateInput").value, 10);
+
+    if (!Number.isFinite(currentLevel)) {
+        currentLevel = 1;
+    }
+    if (!Number.isFinite(currentSkillpointCost)) {
+        currentSkillpointCost = 0;
+    }
+    if (!Number.isFinite(currentSuperCashCost)) {
+        currentSuperCashCost = 0;
+    }
+    if (!Number.isFinite(levelsToGenerate) || levelsToGenerate <= 0) {
+        displayLevels_skillpoints();
+        return;
+    }
+
+    let useCustomMultiplier = Number.isFinite(customCostMultiplier) && customCostMultiplier > 0;
 
     let lastLevel = {
         "0 Param data": {
@@ -23,61 +58,40 @@ function generateLevels_skillpoints() {
     };
 
     for (let i = 0; i < levelsToGenerate; i++) {
-        let newLevel = {};
-        newLevel["0 Param data"] = {};
-        
-        // Calculate the next skill point number as a number
         let newSkillPointNo = lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] + 1;
-        
-        // Determine the correct multiplier based on the skillpoint id
-        let currentCostMultiplier;
-        if (newSkillPointNo < 31) {
-            currentCostMultiplier = skillpointCostMultiplier;
-        } else if (newSkillPointNo < 101) {
-            currentCostMultiplier = skillpointCostMultiplier31;
-        } else if (newSkillPointNo < 151) {
-            currentCostMultiplier = skillpointCostMultiplier101;
-        } else if (newSkillPointNo < 501) {
-            currentCostMultiplier = skillpointCostMultiplier151;
-        } else if (newSkillPointNo < 816) {
-            currentCostMultiplier = skillpointCostMultiplier501;
-        } else if (newSkillPointNo < 2501) {
-            currentCostMultiplier = skillpointCostMultiplier816;
-        } else {
-            currentCostMultiplier = skillpointCostMultiplier2501;
-        }
+        let currentCostMultiplier = useCustomMultiplier ? customCostMultiplier : getLegacySkillpointMultiplier(newSkillPointNo);
+        let newCost = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
 
-        newLevel["0 Param data"]["0 SInt64 SkillPointNo"] = newSkillPointNo;  // Keep as number for now
-        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
-        newLevel["0 Param data"]["0 double SuperCashCost"] = lastLevel["0 Param data"]["0 double SuperCashCost"];
-        
-        // Push the new level data, ensuring SkillPointNo is a string for final storage
         levelData_skillpoints.push({
             "0 Param data": {
                 "0 SInt64 SkillPointNo": newSkillPointNo.toString(),
-                "0 double Cost": newLevel["0 Param data"]["0 double Cost"],
-                "0 double SuperCashCost": newLevel["0 Param data"]["0 double SuperCashCost"]
+                "0 double Cost": newCost,
+                "0 double SuperCashCost": lastLevel["0 Param data"]["0 double SuperCashCost"]
             }
         });
-        
-        lastLevel = newLevel;
+
+        lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] = newSkillPointNo;
+        lastLevel["0 Param data"]["0 double Cost"] = newCost;
     }
 
-    // Display the generated levels
+    if (typeof window.recordGeneratedCount === "function") {
+        window.recordGeneratedCount(levelsToGenerate);
+    }
+
     displayLevels_skillpoints();
 }
 
 function displayLevels_skillpoints() {
-    let outputDiv = document.getElementById('output');
+    let outputDiv = document.getElementById("output");
     outputDiv.innerHTML = JSON.stringify(levelData_skillpoints, null, 4);
 }
 
 function copyJsonSkillpoint() {
-    let filename = `skillpoint_data.json`;
+    let filename = "skillpoint_data.json";
     let json = JSON.stringify(levelData_skillpoints, null, 4);
-    let blob = new Blob([json], { type: 'application/json' });
+    let blob = new Blob([json], { type: "application/json" });
     let url = URL.createObjectURL(blob);
-    let a = document.createElement('a');
+    let a = document.createElement("a");
     a.href = url;
     a.download = filename;
     a.click();

@@ -1,18 +1,36 @@
 let levelData_managerCost = [];
 
-let warehouseManagerCostMultiplier = 5;
-let elevatorManagerCostMultiplier = 5;
-let mineshaftManagerCostMultiplier = 2;
-let warehouseManagerCostMultiplier21 = 9;
-let elevatorManagerCostMultiplier21 = 9;
-let mineshaftManagerCostMultiplier21 = 6;
-
 function generateLevels_managerCost() {
-    let currentLevel = parseInt(document.getElementById('amountManagersInput').value);
-    let currentWarehouseManagerCost = parseFloat(document.getElementById('warehouseManagerCostInput').value);
-    let currentElevatorManagerCost = parseFloat(document.getElementById('elevatorManagerCostInput').value);
-    let currentMineshaftManagerCost = parseFloat(document.getElementById('mineshaftManagerCostInput').value);
-    let levelsToGenerate = parseInt(document.getElementById('levelsToGenerateInput').value);
+    let currentLevel = parseInt(document.getElementById("amountManagersInput").value, 10);
+    let currentWarehouseManagerCost = parseFloat(document.getElementById("warehouseManagerCostInput").value);
+    let currentElevatorManagerCost = parseFloat(document.getElementById("elevatorManagerCostInput").value);
+    let currentMineshaftManagerCost = parseFloat(document.getElementById("mineshaftManagerCostInput").value);
+    let elevatorWarehouseMultiplier = parseFloat(document.getElementById("managerCostElevatorWarehouseMultiplierInput").value);
+    let shaftMultiplier = parseFloat(document.getElementById("managerCostShaftMultiplierInput").value);
+    let levelsToGenerate = parseInt(document.getElementById("levelsToGenerateInput").value, 10);
+
+    if (!Number.isFinite(currentLevel)) {
+        currentLevel = 1;
+    }
+    if (!Number.isFinite(currentWarehouseManagerCost)) {
+        currentWarehouseManagerCost = 0;
+    }
+    if (!Number.isFinite(currentElevatorManagerCost)) {
+        currentElevatorManagerCost = 0;
+    }
+    if (!Number.isFinite(currentMineshaftManagerCost)) {
+        currentMineshaftManagerCost = 0;
+    }
+    if (!Number.isFinite(elevatorWarehouseMultiplier)) {
+        elevatorWarehouseMultiplier = 1;
+    }
+    if (!Number.isFinite(shaftMultiplier)) {
+        shaftMultiplier = 1;
+    }
+    if (!Number.isFinite(levelsToGenerate) || levelsToGenerate <= 0) {
+        displayLevels_managerCost();
+        return;
+    }
 
     let lastLevel = {
         "0 Param data": {
@@ -28,48 +46,32 @@ function generateLevels_managerCost() {
 
         newLevel["0 Param data"] = {};
         newLevel["0 Param data"]["0 int AmountManagersBought"] = lastLevel["0 Param data"]["0 int AmountManagersBought"] + 1;
+        newLevel["0 Param data"]["0 double Ground"] = lastLevel["0 Param data"]["0 double Ground"] * elevatorWarehouseMultiplier;
+        newLevel["0 Param data"]["0 double Elevator"] = lastLevel["0 Param data"]["0 double Elevator"] * elevatorWarehouseMultiplier;
+        newLevel["0 Param data"]["0 double Corridor"] = lastLevel["0 Param data"]["0 double Corridor"] * shaftMultiplier;
 
-        // Determine the correct multiplier based on the level and manager type
-        let currentWarehouseMultiplier;
-        let currentElevatorMultiplier;
-        let currentMineshaftMultiplier;
-
-        if (newLevel["0 Param data"]["0 int AmountManagersBought"] < 21) {
-            currentWarehouseMultiplier = warehouseManagerCostMultiplier;
-            currentElevatorMultiplier = elevatorManagerCostMultiplier;
-            currentMineshaftMultiplier = mineshaftManagerCostMultiplier;
-        } else {
-            currentWarehouseMultiplier = warehouseManagerCostMultiplier21;
-            currentElevatorMultiplier = elevatorManagerCostMultiplier21;
-            currentMineshaftMultiplier = mineshaftManagerCostMultiplier21;
-        }
-
-        // Increment cost based on the current level and manager type
-        newLevel["0 Param data"]["0 double Ground"] = lastLevel["0 Param data"]["0 double Ground"] * (currentWarehouseMultiplier);
-        newLevel["0 Param data"]["0 double Elevator"] = lastLevel["0 Param data"]["0 double Elevator"] * (currentElevatorMultiplier);
-        newLevel["0 Param data"]["0 double Corridor"] = lastLevel["0 Param data"]["0 double Corridor"] * (currentMineshaftMultiplier);
-
-        // Push the new level data
         levelData_managerCost.push(newLevel);
         lastLevel = newLevel;
     }
 
-    // Display the generated levels
+    if (typeof window.recordGeneratedCount === "function") {
+        window.recordGeneratedCount(levelsToGenerate);
+    }
+
     displayLevels_managerCost();
 }
 
 function displayLevels_managerCost() {
-    let outputDiv = document.getElementById('output');
+    let outputDiv = document.getElementById("output");
     outputDiv.innerHTML = JSON.stringify(levelData_managerCost, null, 4);
 }
 
 function copyJsonManagerCost() {
-    let filename = `manager_costs.json`;
-    let outputDiv = document.getElementById('output');
+    let filename = "manager_costs.json";
     let json = JSON.stringify(levelData_managerCost, null, 4);
-    let blob = new Blob([json], { type: 'application/json' });
+    let blob = new Blob([json], { type: "application/json" });
     let url = URL.createObjectURL(blob);
-    let a = document.createElement('a');
+    let a = document.createElement("a");
     a.href = url;
     a.download = filename;
     a.click();
