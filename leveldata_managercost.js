@@ -32,23 +32,25 @@ function generateLevels_managerCost() {
         return;
     }
 
-    let lastLevel = {
-        "0 Param data": {
-            "0 int AmountManagersBought": currentLevel - 1,
-            "0 double Ground": currentWarehouseManagerCost,
-            "0 double Elevator": currentElevatorManagerCost,
-            "0 double Corridor": currentMineshaftManagerCost
-        }
-    };
+    let lastLevel = levelData_managerCost.length > 0 ? levelData_managerCost[levelData_managerCost.length - 1] : null;
 
     for (let i = 0; i < levelsToGenerate; i++) {
-        let newLevel = {};
+        let newLevel = { "0 Param data": {} };
 
-        newLevel["0 Param data"] = {};
-        newLevel["0 Param data"]["0 int AmountManagersBought"] = lastLevel["0 Param data"]["0 int AmountManagersBought"] + 1;
-        newLevel["0 Param data"]["0 double Ground"] = lastLevel["0 Param data"]["0 double Ground"] * elevatorWarehouseMultiplier;
-        newLevel["0 Param data"]["0 double Elevator"] = lastLevel["0 Param data"]["0 double Elevator"] * elevatorWarehouseMultiplier;
-        newLevel["0 Param data"]["0 double Corridor"] = lastLevel["0 Param data"]["0 double Corridor"] * shaftMultiplier;
+        if (!lastLevel) {
+            newLevel["0 Param data"]["0 int AmountManagersBought"] = currentLevel;
+            newLevel["0 Param data"]["0 double Ground"] = currentWarehouseManagerCost;
+            newLevel["0 Param data"]["0 double Elevator"] = currentElevatorManagerCost;
+            newLevel["0 Param data"]["0 double Corridor"] = currentMineshaftManagerCost;
+            levelData_managerCost.push(newLevel);
+            lastLevel = newLevel;
+            continue;
+        }
+
+        newLevel["0 Param data"]["0 int AmountManagersBought"] = parseInt(lastLevel["0 Param data"]["0 int AmountManagersBought"], 10) + 1;
+        newLevel["0 Param data"]["0 double Ground"] = parseFloat(lastLevel["0 Param data"]["0 double Ground"]) * elevatorWarehouseMultiplier;
+        newLevel["0 Param data"]["0 double Elevator"] = parseFloat(lastLevel["0 Param data"]["0 double Elevator"]) * elevatorWarehouseMultiplier;
+        newLevel["0 Param data"]["0 double Corridor"] = parseFloat(lastLevel["0 Param data"]["0 double Corridor"]) * shaftMultiplier;
 
         levelData_managerCost.push(newLevel);
         lastLevel = newLevel;

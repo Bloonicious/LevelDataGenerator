@@ -54,6 +54,30 @@ function generateLevels_barriers() {
     let cost = currentCost;
     let buildTime = currentBuildTime;
 
+    if (levelData_barriers.length > 0) {
+        const lastBarrier = levelData_barriers[levelData_barriers.length - 1]["0 Param data"] || {};
+        const lastOrder = parseInt(lastBarrier["0 int Order"], 10);
+        const lastFromTier = parseInt(lastBarrier["0 int FromTier"], 10);
+        const lastToTier = parseInt(lastBarrier["0 int ToTier"], 10);
+        const lastCost = parseFloat(lastBarrier["0 double Cost"]);
+        const lastBuildTime = parseFloat(lastBarrier["0 double BuildTimeInSeconds"]);
+
+        if (Number.isFinite(lastOrder)) {
+            order = lastOrder + 1;
+        }
+        if (Number.isFinite(lastFromTier) && Number.isFinite(lastToTier)) {
+            tierSpan = Math.max(1, lastToTier - lastFromTier + 1);
+            fromTier = lastToTier + 1;
+            toTier = fromTier + tierSpan - 1;
+        }
+        if (Number.isFinite(lastCost)) {
+            cost = lastCost * costMultiplier;
+        }
+        if (Number.isFinite(lastBuildTime)) {
+            buildTime = lastBuildTime * buildTimeMultiplier;
+        }
+    }
+
     for (let i = 0; i < levelsToGenerate; i++) {
         levelData_barriers.push({
             "0 Param data": {

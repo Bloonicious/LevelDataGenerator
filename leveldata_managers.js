@@ -139,6 +139,27 @@ function extractManagerName(managerEntry) {
     );
 }
 
+function getManagerBaseIdFromEntry(managerEntry) {
+    if (!managerEntry || !managerEntry["0 Param data"]) {
+        return null;
+    }
+
+    const data = managerEntry["0 Param data"];
+    const managerId = parseInt(data["0 int ManagerID"], 10);
+    if (!Number.isFinite(managerId)) {
+        return null;
+    }
+
+    const hasGenderId = Object.prototype.hasOwnProperty.call(data, "0 int GenderId");
+    const genderId = parseInt(data["0 int GenderId"], 10);
+
+    if (hasGenderId && genderId === 1 && managerId >= 100000) {
+        return managerId - 100000;
+    }
+
+    return managerId;
+}
+
 function syncUsedNamesFromGeneratedManagers() {
     for (let i = 0; i < levelData_managers.length; i++) {
         addUsedManagerName(extractManagerName(levelData_managers[i]));
@@ -251,9 +272,16 @@ function generateLevels_managers() {
     }
 
     syncUsedNamesFromGeneratedManagers();
+    let startManagerBaseId = currentLevel;
+    if (levelData_managers.length > 0) {
+        const lastGeneratedBaseId = getManagerBaseIdFromEntry(levelData_managers[levelData_managers.length - 1]);
+        if (Number.isFinite(lastGeneratedBaseId)) {
+            startManagerBaseId = lastGeneratedBaseId + 1;
+        }
+    }
 
     for (let i = 0; i < levelsToGenerate; i++) {
-        let managerBaseId = currentLevel + i;
+        let managerBaseId = startManagerBaseId + i;
         let managerId = managerBaseId;
 
         if (!legacyManagerFormat && currentGenderId === 1) {
@@ -318,27 +346,26 @@ function getValueForRarity(rarityID, values) {
 }
 
 function getValueX(rarityID, effectID) {
-    if (effectID === 3 || effectID === 10 || effectID === 16) {
-        return getValueForRarity(rarityID, [0.4, 0.7, 0.8, 0.9]);
-    }
+    const effectValues = {
+        1: [3, 5, 7, 11],
+        2: [1.5, 2.5, 4, 6],
+        3: [0.6, 0.3, 0.2, 0.1],
+        4: [3, 5, 8, 12],
+        5: [3, 5, 8, 12],
+        6: [1.5, 2.5, 4, 6],
+        7: [0.2, 0.4, 0.6, 0.9],
+        8: [3, 5, 7, 11],
+        9: [1.5, 2.5, 4, 6],
+        10: [0.6, 0.3, 0.2, 0.1],
+        11: [2, 4, 6, 9],
+        12: [3, 5, 7, 11],
+        13: [3, 5, 8, 12],
+        14: [0.2, 0.4, 0.6, 0.9],
+        15: [1.5, 2.5, 4, 6],
+        16: [0.6, 0.3, 0.2, 0.1]
+    };
 
-    if (effectID === 1 || effectID === 8 || effectID === 12) {
-        return getValueForRarity(rarityID, [3, 5, 7, 10]);
-    }
-
-    if (effectID === 11) {
-        return getValueForRarity(rarityID, [2, 4, 6, 8]);
-    }
-
-    if (effectID === 4 || effectID === 5) {
-        return getValueForRarity(rarityID, [3, 5, 8, 11]);
-    }
-
-    if (effectID === 7 || effectID === 14) {
-        return getValueForRarity(rarityID, [0.2, 0.4, 0.6, 0.8]);
-    }
-
-    return getValueForRarity(rarityID, [1.5, 2.5, 4, 6]);
+    return getValueForRarity(rarityID, effectValues[effectID] || [1.5, 2.5, 4, 6]);
 }
 
 function displayLevels_managers() {

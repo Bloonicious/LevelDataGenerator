@@ -125,6 +125,76 @@ let workerCountIncrementLevel = {
     2001: 8
 };
 
+const mineshaftBigUpdateLevels = new Set([10, 25, 50, 100, 200, 400, 500, 600, 700, 800, 850, 900, 1000, 1200, 1400, 1500, 1600, 1750, 1875, 2000]);
+
+function getIncrementValueAtLevel(incrementMap, targetLevel, fallbackValue) {
+    let resolvedValue = fallbackValue;
+    const keys = Object.keys(incrementMap)
+        .map(function(key) {
+            return parseInt(key, 10);
+        })
+        .filter(function(level) {
+            return Number.isFinite(level) && level <= targetLevel;
+        })
+        .sort(function(a, b) {
+            return a - b;
+        });
+
+    for (let i = 0; i < keys.length; i++) {
+        resolvedValue = incrementMap[keys[i]];
+    }
+
+    return resolvedValue;
+}
+
+function getMineshaftMultipliers(level) {
+    if (level < 21) {
+        return { cost: costMultiplier, stat: statMultiplier };
+    }
+    if (level < 101) {
+        return { cost: costMultiplier21, stat: statMultiplier21 };
+    }
+    if (level < 401) {
+        return { cost: costMultiplier101, stat: statMultiplier101 };
+    }
+    if (level < 801) {
+        return { cost: costMultiplier401, stat: statMultiplier401 };
+    }
+    if (level < 851) {
+        return { cost: costMultiplier801, stat: statMultiplier801 };
+    }
+    if (level < 1001) {
+        return { cost: costMultiplier851, stat: statMultiplier851 };
+    }
+    if (level < 1501) {
+        return { cost: costMultiplier1001, stat: statMultiplier1001 };
+    }
+
+    return { cost: costMultiplier1501, stat: statMultiplier1501 };
+}
+
+function getMineshaftSuperCashReward(tier) {
+    const superCashRewards = {
+        0: 2,
+        21: 12,
+        22: 18,
+        23: 24,
+        24: 30,
+        25: 40,
+        31: 50
+    };
+    let reward = 2;
+
+    for (let i = 0; i < Object.keys(superCashRewards).length; i++) {
+        const tierKey = parseInt(Object.keys(superCashRewards)[i], 10);
+        if (tier >= tierKey) {
+            reward = superCashRewards[tierKey];
+        }
+    }
+
+    return reward;
+}
+
 function generateLevels_mineshaft() {
     let currentLevel = parseInt(document.getElementById('mineshaftLevelInput').value);
     let currentTier = parseInt(document.getElementById('tierInput').value);
@@ -154,79 +224,47 @@ function generateLevels_mineshaft() {
         return;
     }
 
-    let lastLevelData = {
-        "0 int Tier": currentTier,
-        "0 int Level": currentLevel - 1,
-        "0 double Cost": currentCost,
-        "0 int NumberOfWorkers": 1,
-        "0 double GainPerSecondPerWorker": currentGain,
-        "0 double CapacityPerWorker": currentCapacity,
-        "0 int WorkerWalkingSpeedPerSecond": 2,
-        "1 UInt8 BigUpdate": 0
-    };
-    if (includeLegacySuperCash) {
-        lastLevelData["0 double SuperCashReward"] = 0;
+    let lastLevel = levelData_mineshaft.length > 0 ? levelData_mineshaft[levelData_mineshaft.length - 1] : null;
+    if (lastLevel && lastLevel["0 Param data"] && Number.isFinite(parseInt(lastLevel["0 Param data"]["0 int Tier"], 10))) {
+        currentTier = parseInt(lastLevel["0 Param data"]["0 int Tier"], 10);
     }
 
-    let lastLevel = {
-        "0 Param data": lastLevelData
-    };
-
-    // Define super cash rewards based on tier ranges
-    const superCashRewards = {
-        0: 2,  // Default
-        21: 12,
-        22: 18,
-        23: 24,
-        24: 30,
-        25: 40,
-        31: 50  // For tiers 31 and above
-    };
-
     for (let i = 0; i < levelsToGenerate; i++) {
-        let newLevel = {};
+        let newLevel = { "0 Param data": {} };
 
-        newLevel["0 Param data"] = {};
-        newLevel["0 Param data"]["0 int Tier"] = currentTier;
-        newLevel["0 Param data"]["0 int Level"] = lastLevel["0 Param data"]["0 int Level"] + 1;
+        if (!lastLevel) {
+            const isBigUpdateLevel = mineshaftBigUpdateLevels.has(currentLevel);
+            newLevel["0 Param data"]["0 int Tier"] = currentTier;
+            newLevel["0 Param data"]["0 int Level"] = currentLevel;
+            newLevel["0 Param data"]["0 double Cost"] = currentCost;
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = getIncrementValueAtLevel(workerCountIncrementLevel, currentLevel, 1);
+            newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] = currentGain;
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] = currentCapacity;
+            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = getIncrementValueAtLevel(workerSpeedIncrementLevel, currentLevel, 2);
+            newLevel["0 Param data"]["1 UInt8 BigUpdate"] = isBigUpdateLevel ? 1 : 0;
+            if (includeLegacySuperCash) {
+                newLevel["0 Param data"]["0 double SuperCashReward"] = isBigUpdateLevel ? getMineshaftSuperCashReward(currentTier) : 0;
+            }
 
-        // Determine the correct multiplier based on the level
-        let currentCostMultiplier;
-        let currentStatMultiplier;
-        if (newLevel["0 Param data"]["0 int Level"] < 21) {
-            currentCostMultiplier = costMultiplier;
-            currentStatMultiplier = statMultiplier;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 101) {
-            currentCostMultiplier = costMultiplier21;
-            currentStatMultiplier = statMultiplier21;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 401) {
-            currentCostMultiplier = costMultiplier101;
-            currentStatMultiplier = statMultiplier101;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 801) {
-            currentCostMultiplier = costMultiplier401;
-            currentStatMultiplier = statMultiplier401;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 851) {
-            currentCostMultiplier = costMultiplier801;
-            currentStatMultiplier = statMultiplier801;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 1001) {
-            currentCostMultiplier = costMultiplier851;
-            currentStatMultiplier = statMultiplier851;
-        } else if (newLevel["0 Param data"]["0 int Level"] < 1501) {
-            currentCostMultiplier = costMultiplier1001;
-            currentStatMultiplier = statMultiplier1001;
-        } else {
-            currentCostMultiplier = costMultiplier1501;
-            currentStatMultiplier = statMultiplier1501;
+            levelData_mineshaft.push(newLevel);
+            lastLevel = newLevel;
+            continue;
         }
 
-        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
+        const newLevelNumber = parseInt(lastLevel["0 Param data"]["0 int Level"], 10) + 1;
+        const multipliers = getMineshaftMultipliers(newLevelNumber);
+        const isBigUpdateLevel = mineshaftBigUpdateLevels.has(newLevelNumber);
+        newLevel["0 Param data"]["0 int Tier"] = currentTier;
+        newLevel["0 Param data"]["0 int Level"] = newLevelNumber;
+
+        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * multipliers.cost;
         if (workerCountIncrementLevel[newLevel["0 Param data"]["0 int Level"]]) {
             newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementLevel[newLevel["0 Param data"]["0 int Level"]];
         } else {
             newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
         }
-        newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] = lastLevel["0 Param data"]["0 double GainPerSecondPerWorker"] * currentStatMultiplier;
-        newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * currentStatMultiplier;
+        newLevel["0 Param data"]["0 double GainPerSecondPerWorker"] = lastLevel["0 Param data"]["0 double GainPerSecondPerWorker"] * multipliers.stat;
+        newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * multipliers.stat;
         if (workerSpeedIncrementLevel[newLevel["0 Param data"]["0 int Level"]]) {
             newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementLevel[newLevel["0 Param data"]["0 int Level"]];
         } else {
@@ -234,17 +272,10 @@ function generateLevels_mineshaft() {
         }
 
         // Apply big update and super cash rewards
-        const bigUpdateLevels = [10, 25, 50, 100, 200, 400, 500, 600, 700, 800, 850, 900, 1000, 1200, 1400, 1500, 1600, 1750, 1875, 2000];
-        if (bigUpdateLevels.includes(newLevel["0 Param data"]["0 int Level"])) {
+        if (isBigUpdateLevel) {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
             if (includeLegacySuperCash) {
-                let reward = 2;  // Default reward
-                for (let tier in superCashRewards) {
-                    if (currentTier >= tier) {
-                        reward = superCashRewards[tier];
-                    }
-                }
-                newLevel["0 Param data"]["0 double SuperCashReward"] = reward;
+                newLevel["0 Param data"]["0 double SuperCashReward"] = getMineshaftSuperCashReward(currentTier);
             }
         } else {
             newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 0;

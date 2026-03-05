@@ -40,6 +40,31 @@ function generateLevels_collectibleFactors() {
         return;
     }
 
+    if (levelData_collectibleFactors.length > 0) {
+        const lastFactor = levelData_collectibleFactors[levelData_collectibleFactors.length - 1]["0 Param data"] || {};
+        const lastCollectibleId = parseInt(lastFactor["0 int CollectibleID"], 10);
+        const lastLevel = parseInt(lastFactor["0 int CollectibleLevel"], 10);
+        const lastProduction = parseFloat(lastFactor["0 double ProductionFactor"]);
+        const lastPartsRequired = parseFloat(lastFactor["0 SInt64 PartsRequired"]);
+        const lastSecondary = parseFloat(lastFactor["0 double SecondaryEffectFactor"]);
+
+        if (Number.isFinite(lastCollectibleId)) {
+            collectibleId = lastCollectibleId;
+        }
+        if (Number.isFinite(lastLevel)) {
+            currentLevel = lastLevel + 1;
+        }
+        if (Number.isFinite(lastProduction)) {
+            productionFactor = lastProduction * productionMultiplier;
+        }
+        if (Number.isFinite(lastPartsRequired)) {
+            partsRequired = lastPartsRequired * partsMultiplier;
+        }
+        if (Number.isFinite(lastSecondary)) {
+            secondaryEffectFactor = lastSecondary * secondaryMultiplier;
+        }
+    }
+
     for (let i = 0; i < levelsToGenerate; i++) {
         levelData_collectibleFactors.push({
             "0 Param data": {

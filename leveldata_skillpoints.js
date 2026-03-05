@@ -48,30 +48,48 @@ function generateLevels_skillpoints() {
     }
 
     let useCustomMultiplier = Number.isFinite(customCostMultiplier) && customCostMultiplier > 0;
-
-    let lastLevel = {
-        "0 Param data": {
-            "0 SInt64 SkillPointNo": currentLevel - 1,
-            "0 double Cost": currentSkillpointCost,
-            "0 double SuperCashCost": currentSuperCashCost
-        }
-    };
+    let lastLevel = levelData_skillpoints.length > 0 ? levelData_skillpoints[levelData_skillpoints.length - 1] : null;
 
     for (let i = 0; i < levelsToGenerate; i++) {
-        let newSkillPointNo = lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] + 1;
-        let currentCostMultiplier = useCustomMultiplier ? customCostMultiplier : getLegacySkillpointMultiplier(newSkillPointNo);
-        let newCost = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
+        if (!lastLevel) {
+            const initialEntry = {
+                "0 Param data": {
+                    "0 SInt64 SkillPointNo": currentLevel.toString(),
+                    "0 double Cost": currentSkillpointCost,
+                    "0 double SuperCashCost": currentSuperCashCost
+                }
+            };
+            levelData_skillpoints.push(initialEntry);
+            lastLevel = initialEntry;
+            continue;
+        }
 
-        levelData_skillpoints.push({
+        let lastSkillPointNo = parseInt(lastLevel["0 Param data"]["0 SInt64 SkillPointNo"], 10);
+        if (!Number.isFinite(lastSkillPointNo)) {
+            lastSkillPointNo = currentLevel;
+        }
+        let lastCost = parseFloat(lastLevel["0 Param data"]["0 double Cost"]);
+        if (!Number.isFinite(lastCost)) {
+            lastCost = currentSkillpointCost;
+        }
+        let lastSuperCashCost = parseFloat(lastLevel["0 Param data"]["0 double SuperCashCost"]);
+        if (!Number.isFinite(lastSuperCashCost)) {
+            lastSuperCashCost = currentSuperCashCost;
+        }
+
+        let newSkillPointNo = lastSkillPointNo + 1;
+        let currentCostMultiplier = useCustomMultiplier ? customCostMultiplier : getLegacySkillpointMultiplier(newSkillPointNo);
+        let newCost = lastCost * currentCostMultiplier;
+
+        const newEntry = {
             "0 Param data": {
                 "0 SInt64 SkillPointNo": newSkillPointNo.toString(),
                 "0 double Cost": newCost,
-                "0 double SuperCashCost": lastLevel["0 Param data"]["0 double SuperCashCost"]
+                "0 double SuperCashCost": lastSuperCashCost
             }
-        });
-
-        lastLevel["0 Param data"]["0 SInt64 SkillPointNo"] = newSkillPointNo;
-        lastLevel["0 Param data"]["0 double Cost"] = newCost;
+        };
+        levelData_skillpoints.push(newEntry);
+        lastLevel = newEntry;
     }
 
     if (typeof window.recordGeneratedCount === "function") {

@@ -38,13 +38,28 @@ function generateLevels_collectibles() {
         return;
     }
 
+    let nextCollectibleId = currentCollectibleId;
+    let nextVariant = variant;
+    if (levelData_collectibles.length > 0) {
+        const lastCollectible = levelData_collectibles[levelData_collectibles.length - 1]["0 Param data"] || {};
+        const lastCollectibleId = parseInt(lastCollectible["0 int CollectibleID"], 10);
+        const lastVariant = parseInt(lastCollectible["0 int Variant"], 10);
+
+        if (Number.isFinite(lastCollectibleId)) {
+            nextCollectibleId = lastCollectibleId + 1;
+        }
+        if (incrementVariant && Number.isFinite(lastVariant)) {
+            nextVariant = lastVariant + 1;
+        }
+    }
+
     for (let i = 0; i < levelsToGenerate; i++) {
         levelData_collectibles.push({
             "0 Param data": {
-                "0 int CollectibleID": currentCollectibleId + i,
+                "0 int CollectibleID": nextCollectibleId + i,
                 "1 string CollectibleType": collectibleType,
                 "0 int RarityID": rarityId,
-                "0 int Variant": incrementVariant ? variant + i : variant,
+                "0 int Variant": incrementVariant ? nextVariant + i : variant,
                 "0 int MaxLevel": maxLevel,
                 "1 UInt8 IsActivated": isActivated,
                 "0 int SecondaryEffectId": secondaryEffectId,

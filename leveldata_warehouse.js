@@ -18,6 +18,13 @@ let warehouseCostMultiplier4001 = 1.20;
 let warehouseStatMultiplier4001 = 1.1667;
 let warehouseCostMultiplier5001 = 1.225;
 let warehouseStatMultiplier5001 = 1.1875;
+const warehouseBigUpdateLevels = new Set([20, 50, 100, 200, 400, 600, 800, 850, 950, 1050, 1150, 1250, 1350, 1450, 1550, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000, 3200, 3400, 3500, 3700, 3900, 4000, 4200, 4400, 4500, 4600, 4800, 5000, 5200, 5400, 5500]);
+const warehouseDoubleLevels = new Set([50, 200, 600, 850, 950, 1050, 1150, 1250, 1350, 1450, 1500, 1550, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400]);
+const warehouseReward400Levels = new Set([2000, 2100, 2200, 2300, 2400]);
+const warehouseTimesThreeLevels = new Set([2500, 2600, 2700, 2800, 2900]);
+const warehouseTimesFiveLevels = new Set([3000, 3500, 4000, 4500, 5000, 5500]);
+const warehouseTimesFourLevels = new Set([3200, 3400, 3700, 3900]);
+const warehouseTimesSixLevels = new Set([4200, 4400, 4600, 4800, 5200, 5400]);
 
 if (!window.workerSpeedIncrementWarehouseLevel) {
     var workerSpeedIncrementWarehouseLevel = {
@@ -97,6 +104,113 @@ if (!window.workerCountIncrementWarehouseLevel) {
     };
 }
 
+function getWarehouseIncrementValueAtLevel(incrementMap, targetLevel, fallbackValue) {
+    let resolvedValue = fallbackValue;
+    const keys = Object.keys(incrementMap)
+        .map(function(key) {
+            return parseInt(key, 10);
+        })
+        .filter(function(level) {
+            return Number.isFinite(level) && level <= targetLevel;
+        })
+        .sort(function(a, b) {
+            return a - b;
+        });
+
+    for (let i = 0; i < keys.length; i++) {
+        resolvedValue = incrementMap[keys[i]];
+    }
+
+    return resolvedValue;
+}
+
+function getWarehouseMultipliers(level) {
+    if (level < 11) {
+        return { cost: warehouseCostMultiplier, stat: warehouseStatMultiplier };
+    }
+    if (level < 21) {
+        return { cost: warehouseCostMultiplier11, stat: warehouseStatMultiplier11 };
+    }
+    if (level < 41) {
+        return { cost: warehouseCostMultiplier21, stat: warehouseStatMultiplier21 };
+    }
+    if (level < 101) {
+        return { cost: warehouseCostMultiplier41, stat: warehouseStatMultiplier41 };
+    }
+    if (level < 2501) {
+        return { cost: warehouseCostMultiplier101, stat: warehouseStatMultiplier101 };
+    }
+    if (level < 3001) {
+        return { cost: warehouseCostMultiplier2501, stat: warehouseStatMultiplier2501 };
+    }
+    if (level < 4001) {
+        return { cost: warehouseCostMultiplier3001, stat: warehouseStatMultiplier3001 };
+    }
+    if (level < 5001) {
+        return { cost: warehouseCostMultiplier4001, stat: warehouseStatMultiplier4001 };
+    }
+
+    return { cost: warehouseCostMultiplier5001, stat: warehouseStatMultiplier5001 };
+}
+
+function getWarehouseSuperCashReward(level, includeLegacySuperCash) {
+    if (!includeLegacySuperCash) {
+        return null;
+    }
+    if (warehouseReward400Levels.has(level)) {
+        return 400;
+    }
+    if (warehouseTimesThreeLevels.has(level) || warehouseTimesFiveLevels.has(level)) {
+        return 500;
+    }
+    if (warehouseTimesFourLevels.has(level) || warehouseTimesSixLevels.has(level)) {
+        return 300;
+    }
+    if (warehouseBigUpdateLevels.has(level)) {
+        return 15;
+    }
+
+    return 0;
+}
+
+function applyWarehouseMilestones(paramData, includeLegacySuperCash, applyStatMultipliers) {
+    const level = parseInt(paramData["0 int Level"], 10);
+    const isBigUpdate = warehouseBigUpdateLevels.has(level);
+    const superCashReward = getWarehouseSuperCashReward(level, includeLegacySuperCash);
+
+    paramData["1 UInt8 BigUpdate"] = isBigUpdate ? 1 : 0;
+    if (includeLegacySuperCash) {
+        paramData["0 double SuperCashReward"] = superCashReward;
+    }
+
+    if (!applyStatMultipliers) {
+        return;
+    }
+
+    if (warehouseDoubleLevels.has(level)) {
+        paramData["0 double CapacityPerWorker"] *= 2;
+        paramData["0 double LoadingPerSecond"] *= 2;
+    } else if (level === 100) {
+        paramData["0 double CapacityPerWorker"] *= 1.25;
+        paramData["0 double LoadingPerSecond"] *= 1.25;
+    } else if (level === 800) {
+        paramData["0 double CapacityPerWorker"] *= 1.5;
+        paramData["0 double LoadingPerSecond"] *= 1.5;
+    } else if (warehouseTimesThreeLevels.has(level)) {
+        paramData["0 double CapacityPerWorker"] *= 3;
+        paramData["0 double LoadingPerSecond"] *= 3;
+    } else if (warehouseTimesFiveLevels.has(level)) {
+        paramData["0 double CapacityPerWorker"] *= 5;
+        paramData["0 double LoadingPerSecond"] *= 5;
+    } else if (warehouseTimesFourLevels.has(level)) {
+        paramData["0 double CapacityPerWorker"] *= 4;
+        paramData["0 double LoadingPerSecond"] *= 4;
+    } else if (warehouseTimesSixLevels.has(level)) {
+        paramData["0 double CapacityPerWorker"] *= 6;
+        paramData["0 double LoadingPerSecond"] *= 6;
+    }
+}
+
 function generateLevels_warehouse() {
     let currentLevel = parseInt(document.getElementById('warehouseLevelInput').value);
     let currentCost = parseFloat(document.getElementById('warehouseCostInput').value);
@@ -122,128 +236,44 @@ function generateLevels_warehouse() {
         return;
     }
 
-    let lastLevelData = {
-        "0 int Level": currentLevel - 1,
-        "0 double Cost": currentCost,
-        "0 int NumberOfWorkers": 1,
-        "0 double CapacityPerWorker": currentCapacity,
-        "0 int WorkerWalkingSpeedPerSecond": 2,
-        "0 double LoadingPerSecond": currentLoadingPerSecond,
-        "1 UInt8 BigUpdate": 0
-    };
-    if (includeLegacySuperCash) {
-        lastLevelData["0 double SuperCashReward"] = 0;
-    }
-
-    let lastLevel = {
-        "0 Param data": lastLevelData
-    };
+    let lastLevel = levelData_warehouse.length > 0 ? levelData_warehouse[levelData_warehouse.length - 1] : null;
 
     for (let i = 0; i < levelsToGenerate; i++) {
-        let newLevel = {};
+        let newLevel = { "0 Param data": {} };
 
-        newLevel["0 Param data"] = {};
-        newLevel["0 Param data"]["0 int Level"] = lastLevel["0 Param data"]["0 int Level"] + 1;
+        if (!lastLevel) {
+            newLevel["0 Param data"]["0 int Level"] = currentLevel;
+            newLevel["0 Param data"]["0 double Cost"] = currentCost;
+            newLevel["0 Param data"]["0 int NumberOfWorkers"] = getWarehouseIncrementValueAtLevel(workerCountIncrementWarehouseLevel, currentLevel, 1);
+            newLevel["0 Param data"]["0 double CapacityPerWorker"] = currentCapacity;
+            newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = getWarehouseIncrementValueAtLevel(workerSpeedIncrementWarehouseLevel, currentLevel, 2);
+            newLevel["0 Param data"]["0 double LoadingPerSecond"] = currentLoadingPerSecond;
+            applyWarehouseMilestones(newLevel["0 Param data"], includeLegacySuperCash, false);
 
-        // Determine the correct multiplier based on the level
-        let currentCostMultiplier;
-        let currentStatMultiplier;
-        if (currentLevel < 11) {
-            currentCostMultiplier = warehouseCostMultiplier;
-            currentStatMultiplier = warehouseStatMultiplier;
-        } else if (currentLevel < 21) {
-            currentCostMultiplier = warehouseCostMultiplier11;
-            currentStatMultiplier = warehouseStatMultiplier11;
-        } else if (currentLevel < 41) {
-            currentCostMultiplier = warehouseCostMultiplier21;
-            currentStatMultiplier = warehouseStatMultiplier21;
-        } else if (currentLevel < 101) {
-            currentCostMultiplier = warehouseCostMultiplier41;
-            currentStatMultiplier = warehouseStatMultiplier41;
-        } else if (currentLevel < 2501) {
-            currentCostMultiplier = warehouseCostMultiplier101;
-            currentStatMultiplier = warehouseStatMultiplier101;
-        } else if (currentLevel < 3001) {
-            currentCostMultiplier = warehouseCostMultiplier2501;
-            currentStatMultiplier = warehouseStatMultiplier2501;
-        } else if (currentLevel < 4001) {
-            currentCostMultiplier = warehouseCostMultiplier3001;
-            currentStatMultiplier = warehouseStatMultiplier3001;
-        } else if (currentLevel < 5001) {
-            currentCostMultiplier = warehouseCostMultiplier4001;
-            currentStatMultiplier = warehouseStatMultiplier4001;
-        } else {
-            currentCostMultiplier = warehouseCostMultiplier5001;
-            currentStatMultiplier = warehouseStatMultiplier5001;
+            levelData_warehouse.push(newLevel);
+            lastLevel = newLevel;
+            continue;
         }
 
+        const newLevelNumber = parseInt(lastLevel["0 Param data"]["0 int Level"], 10) + 1;
+        const multipliers = getWarehouseMultipliers(newLevelNumber);
+        newLevel["0 Param data"]["0 int Level"] = newLevelNumber;
+
         // Increment cost, capacity, and loading per second based on the current level
-        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * currentCostMultiplier;
+        newLevel["0 Param data"]["0 double Cost"] = lastLevel["0 Param data"]["0 double Cost"] * multipliers.cost;
         if (workerCountIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
             newLevel["0 Param data"]["0 int NumberOfWorkers"] = workerCountIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
         } else {
             newLevel["0 Param data"]["0 int NumberOfWorkers"] = lastLevel["0 Param data"]["0 int NumberOfWorkers"];
         }
-        newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * currentStatMultiplier;
+        newLevel["0 Param data"]["0 double CapacityPerWorker"] = lastLevel["0 Param data"]["0 double CapacityPerWorker"] * multipliers.stat;
         if (workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]]) {
             newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = workerSpeedIncrementWarehouseLevel[newLevel["0 Param data"]["0 int Level"]];
         } else {
             newLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"] = lastLevel["0 Param data"]["0 int WorkerWalkingSpeedPerSecond"];
         }
-        newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * currentStatMultiplier;
-
-        // Apply big update for specific levels if needed
-        if (newLevel["0 Param data"]["0 int Level"] === 20 || newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 100 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 400 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 800 || newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 950 || newLevel["0 Param data"]["0 int Level"] === 1050 || newLevel["0 Param data"]["0 int Level"] === 1150 || newLevel["0 Param data"]["0 int Level"] === 1250 || newLevel["0 Param data"]["0 int Level"] === 1350 || newLevel["0 Param data"]["0 int Level"] === 1450 || newLevel["0 Param data"]["0 int Level"] === 1550 || newLevel["0 Param data"]["0 int Level"] === 1600 || newLevel["0 Param data"]["0 int Level"] === 1700 || newLevel["0 Param data"]["0 int Level"] === 1800 || newLevel["0 Param data"]["0 int Level"] === 1900 || newLevel["0 Param data"]["0 int Level"] === 2000 || newLevel["0 Param data"]["0 int Level"] === 2100 || newLevel["0 Param data"]["0 int Level"] === 2200 || newLevel["0 Param data"]["0 int Level"] === 2300 || newLevel["0 Param data"]["0 int Level"] === 2400 || newLevel["0 Param data"]["0 int Level"] === 2500 || newLevel["0 Param data"]["0 int Level"] === 2600 || newLevel["0 Param data"]["0 int Level"] === 2700 || newLevel["0 Param data"]["0 int Level"] === 2800 || newLevel["0 Param data"]["0 int Level"] === 2900 || newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3200 || newLevel["0 Param data"]["0 int Level"] === 3400 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 3700 || newLevel["0 Param data"]["0 int Level"] === 3900 || newLevel["0 Param data"]["0 int Level"] === 4000 || newLevel["0 Param data"]["0 int Level"] === 4200 || newLevel["0 Param data"]["0 int Level"] === 4400 || newLevel["0 Param data"]["0 int Level"] === 4500 || newLevel["0 Param data"]["0 int Level"] === 4600 || newLevel["0 Param data"]["0 int Level"] === 4800 || newLevel["0 Param data"]["0 int Level"] === 5000 || newLevel["0 Param data"]["0 int Level"] === 5200 || newLevel["0 Param data"]["0 int Level"] === 5400 || newLevel["0 Param data"]["0 int Level"] === 5500) {
-            newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 1;
-            if (includeLegacySuperCash) {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 15;
-            }
-        } else {
-            newLevel["0 Param data"]["1 UInt8 BigUpdate"] = 0;
-            if (includeLegacySuperCash) {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 0;
-            }
-        }
-
-        // Update capacity and loading per second according to big update
-        if (newLevel["0 Param data"]["0 int Level"] === 50 || newLevel["0 Param data"]["0 int Level"] === 200 || newLevel["0 Param data"]["0 int Level"] === 600 || newLevel["0 Param data"]["0 int Level"] === 850 || newLevel["0 Param data"]["0 int Level"] === 950 || newLevel["0 Param data"]["0 int Level"] === 1050 || newLevel["0 Param data"]["0 int Level"] === 1150 || newLevel["0 Param data"]["0 int Level"] === 1250 || newLevel["0 Param data"]["0 int Level"] === 1350 || newLevel["0 Param data"]["0 int Level"] === 1450 || newLevel["0 Param data"]["0 int Level"] === 1550 || newLevel["0 Param data"]["0 int Level"] === 1500 || newLevel["0 Param data"]["0 int Level"] === 1600 || newLevel["0 Param data"]["0 int Level"] === 1700 || newLevel["0 Param data"]["0 int Level"] === 1800 || newLevel["0 Param data"]["0 int Level"] === 1900 || newLevel["0 Param data"]["0 int Level"] === 2000 || newLevel["0 Param data"]["0 int Level"] === 2100 || newLevel["0 Param data"]["0 int Level"] === 2200 || newLevel["0 Param data"]["0 int Level"] === 2300 || newLevel["0 Param data"]["0 int Level"] === 2400) {
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 2;
-            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 2;
-        } else if (newLevel["0 Param data"]["0 int Level"] === 100) {
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 1.25;
-            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.25;
-        } else if (newLevel["0 Param data"]["0 int Level"] === 800) {
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 1.5;
-            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 1.5;
-        } else if (newLevel["0 Param data"]["0 int Level"] === 2000 || newLevel["0 Param data"]["0 int Level"] === 2100 || newLevel["0 Param data"]["0 int Level"] === 2200 || newLevel["0 Param data"]["0 int Level"] === 2300 || newLevel["0 Param data"]["0 int Level"] === 2400) {
-            if (includeLegacySuperCash) {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 400;
-            }
-        } else if (newLevel["0 Param data"]["0 int Level"] === 2500 || newLevel["0 Param data"]["0 int Level"] === 2600 || newLevel["0 Param data"]["0 int Level"] === 2700 || newLevel["0 Param data"]["0 int Level"] === 2800 || newLevel["0 Param data"]["0 int Level"] === 2900) {
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 3;
-            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 3;
-            if (includeLegacySuperCash) {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
-            }
-        } else if (newLevel["0 Param data"]["0 int Level"] === 3000 || newLevel["0 Param data"]["0 int Level"] === 3500 || newLevel["0 Param data"]["0 int Level"] === 4000 || newLevel["0 Param data"]["0 int Level"] === 4500 || newLevel["0 Param data"]["0 int Level"] === 5000 || newLevel["0 Param data"]["0 int Level"] === 5500) {
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 5;
-            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 5;
-            if (includeLegacySuperCash) {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 500;
-            }
-        } else if (newLevel["0 Param data"]["0 int Level"] === 3200 || newLevel["0 Param data"]["0 int Level"] === 3400 || newLevel["0 Param data"]["0 int Level"] === 3700 || newLevel["0 Param data"]["0 int Level"] === 3900) {
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 4;
-            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 4;
-            if (includeLegacySuperCash) {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 300;
-            }
-        } else if (newLevel["0 Param data"]["0 int Level"] === 4200 || newLevel["0 Param data"]["0 int Level"] === 4400 || newLevel["0 Param data"]["0 int Level"] === 4600 || newLevel["0 Param data"]["0 int Level"] === 4800 || newLevel["0 Param data"]["0 int Level"] === 5200 || newLevel["0 Param data"]["0 int Level"] === 5400) {
-            newLevel["0 Param data"]["0 double CapacityPerWorker"] *= 6;
-            newLevel["0 Param data"]["0 double LoadingPerSecond"] *= 6;
-            if (includeLegacySuperCash) {
-                newLevel["0 Param data"]["0 double SuperCashReward"] = 300;
-            }
-        }
+        newLevel["0 Param data"]["0 double LoadingPerSecond"] = lastLevel["0 Param data"]["0 double LoadingPerSecond"] * multipliers.stat;
+        applyWarehouseMilestones(newLevel["0 Param data"], includeLegacySuperCash, true);
         
         // Push the new level data
         levelData_warehouse.push(newLevel);
