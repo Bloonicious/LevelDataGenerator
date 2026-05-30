@@ -1,5 +1,43 @@
 let levelData_collectibleFactors = [];
 
+let indexes_collectibleFactors = {
+    byCollectibleID: new Map(),
+    byCollectibleLevel: new Map(),
+    byCollectibleIDAndLevel: new Map()
+};
+
+function buildIndexes_collectibleFactors() {
+    indexes_collectibleFactors.byCollectibleID.clear();
+    indexes_collectibleFactors.byCollectibleLevel.clear();
+    indexes_collectibleFactors.byCollectibleIDAndLevel.clear();
+
+    for (let i = 0; i < levelData_collectibleFactors.length; i++) {
+        const entry = levelData_collectibleFactors[i];
+        const data = entry["0 Param data"];
+
+        const collectibleId = data["0 int CollectibleID"];
+        if (!indexes_collectibleFactors.byCollectibleID.has(collectibleId)) {
+            indexes_collectibleFactors.byCollectibleID.set(collectibleId, []);
+        }
+        indexes_collectibleFactors.byCollectibleID.get(collectibleId).push(entry);
+
+        const level = data["0 int CollectibleLevel"];
+        if (!indexes_collectibleFactors.byCollectibleLevel.has(level)) {
+            indexes_collectibleFactors.byCollectibleLevel.set(level, []);
+        }
+        indexes_collectibleFactors.byCollectibleLevel.get(level).push(entry);
+
+        const compositeKey = collectibleId + ":" + level;
+        indexes_collectibleFactors.byCollectibleIDAndLevel.set(compositeKey, entry);
+    }
+}
+
+function clearIndexes_collectibleFactors() {
+    indexes_collectibleFactors.byCollectibleID.clear();
+    indexes_collectibleFactors.byCollectibleLevel.clear();
+    indexes_collectibleFactors.byCollectibleIDAndLevel.clear();
+}
+
 function generateLevels_collectibleFactors() {
     let collectibleId = parseInt(document.getElementById("collectibleFactorCollectibleIDInput").value, 10);
     let currentLevel = parseInt(document.getElementById("collectibleFactorLevelInput").value, 10);
@@ -85,6 +123,7 @@ function generateLevels_collectibleFactors() {
         window.recordGeneratedCount(levelsToGenerate);
     }
 
+    buildIndexes_collectibleFactors();
     displayLevels_collectibleFactors();
 }
 

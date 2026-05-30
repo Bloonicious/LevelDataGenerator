@@ -262,6 +262,19 @@ function removeGeneratedLines() {
     levelData_collectibles = [];
     levelData_collectibleFactors = [];
 
+    if (typeof clearIndexes_barriers === "function") {
+        clearIndexes_barriers();
+    }
+    if (typeof clearIndexes_collectibleFactors === "function") {
+        clearIndexes_collectibleFactors();
+    }
+    if (typeof clearIndexes_collectibles === "function") {
+        clearIndexes_collectibles();
+    }
+    if (typeof clearIndexes_elevator === "function") {
+        clearIndexes_elevator();
+    }
+
     if (typeof displayLevels_mineshaft === "function") {
         displayLevels_mineshaft();
     }
