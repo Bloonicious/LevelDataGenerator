@@ -1,5 +1,34 @@
 let levelData_elevator = [];
 
+let indexes_elevator = {
+    byLevel: new Map(),
+    byBigUpdate: new Map()
+};
+
+function buildIndexes_elevator() {
+    indexes_elevator.byLevel.clear();
+    indexes_elevator.byBigUpdate.clear();
+
+    for (let i = 0; i < levelData_elevator.length; i++) {
+        const entry = levelData_elevator[i];
+        const data = entry["0 Param data"];
+
+        const level = data["0 int Level"];
+        indexes_elevator.byLevel.set(level, entry);
+
+        const bigUpdate = data["1 UInt8 BigUpdate"];
+        if (!indexes_elevator.byBigUpdate.has(bigUpdate)) {
+            indexes_elevator.byBigUpdate.set(bigUpdate, []);
+        }
+        indexes_elevator.byBigUpdate.get(bigUpdate).push(entry);
+    }
+}
+
+function clearIndexes_elevator() {
+    indexes_elevator.byLevel.clear();
+    indexes_elevator.byBigUpdate.clear();
+}
+
 let elevatorCostMultiplier = 1.20;
 let elevatorStatMultiplier = 1.30;
 let elevatorCostMultiplier11 = 1.20;
@@ -188,7 +217,7 @@ function generateLevels_elevator() {
         window.recordGeneratedCount(levelsToGenerate);
     }
 
-    // Display the generated levels
+    buildIndexes_elevator();
     displayLevels_elevator();
 }
 

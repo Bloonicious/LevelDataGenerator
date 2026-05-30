@@ -1,5 +1,52 @@
 let levelData_collectibles = [];
 
+let indexes_collectibles = {
+    byCollectibleID: new Map(),
+    byRarityID: new Map(),
+    byCollectibleType: new Map(),
+    bySecondaryEffectId: new Map()
+};
+
+function buildIndexes_collectibles() {
+    indexes_collectibles.byCollectibleID.clear();
+    indexes_collectibles.byRarityID.clear();
+    indexes_collectibles.byCollectibleType.clear();
+    indexes_collectibles.bySecondaryEffectId.clear();
+
+    for (let i = 0; i < levelData_collectibles.length; i++) {
+        const entry = levelData_collectibles[i];
+        const data = entry["0 Param data"];
+
+        const collectibleId = data["0 int CollectibleID"];
+        indexes_collectibles.byCollectibleID.set(collectibleId, entry);
+
+        const rarityId = data["0 int RarityID"];
+        if (!indexes_collectibles.byRarityID.has(rarityId)) {
+            indexes_collectibles.byRarityID.set(rarityId, []);
+        }
+        indexes_collectibles.byRarityID.get(rarityId).push(entry);
+
+        const collectibleType = data["1 string CollectibleType"];
+        if (!indexes_collectibles.byCollectibleType.has(collectibleType)) {
+            indexes_collectibles.byCollectibleType.set(collectibleType, []);
+        }
+        indexes_collectibles.byCollectibleType.get(collectibleType).push(entry);
+
+        const effectId = data["0 int SecondaryEffectId"];
+        if (!indexes_collectibles.bySecondaryEffectId.has(effectId)) {
+            indexes_collectibles.bySecondaryEffectId.set(effectId, []);
+        }
+        indexes_collectibles.bySecondaryEffectId.get(effectId).push(entry);
+    }
+}
+
+function clearIndexes_collectibles() {
+    indexes_collectibles.byCollectibleID.clear();
+    indexes_collectibles.byRarityID.clear();
+    indexes_collectibles.byCollectibleType.clear();
+    indexes_collectibles.bySecondaryEffectId.clear();
+}
+
 function generateLevels_collectibles() {
     let currentCollectibleId = parseInt(document.getElementById("collectibleIDInput").value, 10);
     let collectibleType = document.getElementById("collectibleTypeInput").value;
@@ -72,6 +119,7 @@ function generateLevels_collectibles() {
         window.recordGeneratedCount(levelsToGenerate);
     }
 
+    buildIndexes_collectibles();
     displayLevels_collectibles();
 }
 

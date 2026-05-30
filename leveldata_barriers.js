@@ -1,5 +1,43 @@
 let levelData_barriers = [];
 
+let indexes_barriers = {
+    byOrder: new Map(),
+    byFromTier: new Map(),
+    byToTier: new Map()
+};
+
+function buildIndexes_barriers() {
+    indexes_barriers.byOrder.clear();
+    indexes_barriers.byFromTier.clear();
+    indexes_barriers.byToTier.clear();
+
+    for (let i = 0; i < levelData_barriers.length; i++) {
+        const entry = levelData_barriers[i];
+        const data = entry["0 Param data"];
+
+        const order = data["0 int Order"];
+        indexes_barriers.byOrder.set(order, entry);
+
+        const fromTier = data["0 int FromTier"];
+        if (!indexes_barriers.byFromTier.has(fromTier)) {
+            indexes_barriers.byFromTier.set(fromTier, []);
+        }
+        indexes_barriers.byFromTier.get(fromTier).push(entry);
+
+        const toTier = data["0 int ToTier"];
+        if (!indexes_barriers.byToTier.has(toTier)) {
+            indexes_barriers.byToTier.set(toTier, []);
+        }
+        indexes_barriers.byToTier.get(toTier).push(entry);
+    }
+}
+
+function clearIndexes_barriers() {
+    indexes_barriers.byOrder.clear();
+    indexes_barriers.byFromTier.clear();
+    indexes_barriers.byToTier.clear();
+}
+
 function generateLevels_barriers() {
     let currentOrder = parseInt(document.getElementById("barrierOrderInput").value, 10);
     let currentFromTier = parseInt(document.getElementById("barrierFromTierInput").value, 10);
@@ -102,6 +140,7 @@ function generateLevels_barriers() {
         window.recordGeneratedCount(levelsToGenerate);
     }
 
+    buildIndexes_barriers();
     displayLevels_barriers();
 }
 
